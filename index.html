@@ -4281,14 +4281,35 @@ window.VR = (function () {
       <h2 style="color:${c.color};font-size:1.05rem;margin:0 0 .4rem">📄 Generar documento Word — ${c.name}</h2>
       <p class="af-sub">Completa los datos de tu equipo y descarga el Plan PTIIT o el Informe PTIIT con el formato oficial del IDC.</p>
 
-      <div style="display:flex;gap:.6rem;margin-bottom:.9rem;flex-wrap:wrap">
-        <label style="display:flex;align-items:center;gap:.4rem;font-size:.87rem;cursor:pointer">
-          <input type="radio" name="af-wdt-${c.id}" value="plan" checked> Plan PTIIT (secciones 1–11)
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem">
+        <label style="display:flex;flex-direction:column;gap:.3rem;cursor:pointer;border:2px solid ${c.color};border-radius:8px;padding:.75rem 1rem;background:rgba(0,0,0,.02)">
+          <span style="display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.9rem">
+            <input type="radio" name="af-wdt-${c.id}" value="plan" checked style="accent-color:${c.color}">
+            📋 Plan PTIIT — secciones 1–11
+          </span>
+          <span style="font-size:.78rem;color:#666;line-height:1.45;padding-left:1.4rem">
+            <b>¿Cuándo?</b> Al <u>inicio</u> del proyecto (semanas 1–2).<br>
+            <b>¿Para qué?</b> Declarar <i>qué harás</i> y cómo lo harás.<br>
+            <b>¿Qué contiene?</b> Equipo, título, líneas de investigación, objetivos, marco teórico, metodología ABPP, cronograma, presupuesto, bibliografía.<br>
+            <b>Resultado:</b> El comité lo aprueba para que puedas iniciar.
+          </span>
         </label>
-        <label style="display:flex;align-items:center;gap:.4rem;font-size:.87rem;cursor:pointer">
-          <input type="radio" name="af-wdt-${c.id}" value="informe"> Informe PTIIT (4 capítulos)
+        <label style="display:flex;flex-direction:column;gap:.3rem;cursor:pointer;border:2px solid #8e44ad;border-radius:8px;padding:.75rem 1rem;background:rgba(0,0,0,.02)">
+          <span style="display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.9rem">
+            <input type="radio" name="af-wdt-${c.id}" value="informe" style="accent-color:#8e44ad">
+            📄 Informe PTIIT — 4 capítulos
+          </span>
+          <span style="font-size:.78rem;color:#666;line-height:1.45;padding-left:1.4rem">
+            <b>¿Cuándo?</b> Al <u>cierre</u> del proyecto (semana 12).<br>
+            <b>¿Para qué?</b> Reportar <i>qué hiciste</i> y los resultados obtenidos.<br>
+            <b>¿Qué contiene?</b> Cap. I Problema · Cap. II Marco teórico · Cap. III Metodología · Cap. IV Resultados y discusión.<br>
+            <b>Resultado:</b> Se sustenta oralmente ante el jurado evaluador.
+          </span>
         </label>
       </div>
+      <p style="font-size:.78rem;color:#888;margin:-.4rem 0 .9rem;padding:.5rem .75rem;background:#f8f8f8;border-radius:6px;border-left:3px solid ${c.color}">
+        💡 <b>¿Cuál elegir?</b> Si tu proyecto está comenzando → <b>Plan PTIIT</b>. Si ya terminaste y vas a sustentar → <b>Informe PTIIT</b>.
+      </p>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem .9rem">
         <div><label class="af-lbl">Apellidos y nombres — Autor 1 *</label><input class="af-in" id="af-wd-${c.id}-a1" placeholder="Apellido Apellido, Nombre"></div>
