@@ -1162,6 +1162,74 @@ details[open] .af-faq-q::before{transform:rotate(90deg)}
 .af-faq-a a{color:#8e44ad;font-weight:600}
 .af-faq-a code{background:var(--c-surface2);padding:.1rem .35rem;border-radius:4px;font-size:.8rem}
 
+/* === WGEN — Generador Word por especialidad === */
+.wgen-card{border-radius:12px;overflow:hidden}
+.wgen-header{padding:1.1rem 1.25rem;display:flex;justify-content:space-between;align-items:flex-start;gap:.8rem;flex-wrap:wrap}
+.wgen-title-badge{font-size:.65rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:.25rem}
+.wgen-title{color:#fff;font-size:1.1rem;font-weight:800;margin:0;font-family:var(--font-display)}
+.wgen-subtitle{color:rgba(255,255,255,.8);font-size:.82rem;margin:.2rem 0 0}
+.wgen-demo-btn{background:rgba(255,255,255,.18);border:2px solid rgba(255,255,255,.5);color:#fff;font-weight:800;font-size:.8rem;padding:.4rem .85rem;border-radius:6px;cursor:pointer;letter-spacing:.04em;transition:background .2s,transform .15s}
+.wgen-demo-btn:hover{background:rgba(255,255,255,.32);transform:scale(1.04)}
+.wgen-clear-btn{background:transparent;border:1px solid rgba(255,255,255,.35);color:rgba(255,255,255,.8);font-size:.75rem;padding:.4rem .7rem;border-radius:6px;cursor:pointer;transition:background .2s}
+.wgen-clear-btn:hover{background:rgba(255,255,255,.15)}
+.wgen-tip{font-size:.77rem;color:#777;margin:.0 0 .9rem;padding:.45rem .75rem;background:#f9f9f6;border-radius:6px;border-left:3px solid #ccc;line-height:1.5}
+
+/* Selector Plan/Informe */
+.wgen-doc-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;perspective:800px}
+.wgen-doc-card{position:relative;height:200px;cursor:pointer;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.wgen-doc-card:hover{transform:rotateY(180deg)}
+.wgen-doc-card.selected .wgen-doc-front{box-shadow:0 0 0 3px var(--bc,#0072b9),0 6px 20px rgba(0,0,0,.12)}
+.wgen-doc-front,.wgen-doc-back{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:10px;padding:1rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.4rem}
+.wgen-doc-front{background:#fff;border:2px solid #e5e5e0;text-align:center}
+.wgen-doc-back{transform:rotateY(180deg);background:var(--bc,#0072b9);color:#fff;text-align:left;align-items:flex-start;justify-content:flex-start;gap:.3rem}
+.wgen-doc-card.selected .wgen-doc-front{border-color:var(--acc,#0072b9)}
+.wgen-doc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+.wgen-doc-name{font-weight:800;font-size:.92rem;font-family:var(--font-display)}
+.wgen-doc-sub{font-size:.72rem;color:#999;font-weight:600}
+.wgen-doc-phase{font-size:.65rem;font-weight:700;letter-spacing:.08em;padding:.2rem .6rem;border-radius:20px;color:#fff;margin-top:.25rem}
+.wgen-doc-back-title{font-weight:800;font-size:.83rem;opacity:.85;margin-bottom:.2rem}
+.wgen-doc-list{margin:0;padding-left:1.1rem;font-size:.77rem;line-height:1.7}
+.wgen-doc-result{font-size:.72rem;margin-top:auto;background:rgba(255,255,255,.18);padding:.35rem .6rem;border-radius:6px;font-weight:600}
+.wgen-doc-card.selected{transform:none}
+.wgen-doc-card.selected:hover{transform:rotateY(180deg)}
+
+/* Formulario */
+.wgen-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem .85rem}
+.wgen-field{display:flex;flex-direction:column;gap:.25rem}
+.wgen-lbl-row{display:flex;align-items:center;justify-content:space-between;gap:.4rem}
+.wgen-help{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--idc-blue);background:#fff;color:var(--idc-blue);font-size:.68rem;font-weight:800;cursor:pointer;flex-shrink:0;line-height:1;padding:0;position:relative;transition:background .15s,color .15s}
+.wgen-help:hover{background:var(--idc-blue);color:#fff}
+.wgen-help-tip{position:absolute;top:100%;right:0;z-index:200;width:260px;background:#1a1a2e;color:#e8e8f0;font-size:.74rem;line-height:1.5;padding:.7rem .85rem;border-radius:8px;box-shadow:0 6px 24px rgba(0,0,0,.25);margin-top:4px;text-align:left;font-weight:400;pointer-events:none;opacity:0;transform:translateY(-4px);transition:opacity .2s,transform .2s}
+.wgen-help-tip.show{opacity:1;transform:translateY(0)}
+
+/* Flip cards para referencias e IA */
+.wgen-flip-wrap{perspective:900px}
+.wgen-flip-card{position:relative;height:auto;min-height:160px;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1)}
+.wgen-flip-card.flipped{transform:rotateY(180deg)}
+.wgen-flip-front,.wgen-flip-back{backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:8px;padding:.75rem;display:flex;flex-direction:column;gap:.4rem}
+.wgen-flip-front{background:#fff;border:1px solid #e5e5e0}
+.wgen-flip-back{position:absolute;inset:0;transform:rotateY(180deg);color:#fff;font-size:.82rem;min-height:160px}
+.wgen-apa-row{display:flex;gap:.5rem;align-items:flex-start;font-size:.78rem;line-height:1.45;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.1)}
+.wgen-apa-tag{background:rgba(255,255,255,.2);border-radius:4px;padding:.1rem .4rem;font-size:.68rem;font-weight:700;white-space:nowrap;flex-shrink:0}
+.wgen-flip-btn{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.9);font-size:.72rem;font-weight:700;padding:.3rem .65rem;border-radius:5px;cursor:pointer;transition:background .15s;align-self:flex-end}
+.wgen-flip-btn:hover{background:rgba(255,255,255,.25)}
+.wgen-flip-front .wgen-flip-btn{background:transparent;border-color:#ccc;color:#666}
+.wgen-flip-front .wgen-flip-btn:hover{background:#f0f0ee}
+
+/* Botón generar — liquid morph */
+.wgen-gen-btn{display:block;width:100%;margin-top:1.1rem;padding:.85rem 1rem;font-size:1rem;font-weight:800;font-family:var(--font-display);letter-spacing:.04em;color:#fff;border:none;border-radius:10px;cursor:pointer;position:relative;overflow:hidden;background:var(--lm-color,#0072b9);transition:border-radius .35s,transform .25s,box-shadow .25s}
+.wgen-gen-btn::before{content:'';position:absolute;inset:-2px;background:conic-gradient(from 0deg,#0072b9,#00c6ff,#f3a100,#e74c3c,#8e44ad,#0072b9);opacity:0;transition:opacity .35s;z-index:0;border-radius:inherit}
+.wgen-gen-btn span{position:relative;z-index:1}
+.wgen-gen-btn:hover{border-radius:6px;transform:rotate(-1deg) scale(1.015);box-shadow:0 8px 28px rgba(0,0,0,.22)}
+.wgen-gen-btn:hover::before{opacity:1}
+.wgen-gen-btn:active{transform:rotate(0deg) scale(.98)}
+
+@media(max-width:600px){
+  .wgen-doc-grid,.wgen-form-grid{grid-template-columns:1fr}
+  .wgen-doc-card{height:170px}
+  .wgen-field[style*="grid-column"]{grid-column:1}
+}
+
 /* === MODO PÁGINAS === */
 /* ===== MODO PÁGINAS: una pantalla a la vez (menú superior = pestañas) ===== */
 body.pg-mode #main-content .container > section,
@@ -4277,65 +4345,234 @@ window.VR = (function () {
     </div>
 
     <!-- Generador Word por especialidad -->
-    <div class="af-card" style="border-left:4px solid ${c.color}">
-      <h2 style="color:${c.color};font-size:1.05rem;margin:0 0 .4rem">📄 Generar documento Word — ${c.name}</h2>
-      <p class="af-sub">Completa los datos de tu equipo y descarga el Plan PTIIT o el Informe PTIIT con el formato oficial del IDC.</p>
+    <div class="af-card wgen-card" id="wgen-${c.id}" style="--wgen-color:${c.color};border:none;padding:0;overflow:visible;background:transparent;box-shadow:none">
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1rem">
-        <label style="display:flex;flex-direction:column;gap:.3rem;cursor:pointer;border:2px solid ${c.color};border-radius:8px;padding:.75rem 1rem;background:rgba(0,0,0,.02)">
-          <span style="display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.9rem">
-            <input type="radio" name="af-wdt-${c.id}" value="plan" checked style="accent-color:${c.color}">
-            📋 Plan PTIIT — secciones 1–11
-          </span>
-          <span style="font-size:.78rem;color:#666;line-height:1.45;padding-left:1.4rem">
-            <b>¿Cuándo?</b> Al <u>inicio</u> del proyecto (semanas 1–2).<br>
-            <b>¿Para qué?</b> Declarar <i>qué harás</i> y cómo lo harás.<br>
-            <b>¿Qué contiene?</b> Equipo, título, líneas de investigación, objetivos, marco teórico, metodología ABPP, cronograma, presupuesto, bibliografía.<br>
-            <b>Resultado:</b> El comité lo aprueba para que puedas iniciar.
-          </span>
-        </label>
-        <label style="display:flex;flex-direction:column;gap:.3rem;cursor:pointer;border:2px solid #8e44ad;border-radius:8px;padding:.75rem 1rem;background:rgba(0,0,0,.02)">
-          <span style="display:flex;align-items:center;gap:.5rem;font-weight:700;font-size:.9rem">
-            <input type="radio" name="af-wdt-${c.id}" value="informe" style="accent-color:#8e44ad">
-            📄 Informe PTIIT — 4 capítulos
-          </span>
-          <span style="font-size:.78rem;color:#666;line-height:1.45;padding-left:1.4rem">
-            <b>¿Cuándo?</b> Al <u>cierre</u> del proyecto (semana 12).<br>
-            <b>¿Para qué?</b> Reportar <i>qué hiciste</i> y los resultados obtenidos.<br>
-            <b>¿Qué contiene?</b> Cap. I Problema · Cap. II Marco teórico · Cap. III Metodología · Cap. IV Resultados y discusión.<br>
-            <b>Resultado:</b> Se sustenta oralmente ante el jurado evaluador.
-          </span>
-        </label>
-      </div>
-      <p style="font-size:.78rem;color:#888;margin:-.4rem 0 .9rem;padding:.5rem .75rem;background:#f8f8f8;border-radius:6px;border-left:3px solid ${c.color}">
-        💡 <b>¿Cuál elegir?</b> Si tu proyecto está comenzando → <b>Plan PTIIT</b>. Si ya terminaste y vas a sustentar → <b>Informe PTIIT</b>.
-      </p>
-
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem .9rem">
-        <div><label class="af-lbl">Apellidos y nombres — Autor 1 *</label><input class="af-in" id="af-wd-${c.id}-a1" placeholder="Apellido Apellido, Nombre"></div>
-        <div><label class="af-lbl">DNI — Autor 1 *</label><input class="af-in" id="af-wd-${c.id}-d1" placeholder="12345678" maxlength="8"></div>
-        <div><label class="af-lbl">Apellidos y nombres — Autor 2</label><input class="af-in" id="af-wd-${c.id}-a2" placeholder="Apellido Apellido, Nombre"></div>
-        <div><label class="af-lbl">DNI — Autor 2</label><input class="af-in" id="af-wd-${c.id}-d2" placeholder="12345678" maxlength="8"></div>
-        <div><label class="af-lbl">Apellidos y nombres — Autor 3</label><input class="af-in" id="af-wd-${c.id}-a3" placeholder="Apellido Apellido, Nombre"></div>
-        <div><label class="af-lbl">DNI — Autor 3</label><input class="af-in" id="af-wd-${c.id}-d3" placeholder="12345678" maxlength="8"></div>
-        <div><label class="af-lbl">Apellidos y nombres — Autor 4</label><input class="af-in" id="af-wd-${c.id}-a4" placeholder="Apellido Apellido, Nombre"></div>
-        <div><label class="af-lbl">DNI — Autor 4</label><input class="af-in" id="af-wd-${c.id}-d4" placeholder="12345678" maxlength="8"></div>
-        <div><label class="af-lbl">Asesor(a) *</label><input class="af-in" id="af-wd-${c.id}-asesor" placeholder="Mg. Apellido Nombre"></div>
-        <div><label class="af-lbl">Título del proyecto *</label><input class="af-in" id="af-wd-${c.id}-tit" placeholder="Título completo del proyecto"></div>
-        <div><label class="af-lbl">Objetivo general *</label><input class="af-in" id="af-wd-${c.id}-objg" placeholder="Determinar / Diseñar / Desarrollar..."></div>
-        <div><label class="af-lbl">Objetivo específico 1</label><input class="af-in" id="af-wd-${c.id}-obje" placeholder="Primer objetivo específico"></div>
-        <div><label class="af-lbl">Fecha de inicio *</label><input type="date" class="af-in" id="af-wd-${c.id}-ini"></div>
-        <div><label class="af-lbl">Fecha de fin *</label><input type="date" class="af-in" id="af-wd-${c.id}-fin"></div>
-        <div><label class="af-lbl">Total de horas (EFSRT)</label><input class="af-in" id="af-wd-${c.id}-hrs" placeholder="200" value="200"></div>
-        <div><label class="af-lbl">Lugar de ejecución</label><input class="af-in" id="af-wd-${c.id}-lugar" placeholder="Lima, Perú"></div>
-        <div style="grid-column:1/-1"><label class="af-lbl">Descripción / resumen del proyecto</label><textarea class="af-in" id="af-wd-${c.id}-desc" rows="3" placeholder="Breve descripción del proyecto (100–200 palabras)..." style="resize:vertical"></textarea></div>
-        <div style="grid-column:1/-1"><label class="af-lbl">Referencias bibliográficas (APA 7) — una por línea</label><textarea class="af-in" id="af-wd-${c.id}-refs" rows="5" placeholder="Apellido, A. (año). Título. Editorial. https://doi.org/...&#10;Apellido, B. y Apellido, C. (año). Título del artículo. Revista, vol(núm), pp–pp." style="resize:vertical;font-size:.82rem"></textarea></div>
-        <div style="grid-column:1/-1"><label class="af-lbl">Declaración de uso de IA — herramientas e impacto</label><textarea class="af-in" id="af-wd-${c.id}-ia" rows="3" placeholder="Ej.: Se utilizó Claude (Anthropic) para la generación asistida de borradores y revisión gramatical. Midjourney v6 para la creación de imágenes conceptuales. Los autores verificaron y validaron todos los contenidos generados." style="resize:vertical"></textarea></div>
+      <!-- HEADER con liquid-morph -->
+      <div class="wgen-header" style="background:${c.color}">
+        <div>
+          <div class="wgen-title-badge">DOCUMENTO OFICIAL IDC 2026</div>
+          <h2 class="wgen-title">📄 Generar documento Word</h2>
+          <p class="wgen-subtitle">${c.name} · ${c.short}</p>
+        </div>
+        <div style="display:flex;gap:.5rem;align-items:flex-start;flex-wrap:wrap">
+          <button class="wgen-demo-btn" onclick="VR.demoPane('${c.id}')">▶ DEMO</button>
+          <button class="wgen-clear-btn" onclick="VR.clearPane('${c.id}')">✕ Limpiar</button>
+        </div>
       </div>
 
-      <button class="af-btn primary full" style="margin-top:1rem;background:${c.color};border-color:${c.color};font-size:.97rem;padding:.75rem"
-        onclick="VR.genWordPane('${c.id}')">📥 Generar documento Word — ${c.name}</button>
-    </div>`;
+      <div style="padding:1.25rem;background:#fff;border:1px solid #e5e5e0;border-top:none;border-radius:0 0 12px 12px;box-shadow:0 4px 16px rgba(0,0,0,.07)">
+
+        <!-- SELECTOR PLAN / INFORME — flip cards -->
+        <p style="font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#999;margin:0 0 .6rem">Paso 1 — Tipo de documento</p>
+        <div class="wgen-doc-grid">
+          <label class="wgen-doc-card selected" id="wdc-plan-${c.id}" style="--bc:${c.color}">
+            <input type="radio" name="af-wdt-${c.id}" value="plan" checked onchange="document.getElementById('wdc-plan-${c.id}').classList.add('selected');document.getElementById('wdc-inf-${c.id}').classList.remove('selected')" style="position:absolute;opacity:0">
+            <div class="wgen-doc-front">
+              <div class="wgen-doc-icon" style="background:${c.color}20;color:${c.color}">📋</div>
+              <div class="wgen-doc-name" style="color:${c.color}">Plan PTIIT</div>
+              <div class="wgen-doc-sub">11 secciones</div>
+              <div class="wgen-doc-phase" style="background:${c.color}">INICIO · semanas 1–2</div>
+            </div>
+            <div class="wgen-doc-back" style="--bc:${c.color}">
+              <div class="wgen-doc-back-title">¿Qué declara?</div>
+              <ul class="wgen-doc-list">
+                <li>📌 Equipo y título</li>
+                <li>🔬 Líneas de investigación</li>
+                <li>🎯 Objetivos y marco teórico</li>
+                <li>⚙️ Metodología ABPP</li>
+                <li>📅 Cronograma y presupuesto</li>
+              </ul>
+              <div class="wgen-doc-result">✅ El comité lo aprueba para que puedas iniciar</div>
+            </div>
+          </label>
+
+          <label class="wgen-doc-card" id="wdc-inf-${c.id}">
+            <input type="radio" name="af-wdt-${c.id}" value="informe" onchange="document.getElementById('wdc-inf-${c.id}').classList.add('selected');document.getElementById('wdc-plan-${c.id}').classList.remove('selected')" style="position:absolute;opacity:0">
+            <div class="wgen-doc-front">
+              <div class="wgen-doc-icon" style="background:#8e44ad20;color:#8e44ad">📄</div>
+              <div class="wgen-doc-name" style="color:#8e44ad">Informe PTIIT</div>
+              <div class="wgen-doc-sub">4 capítulos</div>
+              <div class="wgen-doc-phase" style="background:#8e44ad">CIERRE · semana 12</div>
+            </div>
+            <div class="wgen-doc-back" style="--bc:#8e44ad">
+              <div class="wgen-doc-back-title">¿Qué reporta?</div>
+              <ul class="wgen-doc-list">
+                <li>I. Planteamiento del problema</li>
+                <li>II. Marco teórico</li>
+                <li>III. Metodología ejecutada</li>
+                <li>IV. Resultados y discusión</li>
+              </ul>
+              <div class="wgen-doc-result">🎓 Se sustenta ante el jurado evaluador</div>
+            </div>
+          </label>
+        </div>
+        <div class="wgen-tip" style="border-color:${c.color}">
+          💡 <b>¿Cuál elegir?</b> Proyecto comenzando → <b>Plan PTIIT</b>. Ya terminaste y vas a sustentar → <b>Informe PTIIT</b>. <span style="color:#aaa">Hover sobre cada tarjeta para ver su contenido.</span>
+        </div>
+
+        <!-- CAMPOS DEL FORMULARIO -->
+        <p style="font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#999;margin:1.1rem 0 .6rem">Paso 2 — Datos del equipo</p>
+        <div class="wgen-form-grid">
+
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Apellidos y nombres — Autor 1 *</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Escribe tus apellidos primero (ambos si los tienes), luego tu nombre. Ejemplo: «García López, Ana Sofía». Este nombre aparecerá en la portada y en la declaración de autoría del documento oficial.')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-a1" placeholder="García López, Ana Sofía">
+          </div>
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">DNI — Autor 1 *</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Ingresa tu número de DNI de 8 dígitos exactos, sin puntos ni espacios. Este dato se usa en la declaración de autoría y derechos de propiedad intelectual.')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-d1" placeholder="12345678" maxlength="8">
+          </div>
+
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Apellidos y nombres — Autor 2</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Si tu equipo tiene un segundo integrante, escribe sus apellidos y nombre. El equipo puede tener hasta 4 estudiantes de 1.° a 5.° semestre. Deja vacío si eres el único integrante.')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-a2" placeholder="Apellido Apellido, Nombre">
+          </div>
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">DNI — Autor 2</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'DNI del segundo integrante. Deja vacío si no aplica.')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-d2" placeholder="12345678" maxlength="8">
+          </div>
+
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Apellidos y nombres — Autor 3</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Tercer integrante del equipo. Recuerda que si algún miembro se retira, deberán firmar una Carta Poder notarial cediendo sus derechos al resto del equipo.')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-a3" placeholder="Apellido Apellido, Nombre">
+          </div>
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">DNI — Autor 3</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'DNI del tercer integrante.')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-d3" placeholder="12345678" maxlength="8">
+          </div>
+
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Apellidos y nombres — Autor 4</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Cuarto y último integrante permitido. El máximo es 4 estudiantes por equipo según el Reglamento IDC 2026.')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-a4" placeholder="Apellido Apellido, Nombre">
+          </div>
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">DNI — Autor 4</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'DNI del cuarto integrante.')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-d4" placeholder="12345678" maxlength="8">
+          </div>
+
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Asesor(a) *</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Escribe el nombre completo y grado del docente que asesora tu proyecto. Ejemplo: «Mg. Rodríguez Campos, Luis Alberto». Si aún no tienes asesor asignado, escribe «Por asignar».')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-asesor" placeholder="Mg. Rodríguez Campos, Luis Alberto">
+          </div>
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Título del proyecto *</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'El título debe ser claro, específico y descriptivo. Fórmula útil: «[Acción] + [objeto] + [en/para] + [contexto/población/lugar]». Ejemplo: «Diseño de sistema de identidad visual para emprendimientos gastronómicos de Lima Norte usando IA generativa».')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-tit" placeholder="Diseño de sistema de identidad visual para emprendimientos gastronómicos de Lima Norte">
+          </div>
+
+          <div class="wgen-field" style="grid-column:1/-1">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Objetivo general *</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'El objetivo general describe el propósito central de tu proyecto. Usa un verbo en infinitivo (Diseñar, Desarrollar, Implementar, Analizar, Crear). Debe ser medible y alcanzable en 12 semanas. Ejemplo: «Diseñar una propuesta de branding integral para tres emprendimientos gastronómicos del distrito de Los Olivos que incremente su reconocimiento de marca en un 20% al finalizar el ciclo».')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-objg" placeholder="Diseñar una propuesta de branding integral para tres emprendimientos gastronómicos que incremente el reconocimiento de marca en 20%">
+          </div>
+          <div class="wgen-field" style="grid-column:1/-1">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Objetivo específico 1</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Los objetivos específicos descomponen el objetivo general en acciones concretas y verificables. Cada uno debe corresponder a una fase ABPP. Verbo + qué + cómo + para qué. Ejemplo: «Diagnosticar el estado actual del branding de los emprendimientos seleccionados mediante entrevistas y análisis FODA para identificar oportunidades de mejora en la fase de Briefing».')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-obje" placeholder="Diagnosticar el estado actual del branding mediante análisis FODA e identidad competitiva">
+          </div>
+
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Fecha de inicio *</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Fecha en que oficialmente comienza el proyecto (Phase 01 — Briefing). Normalmente coincide con el inicio del semestre o con la aprobación del Plan por parte del comité.')">?</button></div>
+            <input type="date" class="af-in" id="af-wd-${c.id}-ini">
+          </div>
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Fecha de fin *</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Fecha de cierre del proyecto (Phase 04 — Socialización). La duración total es de 12 semanas (84 días) desde el inicio. El sistema calculará automáticamente la fecha si usas el Tutorial.')">?</button></div>
+            <input type="date" class="af-in" id="af-wd-${c.id}-fin">
+          </div>
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Total de horas EFSRT</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Las horas EFSRT (Experiencias Formativas en Situaciones Reales de Trabajo) equivalen a créditos de práctica profesional según el numeral 20.3.3.1. El mínimo es 200 horas. Fórmula: créditos × horas por crédito. Si tienes dudas, mantén 200.')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-hrs" placeholder="200" value="200">
+          </div>
+          <div class="wgen-field">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Lugar de ejecución</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Indica el lugar principal donde se ejecutará el proyecto. Puede ser el IDC, un distrito específico, una empresa u organización, o un entorno virtual. Ejemplo: «Instituto IDC — Lima, San Isidro» o «Emprendimientos gastronómicos, Los Olivos, Lima».')">?</button></div>
+            <input class="af-in" id="af-wd-${c.id}-lugar" placeholder="Instituto IDC — Lima, Perú">
+          </div>
+
+          <div class="wgen-field" style="grid-column:1/-1">
+            <div class="wgen-lbl-row"><label class="af-lbl" style="margin:0">Descripción / resumen del proyecto</label>
+              <button class="wgen-help" onclick="wgenHelp(this,'Redacta un resumen de 100 a 200 palabras que responda: ¿qué problema resuelves?, ¿a quién beneficia?, ¿qué solución propones?, ¿qué metodología usas? y ¿qué resultado esperas? Ejemplo: «El proyecto propone diseñar un sistema de identidad visual para tres emprendimientos gastronómicos de Lima Norte que carecen de branding coherente. Mediante la metodología ABPP y herramientas de IA generativa, se crearán logotipos, paletas de color y manuales de marca que eleven el reconocimiento de marca y la captación de clientes en un 20%».')">?</button></div>
+            <textarea class="af-in" id="af-wd-${c.id}-desc" rows="3" placeholder="El proyecto propone... [problema que resuelves] ... mediante ... [metodología/herramientas] ... con el objetivo de ... [resultado esperado y a quién beneficia]." style="resize:vertical"></textarea>
+          </div>
+
+          <!-- Referencias con flip-card -->
+          <div class="wgen-field" style="grid-column:1/-1">
+            <div class="wgen-flip-wrap">
+              <div class="wgen-flip-card" id="wfc-refs-${c.id}">
+                <div class="wgen-flip-front">
+                  <div class="wgen-lbl-row">
+                    <label class="af-lbl" style="margin:0;color:#1a5e1a">📚 Referencias bibliográficas (APA 7) — una por línea</label>
+                    <div style="display:flex;gap:.4rem">
+                      <button class="wgen-help" onclick="wgenHelp(this,'Escribe cada referencia en una línea separada usando el formato APA 7.ª edición. Estructura para libro: Apellido, A. A. (año). Título del libro. Editorial. Para artículo: Apellido, A. A. (año). Título del artículo. Nombre de la revista, volumen(número), páginas. https://doi.org/... Mínimo 5 referencias académicas.')">?</button>
+                      <button class="wgen-flip-btn" onclick="document.getElementById('wfc-refs-${c.id}').classList.toggle('flipped')" title="Ver guía APA 7">↻ Guía</button>
+                    </div>
+                  </div>
+                  <textarea class="af-in" id="af-wd-${c.id}-refs" rows="5" placeholder="Brown, T. (2009). Change by design. HarperCollins.&#10;Osterwalder, A. y Pigneur, Y. (2010). Business model generation. Wiley.&#10;García, M. (2023). Identidad visual y branding digital. Revista Diseño, 4(2), 12–28. https://doi.org/10.xxxx" style="resize:vertical;font-size:.82rem;border-color:#2ecc71"></textarea>
+                </div>
+                <div class="wgen-flip-back" style="background:linear-gradient(135deg,#1a5e1a,#2ecc71)">
+                  <div style="font-weight:800;font-size:.95rem;margin-bottom:.7rem">📖 Formato APA 7 — Referencia rápida</div>
+                  <div class="wgen-apa-row"><span class="wgen-apa-tag">Libro</span><span>Apellido, A. (año). <i>Título</i>. Editorial.</span></div>
+                  <div class="wgen-apa-row"><span class="wgen-apa-tag">Artículo</span><span>Apellido, A. (año). Título. <i>Revista, vol</i>(núm), pp. https://doi.org/…</span></div>
+                  <div class="wgen-apa-row"><span class="wgen-apa-tag">Web</span><span>Autor/Org. (año). <i>Título</i>. Sitio. URL</span></div>
+                  <div class="wgen-apa-row"><span class="wgen-apa-tag">Tesis</span><span>Apellido, A. (año). <i>Título</i> [Tesis de grado, Universidad]. Repositorio.</span></div>
+                  <div style="margin-top:.8rem;font-size:.78rem;opacity:.85">Mínimo 5 referencias · Sangría francesa en el doc final</div>
+                  <button class="wgen-flip-btn" style="margin-top:.7rem;background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff" onclick="document.getElementById('wfc-refs-${c.id}').classList.toggle('flipped')">← Volver a escribir</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Declaración IA con flip-card -->
+          <div class="wgen-field" style="grid-column:1/-1">
+            <div class="wgen-flip-wrap">
+              <div class="wgen-flip-card" id="wfc-ia-${c.id}">
+                <div class="wgen-flip-front">
+                  <div class="wgen-lbl-row">
+                    <label class="af-lbl" style="margin:0;color:#0057a0">🤖 Declaración de uso de IA — herramientas e impacto</label>
+                    <div style="display:flex;gap:.4rem;align-items:center">
+                      <a href="https://mario55666.github.io/REGLA_IA_2026/" target="_blank" style="font-size:.72rem;color:#0072b9;text-decoration:none;border:1px solid #0072b9;padding:.2rem .5rem;border-radius:4px;white-space:nowrap;font-weight:600" title="Ver Reglamento IA IDC 2026">📋 Reglamento IA</a>
+                      <button class="wgen-help" onclick="wgenHelp(this,'Indica qué herramientas de IA usaste, con qué propósito específico y cómo verificaste los resultados. Ejemplo: «Se utilizó Claude (Anthropic) para revisar la redacción del marco teórico y sugerir mejoras de coherencia. Midjourney v6 para generar referencias visuales de tendencias de diseño. Todos los contenidos fueron revisados, editados y validados por los autores. El trabajo intelectual creativo es de autoría propia». Si no usaste IA, decláralo: «Los autores declaran que no se utilizaron herramientas de inteligencia artificial en ninguna etapa del proyecto».')">?</button>
+                      <button class="wgen-flip-btn" onclick="document.getElementById('wfc-ia-${c.id}').classList.toggle('flipped')" title="Ver ejemplos de declaración">↻ Ejemplos</button>
+                    </div>
+                  </div>
+                  <textarea class="af-in" id="af-wd-${c.id}-ia" rows="3" placeholder="Se utilizó [herramienta] para [propósito concreto]. Los autores verificaron y validaron todos los contenidos generados. El trabajo creativo e intelectual es de autoría propia." style="resize:vertical;border-color:#0072b9"></textarea>
+                </div>
+                <div class="wgen-flip-back" style="background:linear-gradient(135deg,#003f7a,#0072b9)">
+                  <div style="font-weight:800;font-size:.95rem;margin-bottom:.7rem">🤖 Ejemplos de declaración IA</div>
+                  <div class="wgen-apa-row" style="flex-direction:column;gap:.15rem">
+                    <span class="wgen-apa-tag" style="width:fit-content">Con IA</span>
+                    <span style="font-size:.78rem;line-height:1.4;font-style:italic">«Se utilizó Claude para asistencia en redacción del marco teórico y Midjourney v6 para referencias visuales de tendencias. Todos los contenidos fueron revisados y validados por los autores. La autoría creativa es propia.»</span>
+                  </div>
+                  <div class="wgen-apa-row" style="flex-direction:column;gap:.15rem;margin-top:.6rem">
+                    <span class="wgen-apa-tag" style="background:#2ecc71;width:fit-content">Sin IA</span>
+                    <span style="font-size:.78rem;line-height:1.4;font-style:italic">«Los autores declaran que no se utilizaron herramientas de inteligencia artificial en ninguna etapa del proyecto. Todo el contenido es de autoría humana íntegra.»</span>
+                  </div>
+                  <div style="margin-top:.8rem;font-size:.75rem;opacity:.85">Ver Reglamento completo: <a href="https://mario55666.github.io/REGLA_IA_2026/" target="_blank" style="color:#90cdf4">mario55666.github.io/REGLA_IA_2026</a></div>
+                  <button class="wgen-flip-btn" style="margin-top:.7rem;background:rgba(255,255,255,.2);border-color:rgba(255,255,255,.4);color:#fff" onclick="document.getElementById('wfc-ia-${c.id}').classList.toggle('flipped')">← Volver a escribir</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /wgen-form-grid -->
+
+        <button class="wgen-gen-btn" style="--lm-color:${c.color}"
+          onclick="VR.genWordPane('${c.id}')"><span>📥 Descargar documento Word — ${c.name}</span></button>
+
+      </div><!-- /inner -->
+    </div><!-- /wgen-card -->`;
   }
   function toggleLine(id,i,checked){
     const arr=ST[id].lines, line=RLINES[id][i];
@@ -4923,6 +5160,77 @@ table.data th { background:${col}; color:#fff; font-weight:bold; }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
   else init();
 
+  /* ===== HELPERS DE CAMPO ===== */
+  function wgenHelp(btn,msg){
+    let tip=btn._tip;
+    if(!tip){
+      tip=document.createElement('div'); tip.className='wgen-help-tip'; tip.textContent=msg;
+      btn.style.position='relative'; btn.appendChild(tip); btn._tip=tip;
+      document.addEventListener('click',function h(e){ if(!btn.contains(e.target)){ tip.classList.remove('show'); document.removeEventListener('click',h); } });
+    }
+    tip.classList.toggle('show');
+  }
+
+  /* ===== DEMO / CLEAR ===== */
+  const DEMO_DATA = {
+    int:{ a1:'Vargas Torres, Lucía Fernanda',d1:'75312890',a2:'Mendoza Ríos, Carlos Andrés',d2:'74890123',
+          asesor:'Dis. María Quintana Pérez Tudela',
+          tit:'Diseño de interiores sostenible para coworkings emergentes en Miraflores usando materiales reciclados',
+          objg:'Diseñar tres propuestas de espacio de coworking con criterios de sostenibilidad y bienestar que reduzcan el consumo energético en un 30% respecto al diseño convencional',
+          obje:'Diagnosticar los estándares de diseño bioclimático aplicables a espacios de trabajo colaborativo en Lima mediante revisión bibliográfica y visitas de campo',
+          desc:'El proyecto propone el diseño de tres propuestas de interiores para coworkings emergentes en el distrito de Miraflores, incorporando principios de sostenibilidad, iluminación natural, materiales reciclados y gestión del ruido. La metodología ABPP guiará las cuatro fases: diagnóstico de usuarios (briefing), elaboración de planimetría y renders 3D (prototipado), validación con potenciales arrendatarios (ejecución) y presentación final ante inversionistas (socialización). El impacto esperado es reducir en 30% el consumo energético y aumentar el índice de bienestar percibido por los usuarios.',
+          refs:'Neufert, E. (2013). Arte de proyectar en arquitectura (16.ª ed.). Gustavo Gili.\nDickson, T. (2018). Sustainable interior design. Laurence King.\nFernández, M. (2022). Biofilia y diseño de interiores en contexto urbano. Revista Diseño y Arquitectura, 8(1), 44–61. https://doi.org/10.xxxx\nGibson, C. (2021). Wellbeing at work: Interior design strategies. Routledge.\nONU Medio Ambiente (2020). Edificaciones y construcción: Hoja de ruta hacia edificios de carbono cero para 2050. UNEP. https://www.unep.org',
+          ia:'Se utilizó AutoCAD para el modelado de planos y SketchUp con IA asistida para renders preliminares. Claude (Anthropic) fue empleado para revisar la coherencia del marco teórico y sugerir bibliografía. Todos los diseños, decisiones conceptuales y renders definitivos son de autoría propia.' },
+    pub:{ a1:'Salinas Pacheco, Rodrigo Alonso',d1:'73456789',a2:'Torres Vega, Valeria Cristina',d2:'72345678',
+          asesor:'Dis. Javier Mendives Laura',
+          tit:'Estrategia de marketing digital con IA para emprendimientos de streetwear en Lima usando creación de contenido generativo',
+          objg:'Desarrollar una estrategia de marketing digital con IA generativa para tres marcas de streetwear de Lima que eleve el CTR en un 3% y reduzca el CAC en un 20% en 12 semanas',
+          obje:'Analizar el comportamiento del público objetivo (18–28 años) en redes sociales mediante herramientas de social listening y benchmarking competitivo',
+          desc:'El proyecto diseña una estrategia de marketing digital para emprendimientos de streetwear peruano, integrando herramientas de IA para la generación de contenido visual y copy publicitario. Se utilizará metodología ABPP: diagnóstico de audiencias (briefing), prototipado de creatividades con Midjourney y Claude, lanzamiento de campañas A/B en Instagram y TikTok (ejecución) y análisis de métricas ROAS, CAC y CTR (socialización). El objetivo es demostrar que la IA puede democratizar el acceso a producción publicitaria de calidad para marcas emergentes con presupuesto limitado.',
+          refs:'Kotler, P. y Keller, K. L. (2022). Marketing management (16.ª ed.). Pearson.\nRyan, D. (2021). Understanding digital marketing (5.ª ed.). Kogan Page.\nChaffey, D. y Ellis-Chadwick, F. (2022). Digital marketing: Strategy, implementation and practice (8.ª ed.). Pearson.\nGarcía, R. (2023). IA generativa y publicidad: impacto en creatividad y eficiencia. Revista Comunicación y Marketing, 5(2), 18–34.\nIAB Perú (2024). Reporte de marketing digital Perú 2024. IAB. https://iabperu.com',
+          ia:'Se utilizó Midjourney v6 para generar referencias visuales de creatividades publicitarias y Claude para redacción de copy y análisis de audiencias. Meta Ads Manager con funciones de IA para optimización de campañas. Los autores revisaron y aprobaron todos los contenidos antes de su publicación.' },
+    mod:{ a1:'Quispe Ramos, Adriana Belén',d1:'71234567',a2:'Huanca León, Fiorella Milagros',d2:'70123456',
+          asesor:'Mg. Fany Picón Tejedo',
+          tit:'Colección de moda circular para el mercado millennial de Lima integrando fibras recicladas y patronaje modular',
+          objg:'Crear una colección de 8 prendas de moda circular usando fibras recicladas y patronaje modular que reduzca el desperdicio textil en un 40% respecto a la confección convencional',
+          obje:'Identificar proveedores de fibras recicladas certificadas en Lima y evaluar sus propiedades técnicas (resistencia, caída, drapeado) para su uso en prendas casualwear',
+          desc:'El proyecto desarrolla una colección de moda circular de 8 prendas casualwear dirigida al segmento millennial de Lima (25–35 años), usando fibras recicladas PET y algodón orgánico con técnicas de patronaje modular que minimizan el desperdicio de tela. La metodología ABPP estructura las fases: diagnóstico de tendencias y proveedores (briefing), diseño y prototipado de patrones (prototipado), confección y prueba de usuario (ejecución), y presentación de lookbook y análisis de viabilidad comercial (socialización). El impacto medido incluye reducción del desperdicio textil y margen bruto objetivo del 35%.',
+          refs:'Fletcher, K. (2014). Sustainable fashion and textiles: Design journeys (2.ª ed.). Routledge.\nMcQuillan, H. y Rissanen, T. (2016). Zero waste fashion design. Fairchild Books.\nFundación Ellen MacArthur (2017). Un nuevo modelo textil. EMF. https://ellenmacarthurfoundation.org\nLópez, C. (2022). Economía circular en la industria textil peruana. Revista Moda y Sostenibilidad, 3(1), 7–22.\nGlobal Fashion Agenda (2023). Pulse of the fashion industry 2023. GFA. https://globalfashionagenda.org',
+          ia:'Se utilizó CLO 3D para visualización de patronaje y simulación de caída de tela. Claude asistió en la redacción del marco teórico sobre economía circular. Pinterest Lens para análisis de tendencias visuales. Todos los diseños, patrones y decisiones de colección son de autoría propia.' },
+    cav:{ a1:'Flores Castro, Diego Sebastián',d1:'69876543',a2:'Paredes Neyra, Camila Rosa',d2:'68765432',
+          asesor:'Mg. Alejandro Seminario Campos',
+          tit:'Producción de contenido audiovisual educativo sobre historia del diseño peruano para plataformas digitales usando motion graphics e IA',
+          objg:'Producir una serie de 5 piezas audiovisuales educativas sobre historia del diseño gráfico peruano que alcancen 5,000 vistas orgánicas y una tasa de retención del 60% en YouTube en 12 semanas',
+          obje:'Investigar y seleccionar los 5 hitos más influyentes del diseño gráfico peruano del siglo XX mediante revisión documental y entrevistas a diseñadores referentes',
+          desc:'El proyecto produce una serie de 5 videos educativos de corta duración (3–5 min) sobre hitos del diseño gráfico peruano, destinados a YouTube e Instagram Reels. Cada pieza combina motion graphics, locución profesional y fotografía de archivo digitalizada. La metodología ABPP articula: investigación y guionización (briefing), animatic y storyboard (prototipado), producción, edición y postproducción con IA (ejecución), y lanzamiento, análisis de métricas y socialización académica (socialización). El impacto esperado incluye 5,000 vistas orgánicas, CPV < S/ 0.05 y tasa de engagement > 5%.',
+          refs:'Barnwell, J. (2017). Fundamentos de la realización cinematográfica. Blume.\nKrasner, J. (2013). Motion graphic design: Applied history and aesthetics (3.ª ed.). Focal Press.\nMostafa, H. (2022). AI-assisted video production: Opportunities and ethical challenges. Journal of Media Technology, 9(3), 112–130.\nIPD (2020). Historia del diseño gráfico peruano. Instituto de Diseño Peruano.\nYouTube Creator Academy (2023). Guía de retención de audiencia. Google. https://creatoracademy.youtube.com',
+          ia:'Se utilizó Runway ML para interpolación de movimiento en motion graphics y ElevenLabs para síntesis de locución de respaldo. Adobe Premiere con funciones de IA para edición automática de cortes. Claude asistió en la redacción de guiones. Los autores aprobaron y editaron todos los contenidos finales.' }
+  };
+  function demoPane(id){
+    const d=DEMO_DATA[id]; if(!d) return;
+    const s=n=>{ const el=document.getElementById('af-wd-'+id+'-'+n); if(el) el.value=d[n]||''; };
+    ['a1','d1','a2','d2','a3','d3','a4','d4','asesor','tit','objg','obje','desc','refs','ia','hrs','lugar'].forEach(s);
+    const el=document.getElementById('af-wd-'+id+'-hrs'); if(el&&!d.hrs) el.value='200';
+    const lug=document.getElementById('af-wd-'+id+'-lugar'); if(lug&&!d.lugar) lug.value='Instituto IDC — Lima, Perú';
+    const ini=document.getElementById('af-wd-'+id+'-ini'); if(ini&&!ini.value){ const t=new Date(); ini.value=t.toISOString().slice(0,10); }
+    const fin=document.getElementById('af-wd-'+id+'-fin'); if(fin&&!fin.value){ const t=new Date(Date.now()+84*864e5); fin.value=t.toISOString().slice(0,10); }
+    // mark plan selected visually
+    const planCard=document.getElementById('wdc-plan-'+id), infCard=document.getElementById('wdc-inf-'+id);
+    if(planCard){ planCard.classList.add('selected'); planCard.querySelector('input').checked=true; }
+    if(infCard) infCard.classList.remove('selected');
+    // scroll to first field
+    const el2=document.getElementById('af-wd-'+id+'-a1'); if(el2) el2.scrollIntoView({behavior:'smooth',block:'center'});
+    toast2('Datos de demo cargados — revisa y personaliza ✓');
+  }
+  function clearPane(id){
+    ['a1','d1','a2','d2','a3','d3','a4','d4','asesor','tit','objg','obje','desc','refs','ia'].forEach(n=>{
+      const el=document.getElementById('af-wd-'+id+'-'+n); if(el) el.value='';
+    });
+    const hrs=document.getElementById('af-wd-'+id+'-hrs'); if(hrs) hrs.value='200';
+    const lug=document.getElementById('af-wd-'+id+'-lugar'); if(lug) lug.value='';
+    toast2('Campos limpiados ✓');
+  }
+
   /* ===== GENERADOR WORD POR ESPECIALIDAD ===== */
   const COORD_MAP_W = { int:'Dis. María Quintana Pérez Tudela', pub:'Dis. Javier Mendives Laura', mod:'Mg. Fany Picón Tejedo', cav:'Mg. Alejandro Seminario Campos' };
   function genWordPane(id){
@@ -5058,7 +5366,8 @@ h1,h2,h3{margin-top:18pt}table{width:100%}@page{margin:2.5cm}</style>
   }
 
   return { recalc, genPrompt, copyP, dlP, fetchBCRP, manualRate, conv, saveProxy, schedule, efsrt, toggleLine, toggleTLine, showScreen,
-           setModalidad, addMember, removeMember, fillLineOptions, importFromTool, genWord, genWordPane, openGlossary, closeGlossary };
+           setModalidad, addMember, removeMember, fillLineOptions, importFromTool, genWord, genWordPane, openGlossary, closeGlossary,
+           demoPane, clearPane };
 })();
 
 </script>
