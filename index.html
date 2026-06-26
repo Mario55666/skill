@@ -1154,6 +1154,13 @@
 .af-member .rm{position:absolute;top:.5rem;right:.5rem;background:#fff;border:1px solid var(--c-border);color:#e3431f;border-radius:6px;cursor:pointer;font-size:.66rem;padding:.2rem .55rem;font-weight:800}
 .af-mtitle{font-family:var(--font-display);font-weight:900;color:var(--idc-blue);font-size:.78rem;margin-bottom:.55rem}
 .af-sign-note{font-size:.74rem;color:var(--c-muted);background:var(--c-surface2);border:1px dashed var(--c-border);border-radius:var(--radius-sm);padding:.6rem .8rem;line-height:1.5}
+.af-faq-item{border:1px solid var(--c-border);border-radius:var(--radius-sm);margin-bottom:.4rem;overflow:hidden}
+.af-faq-q{font-weight:700;font-size:.87rem;padding:.75rem 1rem;cursor:pointer;list-style:none;display:flex;align-items:center;gap:.5rem;color:var(--c-text)}
+.af-faq-q::before{content:"▶";font-size:.6rem;color:#8e44ad;transition:transform .2s;flex-shrink:0}
+details[open] .af-faq-q::before{transform:rotate(90deg)}
+.af-faq-a{padding:.1rem 1rem .9rem 1rem;font-size:.83rem;line-height:1.65;color:var(--c-text-soft)}
+.af-faq-a a{color:#8e44ad;font-weight:600}
+.af-faq-a code{background:var(--c-surface2);padding:.1rem .35rem;border-radius:4px;font-size:.8rem}
 
 /* === MODO PÁGINAS === */
 /* ===== MODO PÁGINAS: una pantalla a la vez (menú superior = pestañas) ===== */
@@ -1622,7 +1629,7 @@ nav[aria-label="Áreas"]{overflow-x:auto;overflow-y:visible}
 
       <h1>Líneas de <em>Investigación</em><br>e Innovación Tecnológica</h1>
       <p class="hero-sub">
-        Convocatoria a docentes, estudiantes y egresados de todas las especialidades para desarrollar investigación aplicada, creatividad y solución de problemas reales en el sector de diseño y comunicación.
+        Convocatoria a estudiantes de 1.° a 5.° semestre de todas las especialidades para desarrollar investigación aplicada, creatividad y solución de problemas reales en el sector de diseño y comunicación.
       </p>
 
 
@@ -2617,16 +2624,23 @@ nav[aria-label="Áreas"]{overflow-x:auto;overflow-y:visible}
     <div class="af-card af-card-accent" style="--acc:#0072b9">
       <div class="af-kicker">Plan del Trabajo de Investigación e Innovación Tecnológica (PTIIT)</div>
       <h2>📄 Inscripción y generación del documento Word</h2>
-      <p class="af-sub">Completa los datos siguiendo la plantilla institucional 2026. Al final, genera un documento Word con membrete del IES «Diseño y Comunicación», estructura del PTIIT y formato APA 7.ª ed., para la aprobación de la Coordinación de la Unidad Didáctica y la Jefatura de la Unidad de Investigación.</p>
+      <p class="af-sub">Completa los datos siguiendo la plantilla institucional 2026. Al final, genera un documento Word con membrete del IES «Diseño y Comunicación», estructura del PTIIT y formato APA 7.ª ed., para la aprobación de la Coordinación del Programa de Estudios y la Jefatura de la Unidad de Investigación.</p>
       <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
         <button class="af-btn sm" onclick="VR.importFromTool()">⤵ Importar datos de la herramienta</button>
         <span class="af-chip" id="af-insc-chip" style="--acc:#0072b9">Diseño de Interiores</span>
       </div>
-      <div style="margin-top:.9rem"><label>Tipo de documento a generar</label>
+      <div style="margin-top:.9rem">
+        <label>Tipo de documento a generar</label>
         <div class="af-radio">
-          <label><input type="radio" name="af-doctype" value="plan" checked> Plan del Trabajo de Investigación e Innovación Tecnológica (PTIIT) (secciones 1–11)</label>
-          <label><input type="radio" name="af-doctype" value="informe"> Informe PTIIT (4 capítulos)</label>
-        </div></div>
+          <label><input type="radio" name="af-doctype" value="plan" checked> Plan del Trabajo de Investigación e Innovación Tecnológica (PTIIT) <span style="color:var(--c-text-soft)">(secciones 1–11)</span></label>
+          <label><input type="radio" name="af-doctype" value="informe"> Informe PTIIT <span style="color:var(--c-text-soft)">(4 capítulos)</span></label>
+        </div>
+        <div class="af-help" style="margin-top:.5rem;background:rgba(0,114,185,.06);border:1px solid rgba(0,114,185,.18);border-radius:8px;padding:.7rem .9rem;font-size:.8rem;line-height:1.6">
+          <b>¿Cuándo usar cada uno?</b><br>
+          <b>Plan PTIIT</b> — documento de inicio: define el problema, objetivos, cronograma y presupuesto. Se presenta <em>antes</em> de ejecutar el proyecto para obtener aprobación de la Coordinación y la Jefatura de Investigación. Equivale al examen escrito (30% de la nota).<br>
+          <b>Informe PTIIT</b> — documento de cierre: reporta resultados, evidencias, conclusiones y referencias. Se presenta <em>después</em> de ejecutar el proyecto ante el Jurado Calificador para el examen oral (70% de la nota).
+        </div>
+      </div>
     </div>
 
     <!-- A. Identificación -->
@@ -2641,10 +2655,10 @@ nav[aria-label="Áreas"]{overflow-x:auto;overflow-y:visible}
         <div><label>Semestre / Año</label><input id="af-f-semestre" value="III Semestre — 2026"></div>
         <div class="full"><label>Línea de investigación</label><select id="af-f-linea"></select></div>
         <div><label>Tipo de innovación</label><select id="af-f-innov"><option>Incremental</option><option>Disruptiva</option><option>Radical</option></select></div>
-        <div><label>Modalidad (individual o máx. 2 egresados)</label>
+        <div><label>Modalidad (individual o máx. 4 estudiantes, 1.° a 5.° semestre)</label>
           <div class="af-radio">
             <label><input type="radio" name="af-modal" value="Individual" checked onchange="VR.setModalidad()"> Individual</label>
-            <label><input type="radio" name="af-modal" value="Grupal" onchange="VR.setModalidad()"> Grupal</label>
+            <label><input type="radio" name="af-modal" value="Grupal" onchange="VR.setModalidad()"> Grupal (2–4 integrantes)</label>
           </div></div>
       </div>
       <div class="af-mini-h" style="--acc:#0072b9;margin-top:1rem">Integrantes</div>
@@ -2702,11 +2716,18 @@ nav[aria-label="Áreas"]{overflow-x:auto;overflow-y:visible}
       <div class="af-form-grid">
         <div><label>Docente asesor(a) / tutor responsable</label><input id="af-f-asesor" placeholder="Apellidos y nombres"></div>
         <div><label>DNI del asesor(a)</label><input id="af-f-asesordni" placeholder="DNI"></div>
-        <div><label>Coordinación de la Unidad Didáctica (especialidad)</label><input id="af-f-coord" placeholder="Apellidos y nombres del coordinador(a)"></div>
+        <div><label>Coordinación del Programa de Estudios</label><input id="af-f-coord" placeholder="Se auto-completa al elegir especialidad"></div>
         <div><label>Jefatura de la Unidad de Investigación</label><input id="af-f-jefe" value="Mg. Mario Quiroz Martínez"></div>
         <div><label>Lugar y fecha de presentación</label><input id="af-f-fecha" placeholder="Lima, dd/mm/aaaa"></div>
       </div>
-      <div class="af-sign-note" style="margin-top:.8rem">El documento incluye firmas con DNI de los autores y del asesor, y la aprobación de la Coordinación de la Unidad Didáctica y de la Jefatura de la Unidad de Investigación.</div>
+      <!-- Nota de propiedad intelectual y carta poder -->
+      <div style="background:#fff8e1;border:1.5px solid #f3a100;border-radius:8px;padding:.9rem 1.1rem;margin-top:1rem;font-size:.82rem;line-height:1.65">
+        <div style="font-weight:700;color:#a05a00;margin-bottom:.4rem">⚖️ Derechos de autor y autoría exclusiva</div>
+        <p style="margin:0 0 .45rem">Los firmantes del presente PTIIT son declarados <strong>autores exclusivos y excluyentes</strong> de la obra, en los términos del <strong>Decreto Legislativo N.° 822 — Ley sobre el Derecho de Autor del Perú</strong> y las normas de <strong>Copyright internacional</strong> (Convenio de Berna, Art. 2). La firma en el documento constituye prueba de autoría y cesión voluntaria de derechos de uso institucional al IDC para fines educativos.</p>
+        <p style="margin:0 0 .45rem"><strong>Retiro de un integrante:</strong> El retiro voluntario o involuntario de uno o más miembros del equipo de trabajo debe estar respaldado por una <strong>Carta Poder notarial</strong> mediante la cual el(los) miembro(s) que se retira(n) cede(n) expresamente todos los derechos patrimoniales sobre el proyecto a los estudiantes que continúan. Sin este documento, la obra no podrá ser sustentada ni publicada por el equipo restante.</p>
+        <p style="margin:0">La Carta Poder debe ser presentada ante la Coordinación del Programa de Estudios y la Jefatura de la Unidad de Investigación para su registro formal antes de la sustentación.</p>
+      </div>
+      <div class="af-sign-note" style="margin-top:.8rem">El documento incluye firmas con DNI de todos los autores y del asesor, más la aprobación de la Coordinación del Programa de Estudios y la Jefatura de la Unidad de Investigación.</div>
     </div>
 
     <!-- Datos adicionales para Informe PTIIT (opcional) -->
@@ -2723,11 +2744,50 @@ nav[aria-label="Áreas"]{overflow-x:auto;overflow-y:visible}
       <div class="af-help">Si los dejas vacíos, el Informe se genera con los textos guía de la plantilla institucional (para que el estudiante los complete).</div>
     </div>
 
+    <!-- FAQ -->
+    <div class="af-card af-card-accent" style="--acc:#8e44ad">
+      <h2 class="af-acc">❓ Preguntas frecuentes</h2>
+      <div id="af-faq-list">
+        <details class="af-faq-item" open>
+          <summary class="af-faq-q">¿Qué es el PTIIT y por qué es obligatorio?</summary>
+          <div class="af-faq-a">El <strong>Plan del Trabajo de Investigación e Innovación Tecnológica (PTIIT)</strong> es el documento institucional que sistematiza y sustenta la experiencia o proyecto del estudiante. Constituye el <strong>examen escrito (30%)</strong> y es la base para la sustentación oral ante el Jurado Calificador <strong>(Examen Oral, 70%)</strong>. Sin el PTIIT aprobado no puede realizarse la sustentación. Véase la sección <a href="#autofin-section" onclick="if(window.VR)VR.showScreen('generales')" style="color:#8e44ad">Proyecto Autofinanciado → Generales</a>.</div>
+        </details>
+        <details class="af-faq-item">
+          <summary class="af-faq-q">¿Cuántos estudiantes pueden presentar un proyecto juntos?</summary>
+          <div class="af-faq-a">Los trabajos pueden presentarse de manera <strong>individual</strong> o en equipo de <strong>hasta cuatro (4) estudiantes</strong> matriculados del 1.° al 5.° semestre. No se admiten egresados ni personas externas al IES como autores. Véase la sección <a href="#autofin-section" onclick="if(window.VR)VR.showScreen('inscripcion')" style="color:#8e44ad">Inscripción → Integrantes</a>.</div>
+        </details>
+        <details class="af-faq-item">
+          <summary class="af-faq-q">¿Qué pasa si un integrante del equipo se retira?</summary>
+          <div class="af-faq-a">El retiro de un miembro debe formalizarse con una <strong>Carta Poder notarial</strong> en la que el estudiante que se retira cede expresamente sus derechos patrimoniales sobre el proyecto a los integrantes que continúan. Esto se sustenta en el <strong>D. Leg. N.° 822 (Ley sobre el Derecho de Autor)</strong> y el Convenio de Berna. Sin ese documento, el equipo restante no puede sustentar ni publicar la obra. Preséntenla ante la Coordinación del Programa y la Jefatura de Investigación. Véase la sección <a href="#autofin-section" onclick="if(window.VR)VR.showScreen('inscripcion')" style="color:#8e44ad">Inscripción → Firmas</a>.</div>
+        </details>
+        <details class="af-faq-item">
+          <summary class="af-faq-q">¿Cuál es la diferencia entre Plan PTIIT e Informe PTIIT?</summary>
+          <div class="af-faq-a"><strong>Plan PTIIT</strong> (secciones 1–11): se presenta <em>antes</em> de iniciar el proyecto. Define el problema, objetivos, cronograma y presupuesto. Requiere aprobación de la Coordinación y de la Jefatura de Investigación.<br><strong>Informe PTIIT</strong> (4 capítulos): se presenta <em>al concluir</em> el proyecto. Reporta resultados, evidencias, conclusiones y referencias. Es el documento que se evalúa en la sustentación oral. Véase <a href="#autofin-section" onclick="if(window.VR)VR.showScreen('inscripcion')" style="color:#8e44ad">Inscripción → Tipo de documento</a>.</div>
+        </details>
+        <details class="af-faq-item">
+          <summary class="af-faq-q">¿Cuántas horas vale el proyecto y cómo se cuentan?</summary>
+          <div class="af-faq-a">El proyecto equivale a <strong>200 horas de práctica profesional (EFSRT)</strong> en la modalidad extracurricular, conforme al numeral <strong>20.3.3.1</strong>: 4 créditos × 50 h/crédito = 200 horas. Se puede presentar del 1.° al 5.° semestre. Véase la calculadora en <a href="#autofin-section" onclick="if(window.VR)VR.showScreen('cronograma')" style="color:#8e44ad">Cronograma → Créditos EFSRT</a>.</div>
+        </details>
+        <details class="af-faq-item">
+          <summary class="af-faq-q">¿Cómo se reparte el presupuesto del fondo común?</summary>
+          <div class="af-faq-a">El fondo se reparte con una fórmula mixta: una parte <strong>igualitaria</strong> (% definido por el control deslizante "Reparto igualitario") y una parte por <strong>mérito</strong> proporcional al puntaje ponderado de la rúbrica (40% creatividad · 35% finanzas · 25% proceso). Véase el simulador en <a href="#autofin-section" onclick="if(window.VR)VR.showScreen('presupuesto')" style="color:#8e44ad">Presupuesto → Reparto del fondo</a>.</div>
+        </details>
+        <details class="af-faq-item">
+          <summary class="af-faq-q">¿Qué líneas de investigación puedo elegir?</summary>
+          <div class="af-faq-a">Puedes seleccionar líneas <strong>propias de tu especialidad</strong> (5 por carrera) y/o <strong>líneas transversales</strong> (6 ejes que cruzan todas las carreras: IA, sostenibilidad, emprendimiento, inclusión, cultura digital y convergencia). Todas las seleccionadas se incluyen automáticamente en el prompt de IA y en el PTIIT. Véase <a href="#autofin-section" onclick="if(window.VR)VR.showScreen('int')" style="color:#8e44ad">tu especialidad → Líneas de investigación</a>.</div>
+        </details>
+        <details class="af-faq-item">
+          <summary class="af-faq-q">¿El documento Word generado es el oficial del IDC?</summary>
+          <div class="af-faq-a">El documento generado sigue la <strong>estructura oficial del PTIIT (11 secciones)</strong> con membrete institucional referencial, formato APA 7.ª ed. (Times New Roman 12, interlineado doble, márgenes 2,54 cm) y el color corporativo de la especialidad. Para uso oficial, guárdalo como <code>.docx</code> en Word y reemplaza el membrete referencial por el <strong>logo oficial del IDC</strong>. Véase <a href="#autofin-section" onclick="if(window.VR)VR.showScreen('inscripcion')" style="color:#8e44ad">Inscripción → Generar documento</a>.</div>
+        </details>
+      </div>
+    </div>
+
     <div class="af-card af-card-accent" style="--acc:#0072b9">
       <h2 class="af-acc">📥 Generar documento</h2>
-      <p class="af-sub">Genera el documento en Word (.doc) con membrete institucional, color de la especialidad y formato APA 7.ª ed., rellenado con los datos de arriba. Elige arriba si es <b>Plan del Trabajo de Investigación e Innovación Tecnológica (PTIIT)</b> o <b>Informe PTIIT</b>.</p>
-      <button class="af-btn primary full" onclick="VR.genWord()">📄 Generar documento Word (APA 7.0)</button>
-      <div class="af-help">Abre en Word / Google Docs / LibreOffice. Dentro de Word: "Guardar como .docx" y, si quieres, reemplaza el membrete por el logo oficial.</div>
+      <p class="af-sub">Genera el documento en Word (.doc) con membrete institucional, <strong>color de la especialidad</strong> seleccionada arriba, y formato APA 7.ª ed., rellenado con los datos ingresados. Elige arriba si es <strong>Plan PTIIT</strong> (inicio del proyecto) o <strong>Informe PTIIT</strong> (cierre y sustentación).</p>
+      <button class="af-btn primary full" style="font-size:1rem;padding:.75rem" onclick="VR.genWord()">📄 Generar documento Word (APA 7.0)</button>
+      <div class="af-help" style="margin-top:.6rem">Abre en Word / Google Docs / LibreOffice. Dentro de Word: <em>Archivo → Guardar como → .docx</em>. Reemplaza el membrete referencial por el logo oficial del IDC si lo deseas.</div>
     </div>
   </div>
 
@@ -4397,9 +4457,12 @@ Entrega todo "staged" para revisión de la Unidad de Investigación del IDC; no 
     })).filter(x=>x.nombre||x.mat);
   }
   const LPREF = { int:'DI', pub:'DP', mod:'DM', cav:'CA' };
+  const COORD_MAP = { int:'Dis. María Quintana Pérez Tudela', pub:'Dis. Javier Mendives Laura', mod:'Mg. Fany Picón Tejedo', cav:'Mg. Alejandro Seminario Campos' };
   function fillLineOptions(){
     const esp=$('af-f-esp').value, sel=$('af-f-linea'), pre=LPREF[esp]||'L';
     sel.innerHTML=(RLINES[esp]||[]).map((l,i)=>`<option>${pre}-L${i+1} — ${l}</option>`).join('');
+    // Auto-completar coordinador según especialidad
+    const coordF=$('af-f-coord'); if(coordF&&!coordF.dataset.edited) coordF.value=COORD_MAP[esp]||'';
     // Acento de la pantalla de Inscripción con el color corporativo de la especialidad
     const col=CCOL[esp]||'#0072b9', sc=$('af-screen-inscripcion');
     if(sc){
@@ -4476,7 +4539,7 @@ table.data th { background:${col}; color:#fff; font-weight:bold; }
     const titulo=v('af-f-titulo')||'[Ingrese el título del trabajo. Máx. 25 palabras: tema, especificidad, lugar y temporalidad.]';
     const linea=v('af-f-linea'), innov=v('af-f-innov');
     const asesor=v('af-f-asesor')||'________________________', asesordni=v('af-f-asesordni')||'__________';
-    const coord=v('af-f-coord')||'________________________', jefe=v('af-f-jefe')||'Mg. Mario Quiroz Martínez';
+    const coord=v('af-f-coord')||COORD_MAP[esp]||'________________________', jefe=v('af-f-jefe')||'Mg. Mario Quiroz Martínez';
     const lugarfecha=v('af-f-fecha')||'Lima, Perú — 2026';
     const resumen=v('af-f-resumen'), dedica=v('af-f-dedica'), agrade=v('af-f-agrade');
     const conclu=v('af-f-conclu'), recom=v('af-f-recom'), refs=v('af-f-refs');
@@ -4532,7 +4595,8 @@ table.data th { background:${col}; color:#fff; font-weight:bold; }
   <div class="brk"></div>
   <p class="h2">INTRODUCCIÓN</p>
   ${desctec?`<p>${esc(desctec)}</p>`:ph('[Contextualización de la experiencia/proyecto en el sector y el mercado, y cómo se describirá a lo largo del informe.]')}
-  <div class="note"><b>Nota institucional.</b> Este informe constituye el examen escrito (30%) del TSP. Desde aquí se desprende la sustentación o exposición con demostración técnica frente al Jurado como Examen Oral (70%).</div>
+  <div class="note"><b>Nota institucional.</b> El Informe PTIIT constituye el examen escrito (30%) y es la base para la sustentación frente al Jurado Calificador (Examen Oral, 70%). Puede presentarse de manera individual o en equipo de hasta cuatro (4) estudiantes de 1.° a 5.° semestre. Al final deben constar las firmas (con DNI) de todos los autores y del asesor/tutor responsable.</div>
+  <div class="note" style="border-color:#a05a00;background:#fff8e1"><b>&#9878; Autoría exclusiva y derechos de autor.</b> Los firmantes son declarados <b>autores exclusivos y excluyentes</b> de la obra conforme al <b>D. Leg. N.° 822 — Ley sobre el Derecho de Autor del Perú</b> y el Convenio de Berna (Art. 2). El retiro de un integrante debe formalizarse con <b>Carta Poder notarial</b> que ceda los derechos patrimoniales a los estudiantes que continúan, presentada ante la Coordinación del Programa y la Jefatura de Investigación antes de la sustentación.</div>
 
   <p class="h2">CAPÍTULO 1: MARCO TEÓRICO</p>
   <p class="h3">1.1 Bases Teóricas</p>
@@ -4580,7 +4644,7 @@ table.data th { background:${col}; color:#fff; font-weight:bold; }
     <td style="text-align:center;padding:30pt 8pt 0"><div class="sigline"></div>${(members[0]&&esc(members[0].nombre))||'[Autor]'}<br><span class="sm">DNI: ${(members[0]&&esc(members[0].dni))||'__________'}</span></td>
     <td style="text-align:center;padding:30pt 8pt 0"><div class="sigline"></div>${asesor}<br><span class="sm">Asesor(a) — DNI: ${asesordni}</span></td>
   </tr><tr>
-    <td style="text-align:center;padding:34pt 8pt 0"><div class="sigline"></div>${coord}<br><span class="sm">Coordinación de la Unidad Didáctica — ${esc(espN)}</span></td>
+    <td style="text-align:center;padding:34pt 8pt 0"><div class="sigline"></div>${coord}<br><span class="sm">Coordinación del Programa de Estudios — ${esc(espN)}</span></td>
     <td style="text-align:center;padding:34pt 8pt 0"><div class="sigline"></div>${jefe}<br><span class="sm">Jefatura de la Unidad de Investigación</span></td>
   </tr></table>
 
@@ -4596,7 +4660,11 @@ table.data th { background:${col}; color:#fff; font-weight:bold; }
     if(docType()==='informe') return genWordInforme();
     const esp=$('af-f-esp').value, espN=ESPN[esp]||esp;
     const col=CCOL[esp]||'#0072b9';
-    const modal=isGrupal()?'Grupal (máx. 2 egresados)':'Individual';
+    const modal=isGrupal()?'Grupal (2–4 integrantes)':'Individual';
+    /* Coordinadores por especialidad */
+    const COORD_MAP = { int:'Dis. María Quintana Pérez Tudela', pub:'Dis. Javier Mendives Laura', mod:'Mg. Fany Picón Tejedo', cav:'Mg. Alejandro Seminario Campos' };
+    /* Auto-completar coordinador si está vacío */
+    const coordField=$('af-f-coord'); if(coordField&&!coordField.value.trim()) coordField.value=COORD_MAP[esp]||'';
     const members=readMembers();
     const v=id=>esc(($(id)&&$(id).value||'').trim());
     const titulo=v('af-f-titulo')||'[Título del trabajo]';
@@ -4611,7 +4679,7 @@ table.data th { background:${col}; color:#fff; font-weight:bold; }
     const inicio=fdate(inicioV), termino=fdate(terminoV);
     const asesor=v('af-f-asesor')||'________________________';
     const asesordni=v('af-f-asesordni')||'__________';
-    const coord=v('af-f-coord')||'________________________';
+    const coord=v('af-f-coord')||COORD_MAP[esp]||'________________________';
     const jefe=v('af-f-jefe')||'Mg. Mario Quiroz Martínez';
     const lugarfecha=v('af-f-fecha')||'Lima, Perú — 2026';
     const autores = members.length ? members.map(m=>esc(m.nombre)).filter(Boolean).join('; ') : '[Apellidos y nombres]';
@@ -4681,7 +4749,8 @@ table.data th { background:${col}; color:#fff; font-weight:bold; }
 
   <div class="brk"></div>
 
-  <div class="note"><b>Nota institucional.</b> El Plan del Trabajo de Investigación e Innovación Tecnológica (PTIIT) sistematiza y sustenta la experiencia o proyecto. Constituye el examen escrito (30%) y es base para la sustentación frente al Jurado Calificador (Examen Oral, 70%). Los trabajos pueden presentarse de manera individual o por un máximo de dos (2) egresados. Al final deben constar las firmas (con DNI) de los autores y del asesor/tutor responsable.</div>
+  <div class="note"><b>Nota institucional.</b> El Plan del Trabajo de Investigación e Innovación Tecnológica (PTIIT) sistematiza y sustenta la experiencia o proyecto. Constituye el examen escrito (30%) y es base para la sustentación frente al Jurado Calificador (Examen Oral, 70%). Los trabajos pueden presentarse de manera individual o por un máximo de cuatro (4) estudiantes de 1.° a 5.° semestre. Al final deben constar las firmas (con DNI) de todos los autores y del asesor/tutor responsable.</div>
+  <div class="note" style="border-color:#a05a00;background:#fff8e1"><b>&#9878; Autoría exclusiva y derechos de autor.</b> Los firmantes del presente PTIIT son declarados <b>autores exclusivos y excluyentes</b> de la obra, conforme al <b>Decreto Legislativo N.° 822 — Ley sobre el Derecho de Autor del Perú</b> y el Convenio de Berna (Art. 2). La firma constituye prueba de autoría y cesión de derechos de uso institucional al IDC para fines educativos. <b>Retiro de integrantes:</b> el retiro voluntario o involuntario de un miembro del equipo debe formalizarse con una <b>Carta Poder notarial</b> en la que el estudiante que se retira cede sus derechos patrimoniales sobre el proyecto a los integrantes que continúan. Sin dicho documento el equipo restante no podrá sustentar ni publicar la obra. La Carta Poder debe presentarse ante la Coordinación del Programa de Estudios y la Jefatura de la Unidad de Investigación antes de la sustentación.</div>
 
   <p class="h2">1. Título del trabajo</p>
   <p>${esc(titulo)}</p>
@@ -4749,12 +4818,12 @@ table.data th { background:${col}; color:#fff; font-weight:bold; }
   <p>Presupuesto estimado: <b>S/ ${esc(presup)}</b>. Modalidad: <b>autofinanciado por el/los estudiante(s)</b>. Categoría: extracurricular equivalente a ${esc(horas)} horas de práctica profesional (EFSRT). Ventana de presentación: del 1.° al 5.° semestre.</p>
 
   <p class="h2">11. Aprobación</p>
-  <p>El presente Plan se somete a revisión y aprobación de la Coordinación de la Unidad Didáctica de la especialidad de ${esc(espN)} y de la Jefatura de la Unidad de Investigación del IES «Diseño y Comunicación».</p>
+  <p>El presente Plan se somete a revisión y aprobación de la Coordinación del Programa de Estudios de ${esc(espN)} y de la Jefatura de la Unidad de Investigación del IES «Diseño y Comunicación».</p>
 
   <table style="width:100%;margin-top:34pt"><tr>${sigMembers}
     <td style="text-align:center;padding:30pt 8pt 0"><div class="sigline"></div>${asesor}<br><span class="sm">Asesor(a) — DNI: ${asesordni}</span></td>
   </tr><tr>
-    <td style="text-align:center;padding:34pt 8pt 0" colspan="${Math.max(1,members.length)}"><div class="sigline"></div>${coord}<br><span class="sm">Coordinación de la Unidad Didáctica — ${esc(espN)}</span></td>
+    <td style="text-align:center;padding:34pt 8pt 0" colspan="${Math.max(1,members.length)}"><div class="sigline"></div>${coord}<br><span class="sm">Coordinación del Programa de Estudios — ${esc(espN)}</span></td>
     <td style="text-align:center;padding:34pt 8pt 0"><div class="sigline"></div>${jefe}<br><span class="sm">Jefatura de la Unidad de Investigación</span></td>
   </tr></table>
 
