@@ -4274,6 +4274,44 @@ window.VR = (function () {
       <textarea class="af-promptBox" id="af-${c.id}-prompt" readonly></textarea>
       <div class="af-out-actions"><button class="af-btn" onclick="VR.copyP('${c.id}')">📋 Copiar prompt</button>
         <button class="af-btn" onclick="VR.dlP('${c.id}')">⬇ Descargar .txt</button></div>
+    </div>
+
+    <!-- Generador Word por especialidad -->
+    <div class="af-card" style="border-left:4px solid ${c.color}">
+      <h2 style="color:${c.color};font-size:1.05rem;margin:0 0 .4rem">📄 Generar documento Word — ${c.name}</h2>
+      <p class="af-sub">Completa los datos de tu equipo y descarga el Plan PTIIT o el Informe PTIIT con el formato oficial del IDC.</p>
+
+      <div style="display:flex;gap:.6rem;margin-bottom:.9rem;flex-wrap:wrap">
+        <label style="display:flex;align-items:center;gap:.4rem;font-size:.87rem;cursor:pointer">
+          <input type="radio" name="af-wdt-${c.id}" value="plan" checked> Plan PTIIT (secciones 1–11)
+        </label>
+        <label style="display:flex;align-items:center;gap:.4rem;font-size:.87rem;cursor:pointer">
+          <input type="radio" name="af-wdt-${c.id}" value="informe"> Informe PTIIT (4 capítulos)
+        </label>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem .9rem">
+        <div><label class="af-lbl">Apellidos y nombres — Autor 1 *</label><input class="af-in" id="af-wd-${c.id}-a1" placeholder="Apellido Apellido, Nombre"></div>
+        <div><label class="af-lbl">DNI — Autor 1 *</label><input class="af-in" id="af-wd-${c.id}-d1" placeholder="12345678" maxlength="8"></div>
+        <div><label class="af-lbl">Apellidos y nombres — Autor 2</label><input class="af-in" id="af-wd-${c.id}-a2" placeholder="Apellido Apellido, Nombre"></div>
+        <div><label class="af-lbl">DNI — Autor 2</label><input class="af-in" id="af-wd-${c.id}-d2" placeholder="12345678" maxlength="8"></div>
+        <div><label class="af-lbl">Apellidos y nombres — Autor 3</label><input class="af-in" id="af-wd-${c.id}-a3" placeholder="Apellido Apellido, Nombre"></div>
+        <div><label class="af-lbl">DNI — Autor 3</label><input class="af-in" id="af-wd-${c.id}-d3" placeholder="12345678" maxlength="8"></div>
+        <div><label class="af-lbl">Apellidos y nombres — Autor 4</label><input class="af-in" id="af-wd-${c.id}-a4" placeholder="Apellido Apellido, Nombre"></div>
+        <div><label class="af-lbl">DNI — Autor 4</label><input class="af-in" id="af-wd-${c.id}-d4" placeholder="12345678" maxlength="8"></div>
+        <div><label class="af-lbl">Asesor(a) *</label><input class="af-in" id="af-wd-${c.id}-asesor" placeholder="Mg. Apellido Nombre"></div>
+        <div><label class="af-lbl">Título del proyecto *</label><input class="af-in" id="af-wd-${c.id}-tit" placeholder="Título completo del proyecto"></div>
+        <div><label class="af-lbl">Objetivo general *</label><input class="af-in" id="af-wd-${c.id}-objg" placeholder="Determinar / Diseñar / Desarrollar..."></div>
+        <div><label class="af-lbl">Objetivo específico 1</label><input class="af-in" id="af-wd-${c.id}-obje" placeholder="Primer objetivo específico"></div>
+        <div><label class="af-lbl">Fecha de inicio *</label><input type="date" class="af-in" id="af-wd-${c.id}-ini"></div>
+        <div><label class="af-lbl">Fecha de fin *</label><input type="date" class="af-in" id="af-wd-${c.id}-fin"></div>
+        <div><label class="af-lbl">Total de horas (EFSRT)</label><input class="af-in" id="af-wd-${c.id}-hrs" placeholder="200" value="200"></div>
+        <div><label class="af-lbl">Lugar de ejecución</label><input class="af-in" id="af-wd-${c.id}-lugar" placeholder="Lima, Perú"></div>
+        <div style="grid-column:1/-1"><label class="af-lbl">Descripción / resumen del proyecto</label><textarea class="af-in" id="af-wd-${c.id}-desc" rows="3" placeholder="Breve descripción del proyecto (100–200 palabras)..." style="resize:vertical"></textarea></div>
+      </div>
+
+      <button class="af-btn primary full" style="margin-top:1rem;background:${c.color};border-color:${c.color};font-size:.97rem;padding:.75rem"
+        onclick="VR.genWordPane('${c.id}')">📥 Generar documento Word — ${c.name}</button>
     </div>`;
   }
   function toggleLine(id,i,checked){
@@ -4862,8 +4900,109 @@ table.data th { background:${col}; color:#fff; font-weight:bold; }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',init);
   else init();
 
+  /* ===== GENERADOR WORD POR ESPECIALIDAD ===== */
+  const COORD_MAP_W = { int:'Dis. María Quintana Pérez Tudela', pub:'Dis. Javier Mendives Laura', mod:'Mg. Fany Picón Tejedo', cav:'Mg. Alejandro Seminario Campos' };
+  function genWordPane(id){
+    const c=CAREERS.find(x=>x.id===id);
+    if(!c){ alert('Especialidad no encontrada.'); return; }
+    const g=n=>{ const el=document.getElementById('af-wd-'+id+'-'+n); return el?(el.value||'').trim():''; };
+    const a1=g('a1'),d1=g('d1');
+    if(!a1||!d1){ alert('Completa al menos el Autor 1 y su DNI.'); return; }
+    const tit=g('tit')||'[Sin título]', objg=g('objg')||'[Sin objetivo general]';
+    const autores=[[g('a1'),g('d1')],[g('a2'),g('d2')],[g('a3'),g('d3')],[g('a4'),g('d4')]].filter(([a])=>a);
+    const tipo=document.querySelector(`input[name="af-wdt-${id}"]:checked`);
+    const isPlan=!tipo||tipo.value==='plan';
+    const coord=COORD_MAP_W[id]||'[Coordinador]';
+    const r=compute().find(x=>x.id===id)||{alloc:0,req:0};
+    const ini=g('ini')||'[Fecha inicio]', fin=g('fin')||'[Fecha fin]';
+    const hrs=g('hrs')||'200', lugar=g('lugar')||'Lima, Perú';
+    const desc=g('desc')||'[Descripción del proyecto]', asesor=g('asesor')||'[Asesor]';
+    const obje=g('obje')||'[Objetivo específico 1]';
+    const autoList=autores.map((a,i)=>`<tr><td style="padding:4px 8px;border:1px solid #ccc">${i+1}</td><td style="padding:4px 8px;border:1px solid #ccc">${a[0]}</td><td style="padding:4px 8px;border:1px solid #ccc">${a[1]}</td></tr>`).join('');
+    const copyNote=`<div style="background:#fffbe6;border:1px solid #f3a100;border-radius:6px;padding:12px 16px;margin:18px 0;font-size:12pt">
+<b>Nota sobre autoría y derechos (D. Leg. N.° 822 · Convenio de Berna, Art. 2)</b><br>
+Los firmantes del presente proyecto son <b>autores exclusivos y excluyentes</b> del trabajo de investigación e innovación tecnológica aquí descrito. Queda expresamente prohibida la reproducción, distribución o comunicación pública total o parcial sin autorización escrita de todos los autores.<br><br>
+<b>Retiro de integrante:</b> Si uno o más miembros del equipo deciden abandonar el proyecto, deberán suscribir una <b>Carta Poder notarial</b> cediendo sus derechos patrimoniales a los estudiantes que continúen el proyecto. Sin dicha carta, el proyecto no podrá ser inscrito ni evaluado por el IDC.
+</div>`;
+
+    let body='';
+    if(isPlan){
+      body=`<h1 style="color:${c.color};font-size:16pt;margin-bottom:4pt">Plan del Trabajo de Investigación e Innovación Tecnológica (PTIIT)</h1>
+<h2 style="font-size:13pt;color:#333;margin:0 0 16pt">${tit}</h2>
+<p><b>Especialidad:</b> ${c.name} &nbsp;|&nbsp; <b>Coordinador(a):</b> ${coord} &nbsp;|&nbsp; <b>Asesor(a):</b> ${asesor}</p>
+<p><b>Jefatura:</b> Mg. Mario Quiroz Martínez &nbsp;|&nbsp; <b>Institución:</b> Instituto de Educación Superior Público Diseño &amp; Comunicación (IDC) &nbsp;|&nbsp; <b>Convocatoria:</b> 2026</p>
+${copyNote}
+<h3 style="color:${c.color}">1. Datos del equipo de investigación</h3>
+<p>Máx. cuatro (4) estudiantes de 1.° a 5.° semestre</p>
+<table style="border-collapse:collapse;width:100%;font-size:11pt"><thead><tr style="background:${c.color};color:#fff"><th style="padding:5px 8px;border:1px solid #ccc">#</th><th style="padding:5px 8px;border:1px solid #ccc">Apellidos y nombres</th><th style="padding:5px 8px;border:1px solid #ccc">DNI</th></tr></thead><tbody>${autoList}</tbody></table>
+<h3 style="color:${c.color}">2. Título del proyecto</h3><p>${tit}</p>
+<h3 style="color:${c.color}">3. Línea(s) de investigación</h3>
+<p>Especialidad: ${(ST[id].lines||[]).filter(l=>!TLINES.includes(l)).join('; ')||'[No seleccionadas]'}</p>
+<p>Transversales: ${(ST[id].lines||[]).filter(l=>TLINES.includes(l)).join('; ')||'Ninguna'}</p>
+<h3 style="color:${c.color}">4. Descripción / resumen</h3><p>${desc}</p>
+<h3 style="color:${c.color}">5. Objetivo general</h3><p>${objg}</p>
+<h3 style="color:${c.color}">6. Objetivos específicos</h3><p>6.1. ${obje}</p>
+<h3 style="color:${c.color}">7. Justificación</h3><p>[Redactar justificación del proyecto]</p>
+<h3 style="color:${c.color}">8. Marco teórico / referencial</h3><p>[Desarrollar fundamentos teóricos — APA 7.ª edición]</p>
+<h3 style="color:${c.color}">9. Metodología ABPP (12 semanas)</h3>
+<table style="border-collapse:collapse;width:100%;font-size:11pt"><thead><tr style="background:${c.color};color:#fff"><th style="padding:5px 8px;border:1px solid #ccc">Fase</th><th style="padding:5px 8px;border:1px solid #ccc">Semanas</th><th style="padding:5px 8px;border:1px solid #ccc">Actividades principales</th></tr></thead><tbody>
+<tr><td style="padding:4px 8px;border:1px solid #ccc">01 — Briefing y Diagnóstico</td><td style="padding:4px 8px;border:1px solid #ccc">1–2</td><td style="padding:4px 8px;border:1px solid #ccc">Análisis de contexto, benchmark, diagnóstico FODA</td></tr>
+<tr><td style="padding:4px 8px;border:1px solid #ccc">02 — Prototipado y Validación</td><td style="padding:4px 8px;border:1px solid #ccc">3–5</td><td style="padding:4px 8px;border:1px solid #ccc">Diseño conceptual, prototipo, pruebas de usuario</td></tr>
+<tr><td style="padding:4px 8px;border:1px solid #ccc">03 — Ejecución y Monitoreo</td><td style="padding:4px 8px;border:1px solid #ccc">6–10</td><td style="padding:4px 8px;border:1px solid #ccc">Desarrollo, implementación, KPIs, ajustes</td></tr>
+<tr><td style="padding:4px 8px;border:1px solid #ccc">04 — Análisis y Socialización</td><td style="padding:4px 8px;border:1px solid #ccc">11–12</td><td style="padding:4px 8px;border:1px solid #ccc">Análisis de resultados, informe final, exposición</td></tr>
+</tbody></table>
+<h3 style="color:${c.color}">10. Presupuesto estimado (EFSRT — numeral 20.3.3.1)</h3>
+<p>Horas EFSRT: <b>${hrs} h</b> &nbsp;|&nbsp; Lugar: <b>${lugar}</b> &nbsp;|&nbsp; Inicio: <b>${ini}</b> &nbsp;|&nbsp; Fin: <b>${fin}</b></p>
+<p>Fondo asignado: <b>S/ ${fmt(r.alloc)}</b> &nbsp;|&nbsp; Monto solicitado: <b>S/ ${fmt(r.req)}</b></p>
+<p>Materiales — ${c.reqs||'según especialidad'}: [desglosar ítems y costos unitarios]</p>
+<h3 style="color:${c.color}">11. Referencias bibliográficas (APA 7.ª edición)</h3><p>[Citar mínimo 5 fuentes académicas en formato APA 7]</p>`;
+    } else {
+      body=`<h1 style="color:${c.color};font-size:16pt;margin-bottom:4pt">Informe PTIIT — Trabajo de Investigación e Innovación Tecnológica</h1>
+<h2 style="font-size:13pt;color:#333;margin:0 0 16pt">${tit}</h2>
+<p><b>Especialidad:</b> ${c.name} &nbsp;|&nbsp; <b>Coordinador(a):</b> ${coord} &nbsp;|&nbsp; <b>Asesor(a):</b> ${asesor}</p>
+<p><b>Jefatura:</b> Mg. Mario Quiroz Martínez &nbsp;|&nbsp; <b>Institución:</b> Instituto de Educación Superior Público Diseño &amp; Comunicación (IDC) &nbsp;|&nbsp; <b>Convocatoria:</b> 2026</p>
+${copyNote}
+<h3 style="color:${c.color}">Datos del equipo</h3>
+<table style="border-collapse:collapse;width:100%;font-size:11pt"><thead><tr style="background:${c.color};color:#fff"><th style="padding:5px 8px;border:1px solid #ccc">#</th><th style="padding:5px 8px;border:1px solid #ccc">Apellidos y nombres</th><th style="padding:5px 8px;border:1px solid #ccc">DNI</th></tr></thead><tbody>${autoList}</tbody></table>
+<hr style="border:1px solid ${c.color};margin:18pt 0">
+<h2 style="color:${c.color}">Capítulo I — Planteamiento del problema</h2>
+<p><b>1.1 Descripción del problema:</b> ${desc}</p>
+<p><b>1.2 Formulación del problema:</b> ¿Cómo ${objg.toLowerCase()}?</p>
+<p><b>1.3 Objetivos:</b></p><p>&nbsp;&nbsp;<b>General:</b> ${objg}</p><p>&nbsp;&nbsp;<b>Específico 1:</b> ${obje}</p>
+<p><b>1.4 Justificación:</b> [Desarrollar importancia y relevancia del problema]</p>
+<h2 style="color:${c.color}">Capítulo II — Marco teórico</h2>
+<p><b>2.1 Antecedentes nacionales e internacionales:</b> [Citar estudios previos en APA 7]</p>
+<p><b>2.2 Bases teóricas:</b> [Desarrollar fundamentos — mín. 5 fuentes]</p>
+<p><b>2.3 Definición de términos:</b> ${c.glossary.map(([t,d])=>`<br><b>${t}:</b> ${d}`).join('')}</p>
+<h2 style="color:${c.color}">Capítulo III — Metodología</h2>
+<p><b>3.1 Tipo y diseño de investigación:</b> Aplicada / cuasi-experimental, enfoque mixto</p>
+<p><b>3.2 Metodología ABPP — fases ejecutadas:</b> Briefing y Diagnóstico → Prototipado → Ejecución → Análisis y Socialización</p>
+<p><b>3.3 Instrumentos:</b> [Encuestas, fichas de observación, protocolos de prueba]</p>
+<p><b>3.4 Horas EFSRT:</b> ${hrs} h &nbsp;|&nbsp; Período: ${ini} — ${fin} &nbsp;|&nbsp; Lugar: ${lugar}</p>
+<h2 style="color:${c.color}">Capítulo IV — Resultados y discusión</h2>
+<p><b>4.1 Resultados por indicadores (KPIs):</b></p>
+<ul>${c.kpis.map(k=>`<li><b>${k.l}:</b> Meta ${k.v} — ${k.h}</li>`).join('')}</ul>
+<p><b>4.2 Discusión:</b> [Comparar con antecedentes y base teórica]</p>
+<p><b>4.3 Conclusiones:</b> [Mín. 3 conclusiones alineadas a los objetivos]</p>
+<p><b>4.4 Recomendaciones:</b> [Mín. 2 recomendaciones para futuros trabajos]</p>
+<p><b>4.5 Presupuesto ejecutado:</b> S/ ${fmt(r.alloc)} asignado / S/ ${fmt(r.req)} solicitado</p>
+<h2 style="color:${c.color}">Referencias bibliográficas (APA 7.ª edición)</h2>
+<p>[Citar todas las fuentes en formato APA 7 — mínimo 5]</p>`;
+    }
+
+    const prefix=isPlan?'Plan-PTIIT':'Informe-PTIIT';
+    const safe=tit.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\s]/g,'').replace(/\s+/g,'-').slice(0,40);
+    const html=`<!DOCTYPE html><html><head><meta charset="utf-8">
+<style>body{font-family:'Calibri',sans-serif;font-size:12pt;line-height:1.6;color:#222;max-width:800px;margin:40px auto;padding:20px}
+h1,h2,h3{margin-top:18pt}table{width:100%}@page{margin:2.5cm}</style>
+</head><body>${body}</body></html>`;
+    const blob=new Blob([html],{type:'application/msword'});
+    const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
+    a.download=`${prefix}-${c.short}-IDC-${safe}.doc`; a.click(); URL.revokeObjectURL(a.href);
+  }
+
   return { recalc, genPrompt, copyP, dlP, fetchBCRP, manualRate, conv, saveProxy, schedule, efsrt, toggleLine, toggleTLine, showScreen,
-           setModalidad, addMember, removeMember, fillLineOptions, importFromTool, genWord, openGlossary, closeGlossary };
+           setModalidad, addMember, removeMember, fillLineOptions, importFromTool, genWord, genWordPane, openGlossary, closeGlossary };
 })();
 
 </script>
