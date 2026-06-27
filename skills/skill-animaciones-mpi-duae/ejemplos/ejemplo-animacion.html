@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!--
+  EJEMPLO MPI-DUAE — Animación interactiva
+  Unidad: "Fundamentos de la composición visual" (Diseño Gráfico, I semestre)
+  Resultado de aprendizaje: aplicar jerarquía y contraste para ordenar una pieza.
+  Patrones usados: 2 Simulación con controles + 8 Micro-comprobación con feedback R-E-A.
+  Accesible: teclado, prefers-reduced-motion, aria-live, sin dependencia del color.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Crea jerarquía visual — Animación interactiva</title>
+<style>
+  :root{ --bg:#0f1220; --panel:#1a1f35; --ink:#eef1f8; --muted:#aab2cf;
+    --accent:#7aa2ff; --ok:#5ed6a0; --warn:#ffd166; --ease:cubic-bezier(.23,1,.32,1); }
+  @media (prefers-color-scheme: light){ :root{ --bg:#f5f7ff; --panel:#fff; --ink:#161a2b; --muted:#52607f; } }
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);padding:1.5rem}
+  .wrap{max-width:820px;margin:auto}
+  h1{font-size:1.4rem;margin:.2rem 0}
+  .lead{color:var(--muted);margin:.2rem 0 1rem}
+  .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:1rem}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .stage{background:var(--panel);border-radius:16px;padding:1.4rem;min-height:300px;display:flex;flex-direction:column;justify-content:center;gap:.6rem;overflow:hidden}
+  .poster{background:linear-gradient(135deg,#222a4d,#11152b);border-radius:12px;padding:1.4rem;border:1px solid #2a335c}
+  .t-title{font-weight:800;letter-spacing:.5px;transition:font-size .4s var(--ease),opacity .4s var(--ease),transform .4s var(--ease)}
+  .t-sub{color:var(--muted);transition:font-size .4s var(--ease),opacity .4s var(--ease)}
+  .t-body{color:var(--muted);font-size:.92rem;margin-top:.4rem}
+  .panel{background:var(--panel);border-radius:16px;padding:1.2rem}
+  label{display:block;margin:.7rem 0 .2rem;font-weight:600}
+  input[type=range]{width:100%;height:34px}
+  .val{color:var(--accent);font-variant-numeric:tabular-nums}
+  .controls{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1rem}
+  button{min-height:44px;min-width:44px;padding:.55rem 1rem;border:0;border-radius:10px;background:var(--accent);color:#0b0e1a;font-weight:700;cursor:pointer;transition:transform .12s var(--ease)}
+  button.sec{background:transparent;color:var(--ink);border:1px solid var(--muted)}
+  button:active{transform:scale(.97)}
+  button:focus-visible,input:focus-visible{outline:3px solid #fff;outline-offset:2px}
+  .feedback{margin-top:.9rem;min-height:3.2rem;padding:.7rem .9rem;border-radius:10px;background:#0d1126;border:1px solid #2a335c}
+  .feedback.ok{border-color:var(--ok)} .feedback.try{border-color:var(--warn)}
+  .tag{display:inline-block;font-size:.78rem;border:1px solid var(--muted);border-radius:999px;padding:.05rem .55rem;margin-right:.3rem;color:var(--muted)}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+  @media (prefers-reduced-motion: reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>Crea jerarquía visual</h1>
+  <p class="lead">Ajusta el <strong>tamaño</strong> y el <strong>contraste</strong> del título hasta que el ojo sepa qué leer primero. Manipula, predice y observa.</p>
+
+  <div class="grid">
+    <!-- ESCENARIO -->
+    <section class="stage" aria-label="Pieza gráfica en vivo">
+      <div class="poster">
+        <div class="t-title" id="title" style="font-size:20px;opacity:.6">FESTIVAL DE DISEÑO</div>
+        <div class="t-sub" id="sub" style="font-size:16px">12 de octubre · Auditorio central</div>
+        <p class="t-body">Charlas, talleres y muestra de portafolios para estudiantes de primer semestre.</p>
+      </div>
+      <p class="sr-only" id="liveState" aria-live="polite"></p>
+    </section>
+
+    <!-- CONTROLES (simulación) -->
+    <section class="panel" aria-label="Controles de la composición">
+      <label for="size">Tamaño del título: <span class="val" id="sizeVal">20</span> px</label>
+      <input id="size" type="range" min="16" max="56" value="20" step="2" />
+
+      <label for="contrast">Contraste del título: <span class="val" id="contrastVal">60</span> %</label>
+      <input id="contrast" type="range" min="30" max="100" value="60" step="5" />
+
+      <div class="controls">
+        <button id="check">Comprobar jerarquía</button>
+        <button id="reset" class="sec">↻ Reiniciar</button>
+      </div>
+
+      <!-- Micro-comprobación con retroalimentación R-E-A -->
+      <div class="feedback" id="feedback" role="status" aria-live="polite">
+        Mueve los controles y pulsa <strong>Comprobar</strong> cuando creas que el título manda.
+      </div>
+      <p style="margin:.6rem 0 0;font-size:.82rem;color:var(--muted)">
+        Creatividad ejercitada: <span class="tag">flexibilidad</span><span class="tag">elaboración</span>
+      </p>
+    </section>
+  </div>
+</main>
+
+<script>
+(() => {
+  const title=document.getElementById('title'), sub=document.getElementById('sub');
+  const size=document.getElementById('size'), contrast=document.getElementById('contrast');
+  const sizeVal=document.getElementById('sizeVal'), contrastVal=document.getElementById('contrastVal');
+  const fb=document.getElementById('feedback'), live=document.getElementById('liveState');
+  const subSize=16; // tamaño fijo del subtítulo, referencia de jerarquía
+
+  function render(){
+    const s=+size.value, c=+contrast.value;
+    sizeVal.textContent=s; contrastVal.textContent=c;
+    title.style.fontSize=s+'px';
+    title.style.opacity=(c/100).toFixed(2);
+    live.textContent=`Título a ${s} px y ${c}% de contraste; subtítulo a ${subSize} px.`;
+  }
+
+  // Retroalimentación positiva R-E-A (acierto / intento) con pista progresiva
+  function check(){
+    const s=+size.value, c=+contrast.value;
+    const ratio=s/subSize;                 // jerarquía por tamaño
+    const strong = ratio>=1.8 && c>=85;    // meta: título claramente dominante
+    const partial= ratio>=1.4 && c>=70;
+    if(strong){
+      fb.className='feedback ok';
+      fb.innerHTML="✅ <strong>Lograste la jerarquía.</strong> Subiste tamaño y contraste juntos, así el ojo cae primero en el título y luego en la fecha — eso es jerarquía. <em>Avanza:</em> prueba bajar el subtítulo y observa cuánto más limpio queda el recorrido visual.";
+    } else if(partial){
+      fb.className='feedback try';
+      fb.innerHTML="🟡 <strong>Vas bien.</strong> El título ya destaca, pero compite un poco con el resto. <em>Pista:</em> ¿qué pasa si subes un poco más el contraste? El tamaño solo no basta si el color se mezcla con el fondo.";
+    } else {
+      fb.className='feedback try';
+      fb.innerHTML="🟡 <strong>Buen punto de partida.</strong> Ahora mismo el ojo duda entre título y subtítulo. <em>Pista:</em> haz el título claramente más grande que el subtítulo (≈ el doble) y súbele el contraste para que aparezca primero.";
+    }
+  }
+
+  size.addEventListener('input',render);
+  contrast.addEventListener('input',render);
+  document.getElementById('check').onclick=check;
+  document.getElementById('reset').onclick=()=>{size.value=20;contrast.value=60;render();fb.className='feedback';fb.textContent='Mueve los controles y pulsa Comprobar cuando creas que el título manda.';};
+
+  render();
+})();
+</script>
+</body>
+</html>
