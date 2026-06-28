@@ -1,5 +1,5 @@
 ---
-name: mpi-duae-lesson-writer
+name: skill-lesson-writer-mpi-duae
 description: Generador de lecciones pedagogicas en formato Markdown para el Modelo Pedagogico Integrado DUA-Experiencial (MPI-DUAE). Usar cuando el usuario solicite "redactar lecciones", "escribir sesiones de clase", "crear contenido de unidad didactica", "desarrollar lecciones con ejemplos reales", o cualquier tarea que implique generar material educativo para el MPI-DUAE en formato *.md. El skill integra Diseno Universal para el Aprendizaje 3.0 (CAST), aprendizaje experiencial de Kolb, las cuatro dimensiones creativas de Torrance (fluidez, flexibilidad, originalidad, elaboracion), y excelencia inclusiva. Contextualizado para estudiantes de primer semestre de carreras de Diseno del IESP DYC (Lima, Peru), con ejemplos reales del contexto peruano y adaptaciones para vulnerabilidad psicosocial y neurodiversidad. NO usar para otros modelos pedagogicos ni para contextos fuera del MPI-DUAE.
 ---
 

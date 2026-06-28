@@ -1,6 +1,6 @@
 ---
-name: mpi-duae-finalizer
-description: "Finalizador y empaquetador de unidades didacticas del Modelo Pedagogico Integrado DUA-Experiencial (MPI-DUAE). Genera el README profesional, el manifiesto pedagogico, la estructura de carpetas estandarizada, y el reporte de calidad que completan el kit de una unidad didactica. Usar cuando el usuario solicite empaquetar la unidad, generar el README, crear el manifiesto, finalizar el kit, hacer el cierre de la unidad, o cualquier tarea relacionada con la documentacion, validacion y entrega final de una unidad MPI-DUAE en formato md. Este skill CIERRA el ciclo trabajando con las lecciones generadas por mpi-duae-lesson-writer y los recursos de mpi-duae-resources-agent para producir la entrega profesional completa. NO usar para crear lecciones (eso es mpi-duae-lesson-writer), ni para generar recursos comunicacionales (eso es mpi-duae-resources-agent), ni para contextos fuera del MPI-DUAE."
+name: skill-finalizer-mpi-duae
+description: "Finalizador y empaquetador de unidades didacticas del Modelo Pedagogico Integrado DUA-Experiencial (MPI-DUAE). Genera el README profesional, el manifiesto pedagogico, la estructura de carpetas estandarizada, y el reporte de calidad que completan el kit de una unidad didactica. Usar cuando el usuario solicite empaquetar la unidad, generar el README, crear el manifiesto, finalizar el kit, hacer el cierre de la unidad, o cualquier tarea relacionada con la documentacion, validacion y entrega final de una unidad MPI-DUAE en formato md. Este skill CIERRA el ciclo trabajando con las lecciones generadas por skill-lesson-writer-mpi-duae y los recursos de skill-resources-agent-mpi-duae para producir la entrega profesional completa. NO usar para crear lecciones (eso es skill-lesson-writer-mpi-duae), ni para generar recursos comunicacionales (eso es skill-resources-agent-mpi-duae), ni para contextos fuera del MPI-DUAE."
 ---
 
 # MPI-DUAE Finalizer
@@ -10,9 +10,9 @@ Genera los documentos de cierre de una unidad didactica MPI-DUAE: README, manifi
 ## Relacion con el ecosistema MPI-DUAE
 
 ```
-mpi-duae-lesson-writer  →  Genera lecciones (sesiones de aula)
-mpi-duae-resources-agent →  Genera recursos (cheatsheets, emails, certificados)
-mpi-duae-finalizer       →  Genera cierre (README, manifiesto, empaquetado)
+skill-lesson-writer-mpi-duae  →  Genera lecciones (sesiones de aula)
+skill-resources-agent-mpi-duae →  Genera recursos (cheatsheets, emails, certificados)
+skill-finalizer-mpi-duae       →  Genera cierre (README, manifiesto, empaquetado)
                                     ↓
                             Kit completo entregado
 ```

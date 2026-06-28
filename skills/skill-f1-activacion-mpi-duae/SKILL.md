@@ -1,5 +1,5 @@
 ---
-name: f1-activacion-mpi-duae
+name: skill-f1-activacion-mpi-duae
 description: Orquesta la Fase 1 (Activación y Representación, semanas 1–3) de una unidad didáctica MPI-DUAE — Experiencia Concreta de Kolb + Múltiples Medios de Representación (DUA 3.0). Úsalo cuando el usuario pida planificar el inicio de una unidad, la bienvenida inclusiva, el encuadre del ciclo, el mapeo de diversidades del grupo, la presentación multimodal del reto, el contrato de aprendizaje o la línea base (TTCT, EAE, IBE, ESPA). Contextualizado para primer semestre de Diseño del IESP DYC (Lima), con adaptaciones de neurodiversidad y bienestar psicosocial.
 # METADATOS DEL SKILL
 skill_id: MPI-DUAE-F1

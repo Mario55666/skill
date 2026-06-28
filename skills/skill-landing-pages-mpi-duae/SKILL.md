@@ -1,5 +1,5 @@
 ---
-name: landing-pages-mpi-duae
+name: skill-landing-pages-mpi-duae
 description: Convierte cualquier unidad didáctica del modelo MPI-DUAE en una landing page de comunicación optimizada en formato .md (hero, propuesta de valor, actividades, apoyos, evaluación, FAQ y CTA). Úsalo cuando el usuario pida una landing page, página de comunicación, página de inscripción/captación, copy/UX writing, briefing o micrositio para presentar una unidad, fase, curso, taller o experiencia MPI-DUAE. Combina claridad, relevancia, accesibilidad y conversión ética.
 # METADATOS DEL SKILL
 skill_id: MPI-DUAE-LANDING-PAGES

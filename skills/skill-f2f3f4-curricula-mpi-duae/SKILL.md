@@ -1,5 +1,5 @@
 ---
-name: f2f3f4-curricula-mpi-duae
+name: skill-f2f3f4-curricula-mpi-duae
 description: Orquesta la Fase de Contenido (F2 Exploración · F3 Conceptualización · F4 Experimentación, semanas 4–14) de una unidad didáctica MPI-DUAE — ciclo OR→CA→EA de Kolb + Acción/Expresión y Compromiso (DUA 3.0). Úsalo cuando el usuario pida desarrollar la currícula/contenido del curso, secuencias didácticas por semana, bocetaje, protocolo de feedback ECS, clínicas de proyecto, prototipado iterativo, el Diario de Diseño, rúbricas formativas o el seguimiento de bienestar. Contextualizado para primer semestre de Diseño del IESP DYC (Lima).
 # METADATOS DEL SKILL
 skill_id: MPI-DUAE-F2F3F4
