@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!--
+  Scaffold accesible — Animaciones Interactivas MPI-DUAE
+  Reemplaza los marcadores [[...]] y la lógica del "escenario" por tu animación.
+  Ya resuelto: controles play/pausa/repetir, navegación por pasos, teclado,
+  prefers-reduced-motion, región de estado (aria-live) y subtítulo/descripción.
+-->
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>[[Título de la animación]]</title>
+<style>
+  :root{
+    --bg:#0f1220; --panel:#1a1f35; --ink:#eef1f8; --muted:#aab2cf;
+    --accent:#7aa2ff; --ok:#5ed6a0; --warn:#ffd166; --focus:#ffffff;
+    --ease-out:cubic-bezier(.23,1,.32,1);
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#f5f7ff; --panel:#fff; --ink:#161a2b; --muted:#52607f; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.55 system-ui,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);padding:1.5rem}
+  .wrap{max-width:760px;margin:auto}
+  h1{font-size:1.4rem;margin:.2rem 0}
+  .lead{color:var(--muted);margin:.2rem 0 1rem}
+  .stage{position:relative;background:var(--panel);border-radius:16px;min-height:280px;
+    display:grid;place-items:center;overflow:hidden;padding:1.5rem}
+  /* ---- Demo: caja que se mueve por pasos (reemplázalo) ---- */
+  .obj{width:84px;height:84px;border-radius:14px;background:var(--accent);
+    transform:translateX(var(--x,-160px));transition:transform .5s var(--ease-out)}
+  /* -------------------------------------------------------- */
+  .caption{margin:.8rem 0;padding:.7rem .9rem;background:var(--panel);border-radius:10px;color:var(--ink)}
+  .controls{display:flex;flex-wrap:wrap;gap:.5rem;margin:.8rem 0}
+  button{min-height:44px;min-width:44px;padding:.5rem 1rem;border:0;border-radius:10px;
+    background:var(--accent);color:#0b0e1a;font-weight:600;cursor:pointer;transition:transform .12s var(--ease-out)}
+  button.secondary{background:transparent;color:var(--ink);border:1px solid var(--muted)}
+  button:active{transform:scale(.97)}
+  button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+  .progress{display:flex;gap:.4rem;margin:.5rem 0}
+  .dot{width:12px;height:12px;border-radius:50%;background:var(--muted);opacity:.4}
+  .dot[aria-current="step"]{opacity:1;background:var(--ok)}
+  .feedback{min-height:1.5rem;margin-top:.5rem;color:var(--ok);font-weight:600}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>[[Título de la animación]]</h1>
+  <p class="lead">[[Resultado de aprendizaje que esta animación hace visible]]</p>
+
+  <!-- ESCENARIO: reemplaza por tu visual (SVG/Canvas/DOM) -->
+  <section class="stage" aria-label="Animación interactiva">
+    <div class="obj" id="obj"></div>
+  </section>
+
+  <!-- Indicador de pasos -->
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <!-- Subtítulo/descripción del paso (representación textual del movimiento) -->
+  <p class="caption" id="caption">[[Descripción del paso 1]]</p>
+
+  <!-- Controles -->
+  <div class="controls">
+    <button id="prev" class="secondary">◀ Anterior</button>
+    <button id="play">▶ Reproducir</button>
+    <button id="next">Siguiente ▶</button>
+    <button id="replay" class="secondary">↻ Repetir</button>
+  </div>
+
+  <!-- Región de estado para lectores de pantalla -->
+  <p class="feedback" id="feedback" aria-live="polite"></p>
+  <p class="sr-only" id="liveStep" aria-live="polite"></p>
+</main>
+
+<script>
+(() => {
+  // ====== DATOS DE LA ANIMACIÓN (reemplaza) ======
+  // Cada paso define el estado visual (x) y su descripción textual.
+  const steps = [
+    { x:-160, text:"[[Descripción del paso 1]]" },
+    { x:0,    text:"[[Descripción del paso 2]]" },
+    { x:160,  text:"[[Descripción del paso 3]]" },
+  ];
+  // ===============================================
+
+  const obj=document.getElementById('obj');
+  const caption=document.getElementById('caption');
+  const live=document.getElementById('liveStep');
+  const progress=document.getElementById('progress');
+  let i=0, playing=false, timer=null;
+
+  // construir indicadores de paso
+  steps.forEach((_,k)=>{const d=document.createElement('span');d.className='dot';if(k===0)d.setAttribute('aria-current','step');progress.appendChild(d);});
+  const dots=[...progress.children];
+
+  function render(){
+    const s=steps[i];
+    obj.style.setProperty('--x', s.x+'px');     // <- reemplaza por tu render real
+    caption.textContent=s.text;
+    live.textContent=`Paso ${i+1} de ${steps.length}: ${s.text}`;
+    dots.forEach((d,k)=>k===i?d.setAttribute('aria-current','step'):d.removeAttribute('aria-current'));
+  }
+  function go(n){ i=Math.max(0,Math.min(steps.length-1,n)); render(); }
+  function next(){ if(i<steps.length-1) go(i+1); else stop(); }
+  function play(){ playing=true; document.getElementById('play').textContent='⏸ Pausar';
+    timer=setInterval(()=>{ if(i>=steps.length-1){stop();return;} next(); }, 1600); }
+  function stop(){ playing=false; clearInterval(timer); document.getElementById('play').textContent='▶ Reproducir'; }
+
+  document.getElementById('next').onclick=()=>{stop();next();};
+  document.getElementById('prev').onclick=()=>{stop();go(i-1);};
+  document.getElementById('play').onclick=()=>playing?stop():play();
+  document.getElementById('replay').onclick=()=>{stop();go(0);};
+
+  // teclado: flechas para navegar, espacio para play/pausa
+  document.addEventListener('keydown',e=>{
+    if(e.key==='ArrowRight'){stop();next();}
+    else if(e.key==='ArrowLeft'){stop();go(i-1);}
+    else if(e.key===' '){e.preventDefault();playing?stop():play();}
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
