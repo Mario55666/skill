@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sabores del Barrio - Arquitectura de Datos. Sesión 3 con validaciones, rúbrica y reflexión metacognitiva.">
+    <title>Sabores del Barrio — Arquitectura de Datos (v2)</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8B5CF6;
+            --secondary: #EC4899;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --dark-bg: #0F172A;
+            --dark-card: #1E293B;
+            --dark-border: #334155;
+            --light-text: #F1F5F9;
+            --muted-text: #94A3B8;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: var(--dark-bg);
+                color: var(--light-text);
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--dark-card);
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 60px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            font-size: clamp(2em, 8vw, 2.8em);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+            margin: 8px 0;
+        }
+
+        header .subtitle {
+            font-size: 0.95em;
+            opacity: 0.85;
+            margin-top: 15px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        /* Mode Selector */
+        .mode-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .mode-btn {
+            padding: 28px;
+            border: 2px solid var(--dark-border);
+            border-radius: 12px;
+            background: transparent;
+            color: var(--light-text);
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: 600;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .mode-btn:hover:not(.disabled) {
+            border-color: var(--primary);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+        }
+
+        .mode-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+
+        .mode-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .mode-btn small {
+            display: block;
+            font-weight: 400;
+            opacity: 0.8;
+            margin-top: 8px;
+        }
+
+        /* Sections */
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: var(--primary);
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--dark-border);
+            padding-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .subsection {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--primary);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light-text);
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--dark-border);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light-text);
+            font-size: 1em;
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        /* Cards */
+        .role-card {
+            background: rgba(139, 92, 246, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            transition: var(--transition);
+        }
+
+        .role-card:hover {
+            border-color: var(--primary);
+            background: rgba(139, 92, 246, 0.15);
+        }
+
+        .role-card label {
+            margin-bottom: 8px;
+        }
+
+        .role-card small {
+            color: var(--muted-text);
+            display: block;
+            margin-top: 8px;
+        }
+
+        /* Rubric */
+        .rubric-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow-x: auto;
+        }
+
+        .rubric-table th,
+        .rubric-table td {
+            border: 1px solid var(--dark-border);
+            padding: 15px;
+            text-align: left;
+        }
+
+        .rubric-table th {
+            background: rgba(139, 92, 246, 0.15);
+            color: var(--primary);
+            font-weight: 700;
+            position: sticky;
+            top: 0;
+        }
+
+        .rubric-table tr:hover {
+            background: rgba(139, 92, 246, 0.08);
+        }
+
+        /* Quality Meter */
+        .quality-meter {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .quality-meter strong {
+            display: block;
+            margin-bottom: 12px;
+            color: var(--success);
+        }
+
+        .meter-bar {
+            width: 100%;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--warning), var(--success));
+            width: 0%;
+            transition: width 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9em;
+            color: white;
+        }
+
+        /* Items List */
+        .item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid var(--dark-border);
+            transition: var(--transition);
+        }
+
+        .item:hover {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1em;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #7C3AED;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+            width: 100%;
+            margin-top: 20px;
+            padding: 16px;
+            font-size: 1.1em;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+            padding: 8px 16px;
+            font-size: 0.85em;
+        }
+
+        .btn-danger:hover {
+            background: #DC2626;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            border-left: 4px solid;
+        }
+
+        .alert.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-info {
+            background: rgba(59, 130, 246, 0.1);
+            border-color: #3B82F6;
+            color: #93C5FD;
+        }
+
+        .alert-warning {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+            color: #FCD34D;
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #EF4444;
+            color: #FCA5A5;
+        }
+
+        .alert strong {
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        /* Validation Feedback */
+        .validation-feedback {
+            font-size: 0.85em;
+            margin-top: 6px;
+            display: none;
+            font-weight: 500;
+        }
+
+        .validation-feedback.show {
+            display: block;
+        }
+
+        .validation-feedback.error {
+            color: #FCA5A5;
+        }
+
+        .validation-feedback.success {
+            color: #86EFAC;
+        }
+
+        /* Questions */
+        .question-container {
+            background: rgba(139, 92, 246, 0.08);
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .question-container:hover {
+            border-left-color: var(--secondary);
+            background: rgba(139, 92, 246, 0.12);
+        }
+
+        .question-number {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        .question-text {
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.05em;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            text-align: center;
+            color: var(--muted-text);
+            font-size: 0.9em;
+            line-height: 1.8;
+        }
+
+        footer p {
+            margin: 8px 0;
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        footer a:hover {
+            color: var(--secondary);
+            text-decoration: underline;
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus Visible */
+        *:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content {
+                padding: 25px;
+            }
+
+            .section-title {
+                font-size: 1.5em;
+            }
+
+            .grid-2,
+            .grid-3,
+            .grid-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .mode-selector {
+                grid-template-columns: 1fr;
+            }
+
+            header {
+                padding: 40px 20px;
+            }
+
+            .rubric-table {
+                font-size: 0.9em;
+            }
+
+            .rubric-table th,
+            .rubric-table td {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍽️ Sabores del Barrio</h1>
+            <p>Diseña una arquitectura de datos para decisiones basadas en información</p>
+            <p class="subtitle">Sesión 3: Arquitectura básica de datos y Modelo Entidad-Relación</p>
+        </header>
+
+        <div class="content">
+            <!-- Mode Selection -->
+            <div id="modeSelection">
+                <h2 style="margin-bottom: 30px; color: var(--light-text); font-size: 1.5em;">Elige tu modo de trabajo</h2>
+                <div class="mode-selector">
+                    <button class="mode-btn" onclick="selectMode('group')" aria-label="Seleccionar modo grupal">
+                        👥 Trabajo Grupal
+                        <small>Equipo de 3–4 estudiantes</small>
+                    </button>
+                    <button class="mode-btn" onclick="selectMode('individual')" aria-label="Seleccionar modo individual">
+                        🧑 Trabajo Individual
+                        <small>Responde solo</small>
+                    </button>
+                </div>
+                <div class="alert alert-info show">
+                    <strong>Nota:</strong> Una vez selecciones tu modo, el otro se bloqueará. Elige con cuidado.
+                </div>
+            </div>
+
+            <!-- GROUP MODE -->
+            <div id="groupSection" class="section" role="main">
+                <!-- Registration -->
+                <div class="subsection">
+                    <h3 class="section-title">📋 Registro del Equipo</h3>
+
+                    <div class="form-group">
+                        <label for="teamName">Nombre del equipo *</label>
+                        <input type="text" id="teamName" placeholder="Ej: Los Analistas del Barrio" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="teamMembers">Integrantes (separa con comas) *</label>
+                        <input type="text" id="teamMembers" placeholder="Ana, Bruno, Carlos" required>
+                    </div>
+
+                    <div style="margin-top: 35px;">
+                        <h3 class="section-title" style="margin-top: 0;">Roles Cooperativos</h3>
+                        <p style="color: var(--muted-text); margin-bottom: 25px;">Un responsable por rol; rotan la palabra en el pitch de cierre.</p>
+
+                        <div class="grid-2">
+                            <div class="role-card">
+                                <label for="role1">🏗️ Arquitecto de Datos</label>
+                                <input type="text" id="role1" placeholder="Nombre" required>
+                                <small>Diseña fuentes y repositorios</small>
+                            </div>
+                            <div class="role-card">
+                                <label for="role2">🧩 Modelador E-R</label>
+                                <input type="text" id="role2" placeholder="Nombre" required>
+                                <small>Define entidades y relaciones</small>
+                            </div>
+                            <div class="role-card">
+                                <label for="role3">🔐 Curador de Calidad</label>
+                                <input type="text" id="role3" placeholder="Nombre" required>
+                                <small>Vela por calidad y seguridad</small>
+                            </div>
+                            <div class="role-card">
+                                <label for="role4">📣 Vocero</label>
+                                <input type="text" id="role4" placeholder="Nombre" required>
+                                <small>Presenta la solución</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="saveGroupRegistration()" style="margin-top: 30px;">
+                        ✓ Guardar Registro
+                    </button>
+                </div>
+
+                <!-- Rubric -->
+                <div class="subsection">
+                    <h3 class="section-title">📊 Rúbrica de Evaluación</h3>
+                    <p style="color: var(--muted-text); margin-bottom: 20px;">Escala: <strong style="color: var(--light-text);">Logrado</strong> · <strong style="color: var(--light-text);">En proceso</strong> · <strong style="color: var(--light-text);">Inicial</strong></p>
+
+                    <div style="overflow-x: auto;">
+                        <table class="rubric-table">
+                            <thead>
+                                <tr>
+                                    <th>Criterio</th>
+                                    <th>Logrado ✓</th>
+                                    <th>En proceso ◐</th>
+                                    <th>Inicial ◯</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Necesidad de información</strong></td>
+                                    <td>Concreta y ligada a decisión</td>
+                                    <td>Enunciada pero genérica</td>
+                                    <td>Ausente o confusa</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Fuentes de datos</strong></td>
+                                    <td>≥3 fuentes pertinentes</td>
+                                    <td>1–2 fuentes</td>
+                                    <td>Sin fuentes claras</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Arquitectura</strong></td>
+                                    <td>Completa: operacional + ETL + repo</td>
+                                    <td>Componentes incompletos</td>
+                                    <td>Sin flujo</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>BI e indicadores</strong></td>
+                                    <td>Herramienta + 2 indicadores con origen</td>
+                                    <td>Indicadores sin origen</td>
+                                    <td>Ausente</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Modelo E-R</strong></td>
+                                    <td>≥4 entidades + ≥3 relaciones con PK</td>
+                                    <td>Entidades sin claves claras</td>
+                                    <td>Incompleto</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gobernanza</strong></td>
+                                    <td>Anti-duplicidad + ética/seguridad</td>
+                                    <td>Solo mención parcial</td>
+                                    <td>Ausente</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Defensa (90 seg)</strong></td>
+                                    <td>Claro, coherente, justificado</td>
+                                    <td>Parcialmente claro</td>
+                                    <td>Confuso o incompleto</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Architecture Design -->
+                <div class="subsection">
+                    <h3 class="section-title">🏗️ Arquitectura de Datos</h3>
+
+                    <div class="form-group">
+                        <label for="businessNeed"><strong>Necesidad de información organizacional *</strong></label>
+                        <p style="color: var(--muted-text); font-size: 0.9em; margin-bottom: 10px;">¿Qué decisión debe facilitar tu sistema?</p>
+                        <textarea id="businessNeed" placeholder="Ej: Decidir qué productos incluir en cada sucursal según demanda local" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Fuentes de datos (≥3)</strong></label>
+                        <p style="color: var(--muted-text); font-size: 0.9em; margin-bottom: 15px;">Nombra al menos 3 fuentes</p>
+                        <div id="sourcesList"></div>
+                        <button class="btn btn-secondary btn-small" onclick="addSource()" type="button">+ Agregar fuente</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Componentes de la arquitectura *</strong></label>
+                        <div class="grid-2">
+                            <div class="form-group">
+                                <label>Sistema operacional</label>
+                                <input type="text" id="operational" placeholder="Ej: BD de ventas" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Proceso ETL</label>
+                                <input type="text" id="etl" placeholder="Ej: Script de normalización" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Data Warehouse</label>
+                                <input type="text" id="warehouse" placeholder="Ej: BD analítica" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Herramienta BI</label>
+                                <input type="text" id="biTool" placeholder="Ej: Tableau, Power BI" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Indicadores clave (≥2)</strong></label>
+                        <p style="color: var(--muted-text); font-size: 0.9em; margin-bottom: 15px;">Diseña indicadores ligados a tu necesidad</p>
+                        <div id="indicatorsList"></div>
+                        <button class="btn btn-secondary btn-small" onclick="addIndicator()" type="button">+ Agregar indicador</button>
+                    </div>
+                </div>
+
+                <!-- Entity-Relationship Model -->
+                <div class="subsection">
+                    <h3 class="section-title">🧩 Modelo Entidad-Relación</h3>
+
+                    <div class="form-group">
+                        <label><strong>Entidades (≥4)</strong></label>
+                        <p style="color: var(--muted-text); font-size: 0.9em; margin-bottom: 15px;">Define entidades con atributos y claves primarias</p>
+                        <div id="entitiesList"></div>
+                        <button class="btn btn-secondary btn-small" onclick="addEntity()" type="button">+ Agregar entidad</button>
+                    </div>
+
+                    <div class="form-group">
+                        <label><strong>Relaciones (≥3)</strong></label>
+                        <p style="color: var(--muted-text); font-size: 0.9em; margin-bottom: 15px;">Define relaciones con cardinalidad</p>
+                        <div id="relationsList"></div>
+                        <button class="btn btn-secondary btn-small" onclick="addRelation()" type="button">+ Agregar relación</button>
+                    </div>
+                </div>
+
+                <!-- Quality & Governance -->
+                <div class="subsection">
+                    <h3 class="section-title">🔐 Calidad y Gobernanza</h3>
+
+                    <div class="form-group">
+                        <label for="noDuplicates"><strong>Medida contra duplicidad *</strong></label>
+                        <textarea id="noDuplicates" placeholder="Ej: Usar claves naturales únicas (email + teléfono)" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="securityEthics"><strong>Criterio ético y seguridad *</strong></label>
+                        <textarea id="securityEthics" placeholder="Ej: Encriptar datos de clientes, cumplir GDPR, anonimizar" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="aiDisclosure"><strong>Declaración de uso de IA</strong></label>
+                        <textarea id="aiDisclosure" placeholder="¿Usaste IA? ¿Cómo?"></textarea>
+                    </div>
+                </div>
+
+                <!-- Group Defense -->
+                <div class="subsection">
+                    <h3 class="section-title">🎯 Defensa de Arquitectura (90 segundos)</h3>
+                    <p style="color: var(--muted-text); margin-bottom: 20px;">El vocero integra: "Nuestro diseño permitirá a la organización decidir ___. Las tres fuentes son ___. La medida contra duplicidad es ___. Elegimos esta estructura porque ___."</p>
+
+                    <textarea id="groupDefense" placeholder="Tu defensa de 90 segundos..." required></textarea>
+
+                    <div class="quality-meter">
+                        <strong>Calidad de la defensa:</strong>
+                        <div class="meter-bar">
+                            <div class="meter-fill" id="groupQualityMeter" style="width: 0%;">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Export -->
+                <button class="btn btn-success" onclick="exportGroupReport()">
+                    📥 Exportar Reporte del Equipo
+                </button>
+            </div>
+
+            <!-- INDIVIDUAL MODE -->
+            <div id="individualSection" class="section" role="main">
+                <div class="subsection">
+                    <h3 class="section-title">🧑 Reflexión Individual — 25 Preguntas</h3>
+                    <p style="color: var(--muted-text); margin-bottom: 30px;">Responde con honestidad. Reflexiona sobre tu aprendizaje.</p>
+
+                    <div id="questionsList"></div>
+
+                    <button class="btn btn-success" onclick="exportIndividualReport()">
+                        📥 Exportar Mi Reflexión
+                    </button>
+                </div>
+            </div>
+
+            <!-- Operational Cognition Notice -->
+            <div class="subsection" style="background: rgba(16, 185, 129, 0.1); border-left-color: var(--success); margin-top: 40px;">
+                <div style="color: var(--primary); font-weight: 700; margin-bottom: 10px;">📚 Operación Cognitiva</div>
+                <p>En esta sesión <strong>diseñarás una arquitectura de datos, modelarás entidades y relaciones, y justificarás decisiones técnicas</strong> según una necesidad organizacional real. La evidencia que produzcas será reflejo directo de tu comprensión.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p><strong>Sabores del Barrio — Sesión 3: Arquitectura de Datos</strong></p>
+            <p>Gamificación + DUA + Accesibilidad WCAG 2.1 AA</p>
+            <p style="margin-top: 15px;">🤖 Diseñado con asistencia de IA | <a href="#">Leer política</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const questionList = [
+            "¿Qué significa 'necesidad de información'? Cita un ejemplo.",
+            "¿Por qué una fuente operacional no es suficiente?",
+            "¿Diferencia entre ETL y sistema operacional?",
+            "¿Qué es una clave primaria? ¿Cómo evita duplicados?",
+            "Diseña una entidad 'Producto'. ¿Atributos y PK?",
+            "¿Qué es una relación? Cita un ejemplo.",
+            "¿Cardinalidad entre Cliente y Compra? ¿Por qué?",
+            "¿Relación entre fuente y indicador?",
+            "Describe un indicador para tu caso.",
+            "¿Qué es duplicidad? Nombra dos medidas.",
+            "¿Qué significa 'gobernanza del dato'?",
+            "¿Cómo proteges datos de clientes?",
+            "¿Qué es Data Warehouse? ¿Diferencia?",
+            "¿Qué herramienta BI elegiste? ¿Por qué?",
+            "¿Cambios si tuvieras el doble de sucursales?",
+            "¿Riesgos en tu modelo? ¿Mitigación?",
+            "¿Qué NO entendiste? ¿Cómo lo resolviste?",
+            "¿Pediste ayuda? ¿Sobre qué?",
+            "¿Cómo lo enseñarías a alguien más?",
+            "¿Conexión con tu realidad?",
+            "¿Cambió tu comprensión de 'datos'?",
+            "¿Confianza en tu modelo? (1-10, justificada)",
+            "¿Pregunta que hubiera querido?",
+            "¿Usaste IA? ¿Cómo? ¿Qué aprendiste?",
+            "¿Consejo a un equipo que empieza?"
+        ];
+
+        let currentMode = null;
+        let sourceCount = 1, entityCount = 1, relationCount = 1, indicatorCount = 1;
+
+        function selectMode(mode) {
+            if (currentMode) return;
+            currentMode = mode;
+
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.add('disabled');
+                btn.onclick = null;
+            });
+
+            event.target.closest('.mode-btn').classList.add('active');
+            document.getElementById('modeSelection').style.display = 'none';
+
+            if (mode === 'group') {
+                document.getElementById('groupSection').classList.add('active');
+                renderSources();
+                renderEntities();
+                renderRelations();
+                renderIndicators();
+            } else {
+                document.getElementById('individualSection').classList.add('active');
+                renderQuestions();
+            }
+        }
+
+        function renderSources() {
+            const list = document.getElementById('sourcesList');
+            list.innerHTML = '';
+            for (let i = 1; i <= 3; i++) {
+                list.innerHTML += `
+                    <div class="item">
+                        <div class="grid-2">
+                            <div>
+                                <label>Fuente ${i}</label>
+                                <input type="text" id="source${i}" placeholder="Nombre de la fuente" required>
+                            </div>
+                            <div>
+                                <label>Tipo</label>
+                                <select id="sourceType${i}" required>
+                                    <option value="">Selecciona</option>
+                                    <option value="operational">Operacional</option>
+                                    <option value="external">Externa</option>
+                                    <option value="manual">Manual</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function addSource() {
+            sourceCount++;
+            document.getElementById('sourcesList').innerHTML += `
+                <div class="item" id="source${sourceCount}Item">
+                    <div class="grid-2">
+                        <div>
+                            <label>Fuente ${sourceCount}</label>
+                            <input type="text" id="source${sourceCount}" placeholder="Nombre de la fuente">
+                        </div>
+                        <div>
+                            <label>Tipo</label>
+                            <select id="sourceType${sourceCount}">
+                                <option value="">Selecciona</option>
+                                <option value="operational">Operacional</option>
+                                <option value="external">Externa</option>
+                                <option value="manual">Manual</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" onclick="removeSource(${sourceCount})" type="button">🗑️ Eliminar</button>
+                </div>
+            `;
+        }
+
+        function removeSource(id) {
+            document.getElementById(`source${id}Item`)?.remove();
+        }
+
+        function renderEntities() {
+            const list = document.getElementById('entitiesList');
+            list.innerHTML = '';
+            for (let i = 1; i <= 4; i++) {
+                list.innerHTML += `
+                    <div class="item">
+                        <div class="grid-2">
+                            <div>
+                                <label>Entidad ${i} - Nombre</label>
+                                <input type="text" id="entity${i}n" placeholder="Ej: Cliente" required>
+                            </div>
+                            <div>
+                                <label>Clave Primaria (PK)</label>
+                                <input type="text" id="entity${i}pk" placeholder="Ej: id_cliente" required>
+                                <div class="validation-feedback" id="pk${i}Feedback"></div>
+                            </div>
+                        </div>
+                        <label style="margin-top: 12px;">Atributos (separados por comas)</label>
+                        <input type="text" id="entity${i}attrs" placeholder="Ej: nombre, email, teléfono" required>
+                    </div>
+                `;
+            }
+        }
+
+        function addEntity() {
+            entityCount++;
+            document.getElementById('entitiesList').innerHTML += `
+                <div class="item" id="entity${entityCount}Item">
+                    <div class="grid-2">
+                        <div>
+                            <label>Entidad ${entityCount} - Nombre</label>
+                            <input type="text" id="entity${entityCount}n" placeholder="Ej: Cliente" required>
+                        </div>
+                        <div>
+                            <label>Clave Primaria (PK)</label>
+                            <input type="text" id="entity${entityCount}pk" placeholder="Ej: id_cliente" required>
+                            <div class="validation-feedback" id="pk${entityCount}Feedback"></div>
+                        </div>
+                    </div>
+                    <label style="margin-top: 12px;">Atributos (separados por comas)</label>
+                    <input type="text" id="entity${entityCount}attrs" placeholder="Ej: nombre, email, teléfono" required>
+                    <button class="btn btn-danger" onclick="removeEntity(${entityCount})" type="button" style="margin-top: 10px;">🗑️ Eliminar</button>
+                </div>
+            `;
+        }
+
+        function removeEntity(id) {
+            document.getElementById(`entity${id}Item`)?.remove();
+        }
+
+        function renderRelations() {
+            const list = document.getElementById('relationsList');
+            list.innerHTML = '';
+            for (let i = 1; i <= 3; i++) {
+                list.innerHTML += `
+                    <div class="item">
+                        <div class="grid-3">
+                            <div>
+                                <label>Relación ${i} - De (Entidad)</label>
+                                <input type="text" id="rel${i}a" placeholder="Ej: Cliente" required>
+                                <div class="validation-feedback" id="relAFeedback${i}"></div>
+                            </div>
+                            <div>
+                                <label>Tipo de relación</label>
+                                <select id="rel${i}type" required>
+                                    <option value="">Selecciona</option>
+                                    <option value="1:1">1:1</option>
+                                    <option value="1:N">1:N</option>
+                                    <option value="N:N">N:N</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>A (Entidad)</label>
+                                <input type="text" id="rel${i}b" placeholder="Ej: Compra" required>
+                                <div class="validation-feedback" id="relBFeedback${i}"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function addRelation() {
+            relationCount++;
+            document.getElementById('relationsList').innerHTML += `
+                <div class="item" id="relation${relationCount}Item">
+                    <div class="grid-3">
+                        <div>
+                            <label>Relación ${relationCount} - De</label>
+                            <input type="text" id="rel${relationCount}a" placeholder="Ej: Cliente" required>
+                            <div class="validation-feedback" id="relAFeedback${relationCount}"></div>
+                        </div>
+                        <div>
+                            <label>Tipo</label>
+                            <select id="rel${relationCount}type" required>
+                                <option value="">Selecciona</option>
+                                <option value="1:1">1:1</option>
+                                <option value="1:N">1:N</option>
+                                <option value="N:N">N:N</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label>A</label>
+                            <input type="text" id="rel${relationCount}b" placeholder="Ej: Compra" required>
+                            <div class="validation-feedback" id="relBFeedback${relationCount}"></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-danger" onclick="removeRelation(${relationCount})" type="button" style="margin-top: 10px;">🗑️ Eliminar</button>
+                </div>
+            `;
+        }
+
+        function removeRelation(id) {
+            document.getElementById(`relation${id}Item`)?.remove();
+        }
+
+        function renderIndicators() {
+            const list = document.getElementById('indicatorsList');
+            list.innerHTML = '';
+            for (let i = 1; i <= 2; i++) {
+                list.innerHTML += `
+                    <div class="item">
+                        <label>Indicador ${i} - Nombre</label>
+                        <input type="text" id="indicator${i}name" placeholder="Ej: Venta promedio por sucursal" required>
+                        <label style="margin-top: 12px;">Cálculo / Fórmula</label>
+                        <input type="text" id="indicator${i}calc" placeholder="Ej: SUM(ventas) / COUNT(sucursales)" required>
+                        <label style="margin-top: 12px;">Origen (fuente o entidad)</label>
+                        <input type="text" id="indicator${i}origin" placeholder="Ej: Tabla Compras" required>
+                        <div class="validation-feedback" id="indOriginFeedback${i}"></div>
+                    </div>
+                `;
+            }
+        }
+
+        function addIndicator() {
+            indicatorCount++;
+            document.getElementById('indicatorsList').innerHTML += `
+                <div class="item" id="indicator${indicatorCount}Item">
+                    <label>Indicador ${indicatorCount} - Nombre</label>
+                    <input type="text" id="indicator${indicatorCount}name" placeholder="Ej: Venta promedio por sucursal">
+                    <label style="margin-top: 12px;">Cálculo / Fórmula</label>
+                    <input type="text" id="indicator${indicatorCount}calc" placeholder="Ej: SUM(ventas) / COUNT(sucursales)">
+                    <label style="margin-top: 12px;">Origen (fuente o entidad)</label>
+                    <input type="text" id="indicator${indicatorCount}origin" placeholder="Ej: Tabla Compras">
+                    <div class="validation-feedback" id="indOriginFeedback${indicatorCount}"></div>
+                    <button class="btn btn-danger" onclick="removeIndicator(${indicatorCount})" type="button" style="margin-top: 10px;">🗑️ Eliminar</button>
+                </div>
+            `;
+        }
+
+        function removeIndicator(id) {
+            document.getElementById(`indicator${id}Item`)?.remove();
+        }
+
+        function renderQuestions() {
+            const list = document.getElementById('questionsList');
+            list.innerHTML = '';
+            questionList.forEach((question, index) => {
+                list.innerHTML += `
+                    <div class="question-container">
+                        <div class="question-number">Pregunta ${index + 1} de ${questionList.length}</div>
+                        <div class="question-text">${question}</div>
+                        <textarea id="answer${index}" placeholder="Tu respuesta..." minlength="20" required></textarea>
+                    </div>
+                `;
+            });
+        }
+
+        function saveGroupRegistration() {
+            const teamName = document.getElementById('teamName').value;
+            if (!teamName.trim()) {
+                alert('Por favor, ingresa el nombre del equipo');
+                return;
+            }
+            alert('✓ Registro guardado: ' + teamName);
+        }
+
+        function getEntityNames() {
+            const names = [];
+            for (let i = 1; i <= entityCount; i++) {
+                const name = document.getElementById(`entity${i}n`);
+                if (name && name.value.trim()) {
+                    names.push(name.value.trim().toLowerCase());
+                }
+            }
+            return names;
+        }
+
+        function validateData() {
+            let valid = true;
+            const entityNames = getEntityNames();
+
+            // Validar PKs
+            for (let i = 1; i <= entityCount; i++) {
+                const pk = document.getElementById(`entity${i}pk`);
+                const feedback = document.getElementById(`pk${i}Feedback`);
+                if (pk && feedback) {
+                    if (!pk.value.toLowerCase().startsWith('id')) {
+                        feedback.classList.add('show', 'error');
+                        feedback.textContent = '⚠️ PK debe comenzar con "id"';
+                        valid = false;
+                    } else {
+                        feedback.classList.remove('error');
+                        feedback.classList.add('success');
+                        feedback.textContent = '✓ válida';
+                    }
+                }
+            }
+
+            // Validar relaciones
+            for (let i = 1; i <= relationCount; i++) {
+                const a = document.getElementById(`rel${i}a`)?.value.toLowerCase();
+                const b = document.getElementById(`rel${i}b`)?.value.toLowerCase();
+                const feedbackA = document.getElementById(`relAFeedback${i}`);
+                const feedbackB = document.getElementById(`relBFeedback${i}`);
+
+                if (a && !entityNames.includes(a)) {
+                    feedbackA.classList.add('show', 'error');
+                    feedbackA.textContent = '⚠️ Entidad no existe';
+                    valid = false;
+                }
+                if (b && !entityNames.includes(b)) {
+                    feedbackB.classList.add('show', 'error');
+                    feedbackB.textContent = '⚠️ Entidad no existe';
+                    valid = false;
+                }
+            }
+
+            return valid;
+        }
+
+        function calculateQuality() {
+            const quality = Math.min(100, (
+                (document.getElementById('businessNeed')?.value.length || 0) / 5 +
+                (document.getElementById('noDuplicates')?.value.length || 0) / 5 +
+                (document.getElementById('securityEthics')?.value.length || 0) / 5 +
+                (document.getElementById('groupDefense')?.value.length || 0) / 5
+            ));
+
+            const meter = document.getElementById('groupQualityMeter');
+            if (meter) {
+                meter.style.width = quality + '%';
+                meter.textContent = Math.round(quality) + '%';
+            }
+            return quality;
+        }
+
+        document.addEventListener('input', () => {
+            if (currentMode === 'group') calculateQuality();
+        });
+
+        function exportGroupReport() {
+            if (!validateData()) {
+                alert('⚠️ Corrije los errores antes de exportar');
+                return;
+            }
+
+            const quality = calculateQuality();
+            let report = `SABORES DEL BARRIO — REPORTE DEL EQUIPO\n`;
+            report += `${'='.repeat(50)}\n\n`;
+            report += `Equipo: ${document.getElementById('teamName').value}\n`;
+            report += `Integrantes: ${document.getElementById('teamMembers').value}\n\n`;
+            report += `ROLES:\n${'-'.repeat(50)}\n`;
+            report += `🏗️  Arquitecto: ${document.getElementById('role1').value}\n`;
+            report += `🧩  Modelador: ${document.getElementById('role2').value}\n`;
+            report += `🔐  Curador: ${document.getElementById('role3').value}\n`;
+            report += `📣  Vocero: ${document.getElementById('role4').value}\n\n`;
+            report += `NECESIDAD: ${document.getElementById('businessNeed').value}\n\n`;
+            report += `⭐ CALIDAD: ${Math.round(quality)}%\n`;
+            report += `🎁 XP GANADO: ${Math.round(quality * 10)} XP\n`;
+
+            downloadReport(report, `Sabores-${document.getElementById('teamName').value}.txt`);
+        }
+
+        function exportIndividualReport() {
+            let answered = 0;
+            let report = `SABORES DEL BARRIO — REFLEXIÓN INDIVIDUAL\n`;
+            report += `${'='.repeat(50)}\n\n`;
+
+            questionList.forEach((question, index) => {
+                const answer = document.getElementById(`answer${index}`).value;
+                if (answer.trim().length >= 20) answered++;
+                report += `${index + 1}. ${question}\n   ${answer || '(sin respuesta)'}\n\n`;
+            });
+
+            const quality = Math.round((answered / questionList.length) * 100);
+            report += `\n⭐ COMPLETITUD: ${quality}%\n🎁 XP GANADO: ${Math.round(quality * 5)} XP\n`;
+
+            downloadReport(report, `Reflexion-Individual.txt`);
+        }
+
+        function downloadReport(content, filename) {
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+            element.setAttribute('download', filename);
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        }
+    </script>
+</body>
+</html>
