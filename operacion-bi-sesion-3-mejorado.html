@@ -1,0 +1,1637 @@
+<!DOCTYPE html>
+<!-- Operación BI · Sesión 3: Arquitectura de Datos y Modelo Entidad-Relación
+     ARCHIVO ÚNICO AUTOCONTENIDO — sin dependencias externas.
+     Método serie IA+DATA (DataCorp Global / Arsenal BI) · Modelo Didáctico IUTPC · DUA · WCAG 2.1 AA.
+     Mg. Mario Quiroz Martínez · IA + DATA 2026 · Unidad 1: Fundamentos de Business Intelligence. -->
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0b10" />
+<meta name="description" content="Circuito gamificado IUTPC — Sesión 3: diseño de una arquitectura básica de datos y un modelo inicial entidad-relación según una necesidad de información organizacional. Curso IA+DATA, Unidad 1. Narrativa: agencia Operación BI." />
+<meta name="author" content="Mg. Mario Quiroz Martínez — IA + DATA 2026" />
+<title>Operación BI · Sesión 3 · Arquitectura de Datos · IA + DATA 2026</title>
+<style>
+  /* ===========================================================
+     Sistema de diseño heredado de la serie (Arsenal BI):
+     tema oscuro inmersivo · acentos cian/ámbar · sin ranking.
+     =========================================================== */
+  :root {
+    --bg: #0a0b10;
+    --panel: #12131a;
+    --panel-2: #171826;
+    --line: #1f2230;
+    --text: #e6e8f2;
+    --muted: #9aa0b6;
+    --cyan: #00e5ff;
+    --amber: #ffd600;
+    --gold: #ffd64a;
+    --green: #00ff9d;
+    --alert: #ff2038;
+    --violet: #b829dd;
+    --ok-ink: #063b28;
+    --radio: 14px;
+    --foco: 3px solid var(--cyan);
+    /* Acentos accesibles sobre tema oscuro (texto claro sobre fondos oscuros) */
+    --tag-ludic: #00e5ff;
+    --tag-gami: #ffd600;
+    --tag-tech: #b829dd;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: radial-gradient(1200px 600px at 80% -10%, #101a2e 0, transparent 60%), var(--bg);
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+
+  .skip-link {
+    position: absolute; left: -999px; top: 0; z-index: 100;
+    background: var(--cyan); color: #001018; font-weight: 800;
+    padding: 10px 16px; border-radius: 0 0 12px 0;
+  }
+  .skip-link:focus { left: 0; }
+
+  a { color: var(--cyan); }
+  :focus-visible { outline: var(--foco); outline-offset: 3px; border-radius: 6px; }
+
+  h1, h2, h3, h4 { line-height: 1.15; color: var(--text); }
+  h1 { font-size: 2rem; margin: 0 0 8px; letter-spacing: 0.5px; }
+
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 18px; }
+
+  /* ---------- Header / narrativa ---------- */
+  header.top {
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(180deg, #101828 0, #0a0b10 100%);
+    padding: 28px 0 22px;
+  }
+  .eyebrow {
+    display: inline-block; margin-bottom: 12px;
+    font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--cyan); border: 1px solid #17384a; background: #071b24;
+    padding: 4px 12px; border-radius: 999px;
+  }
+  header.top .lead { color: #c9cee2; max-width: 68ch; margin: 6px 0 0; }
+  .marca { color: var(--amber); font-weight: 800; }
+
+  /* ---------- HUD de progreso (XP / anillo / insignias) ---------- */
+  .hud {
+    display: flex; gap: 18px; align-items: center; flex-wrap: wrap;
+    margin-top: 20px; padding: 14px 16px;
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radio);
+  }
+  .anillo circle.pista { stroke: #23283b; }
+  .anillo circle.avance { stroke: var(--cyan); stroke-linecap: round; transition: stroke-dashoffset .6s ease; }
+  .anillo text { fill: var(--text); font-size: 15px; font-weight: 800; }
+  .hud .xp strong { font-size: 1.5rem; color: var(--amber); }
+  .hud .xp small { color: var(--muted); }
+  .insignias { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .insignia {
+    font-size: 0.76rem; padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--line); color: var(--muted); background: #0e1018;
+    opacity: 0.5; transition: opacity .3s ease, transform .3s ease;
+  }
+  .insignia.ganada { opacity: 1; color: #10131c; background: var(--amber); border-color: var(--amber); font-weight: 800; }
+
+  /* ---------- Leyenda de etiquetas (tag-ludic / gami / tech) ---------- */
+  .tags { margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .tag {
+    font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em;
+    padding: 3px 9px; border-radius: 999px; border: 1px solid;
+  }
+  .tag-ludic { color: var(--tag-ludic); border-color: #17384a; background: #061a22; }
+  .tag-gami  { color: var(--tag-gami);  border-color: #40390a; background: #1a1705; }
+  .tag-tech  { color: #e59bf5; border-color: #3a1145; background: #1a0720; }
+
+  main { padding: 24px 0 70px; }
+
+  /* ---------- Niveles ---------- */
+  section.nivel {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radio);
+    margin: 0 auto 22px; overflow: hidden;
+  }
+  .nivel-head { display: flex; gap: 14px; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--line); background: var(--panel-2); }
+  .nivel-num {
+    flex: 0 0 auto; width: 46px; height: 46px; border-radius: 12px;
+    display: grid; place-items: center; font-weight: 900; font-size: 1.15rem;
+    background: #0e1a24; color: var(--cyan); border: 1px solid #17384a;
+  }
+  .nivel-titulo { margin: 0; font-size: 1.2rem; }
+  .nivel-meta { margin: 3px 0 0; font-size: 0.82rem; color: var(--muted); }
+  .nivel-estado { margin-left: auto; font-size: 0.76rem; font-weight: 800; padding: 5px 12px; border-radius: 999px; background: #0e1018; border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+  .nivel-estado.activo { color: var(--amber); border-color: #40390a; }
+  .nivel-estado.logrado { color: var(--green); border-color: #0a3c2a; }
+  .nivel-cuerpo { padding: 20px; }
+  section.nivel[data-bloqueado="true"] .nivel-cuerpo { display: none; }
+  section.nivel[data-bloqueado="true"] { opacity: 0.7; }
+  .candado { display: none; align-items: center; gap: 10px; padding: 16px 20px; color: var(--muted); }
+  section.nivel[data-bloqueado="true"] .candado { display: flex; }
+
+  .op-cognitiva {
+    display: inline-block; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em;
+    color: var(--cyan); border: 1px solid #17384a; background: #061a22; padding: 2px 9px; border-radius: 999px; margin-bottom: 10px;
+  }
+  .consigna { background: #10131c; border-left: 4px solid var(--amber); padding: 12px 16px; border-radius: 0 8px 8px 0; margin: 0 0 18px; }
+  .consigna strong { color: var(--amber); }
+
+  /* ---------- Mapa interactivo (canvas) + física de flujo ---------- */
+  .mapa-wrap { border: 1px solid var(--line); border-radius: 12px; background: #0a0c14; padding: 12px; margin: 0 0 18px; }
+  .mapa-wrap canvas { width: 100%; height: auto; display: block; border-radius: 8px; background: radial-gradient(600px 200px at 20% 0, #0e1a2a 0, #0a0c14 70%); }
+  .mapa-controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 10px; }
+  .mapa-controls .leyenda { margin-left: auto; font-size: 0.78rem; color: var(--muted); }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; vertical-align: middle; margin: 0 3px 0 8px; }
+  .dot.sucio { background: var(--alert); } .dot.limpio { background: var(--green); }
+  .mapa-fallback { display: none; }
+  @media (prefers-reduced-motion: reduce) { .mapa-wrap canvas { display: none; } .mapa-fallback { display: block; } }
+
+  /* ---------- Tarjeta de asociación (juegos) ---------- */
+  .assoc { border: 1px solid #40390a; background: #14120a; border-radius: 12px; padding: 14px 16px; margin: 0 0 18px; }
+  .assoc h4 { margin: 0 0 8px; color: var(--amber); }
+  .assoc .par { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: center; margin: 10px 0; }
+  .assoc .par .caja { background: #0e1018; border: 1px solid var(--line); border-radius: 10px; padding: 10px; font-size: 0.85rem; }
+  .assoc .par .flecha { color: var(--cyan); font-weight: 900; font-size: 1.2rem; text-align: center; }
+  .assoc .caja strong { color: var(--cyan); }
+  @media (max-width: 640px) { .assoc .par { grid-template-columns: 1fr; } .assoc .par .flecha { transform: rotate(90deg); } }
+
+  /* ---------- Botones ---------- */
+  button { font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: #10131c; color: var(--text); padding: 9px 16px; transition: transform .12s ease, border-color .2s ease, background .2s ease; }
+  button:hover { border-color: var(--cyan); }
+  button:active { transform: translateY(1px); }
+  .btn-primario { background: var(--cyan); color: #001018; border-color: var(--cyan); font-weight: 800; }
+  .btn-primario:hover { background: #4df0ff; }
+  .btn-primario[disabled] { background: #2a3742; color: #6b7686; border-color: #2a3742; cursor: not-allowed; }
+  .btn-amber { background: var(--amber); color: #10131c; border-color: var(--amber); font-weight: 800; }
+
+  /* ---------- Mito o evidencia ---------- */
+  .afirmacion { border: 1px solid var(--line); border-radius: 12px; padding: 14px; margin-bottom: 12px; background: #0e1018; }
+  .afirmacion p { margin: 0 0 10px; }
+  .afirmacion .opciones { display: flex; gap: 10px; flex-wrap: wrap; }
+  .afirmacion.resuelta { border-color: #0a3c2a; }
+  .fb { font-size: 0.92rem; }
+  .fb-ok { color: var(--green); }
+  .fb-ok::before { content: "✓ "; font-weight: 900; }
+  .fb-error { color: #ff8a8a; }
+  .fb-error::before { content: "✗ "; font-weight: 900; }
+
+  /* Panel de refuerzo (Pausa-Pista-Dato-Contexto-Reintento) */
+  .refuerzo { background: #1a0d10; border: 1px solid #4a1f22; border-left: 4px solid var(--alert); border-radius: 0 8px 8px 0; padding: 10px 14px; margin-top: 10px; font-size: 0.9rem; }
+  .refuerzo dt { font-weight: 800; color: #ff8a8a; margin-top: 6px; }
+  .refuerzo dd { margin: 0 0 4px; color: #d7bcbf; }
+
+  /* ---------- Cartas de restricción ---------- */
+  .cartas { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin: 14px 0; }
+  .carta { background: linear-gradient(135deg, #131a2a, #0e1420); border: 1px solid #22304a; border-radius: 12px; padding: 14px; }
+  .carta h4 { color: var(--cyan); margin: 0 0 6px; font-size: 0.95rem; }
+  .carta p { margin: 0; font-size: 0.85rem; color: #b9c0d6; }
+
+  /* ---------- Ruta del dato (ordenar) ---------- */
+  .banco { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 16px; }
+  .chip { background: #10131c; border: 2px solid var(--line); color: var(--text); border-radius: 10px; padding: 9px 14px; font-size: 0.9rem; }
+  .chip[aria-pressed="true"] { border-color: var(--cyan); background: #061a22; box-shadow: 0 0 0 2px rgba(0,229,255,.25); }
+  .chip.colocado { display: none; }
+  .slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+  .slot { border: 2px dashed var(--line); border-radius: 12px; padding: 10px; min-height: 92px; background: #0e1018; text-align: center; }
+  .slot .num { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .slot.dragover { border-color: var(--cyan); background: #061a22; }
+  .slot .puesto { margin-top: 6px; font-size: 0.85rem; font-weight: 700; padding: 8px; border-radius: 8px; }
+  .slot .puesto.bien { background: #06251b; color: var(--green); border: 1px solid #0a3c2a; }
+  .slot .puesto.mal { background: #26090c; color: #ff8a8a; border: 1px solid #4a1f22; }
+
+  /* ---------- Tablas complejas ---------- */
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: 0.9rem; }
+  caption { text-align: left; font-weight: 800; color: var(--cyan); margin-bottom: 8px; }
+  th, td { border: 1px solid var(--line); padding: 9px 11px; text-align: left; vertical-align: top; }
+  thead th { background: #0e1a24; color: var(--cyan); }
+  tbody th { background: #10131c; color: var(--text); }
+  .tabla-scroll { overflow-x: auto; }
+
+  /* ---------- Formularios ---------- */
+  form fieldset { border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; margin: 0 0 18px; background: #0e1018; }
+  form legend { font-weight: 800; color: var(--amber); padding: 0 6px; }
+  label { display: block; font-weight: 600; margin: 12px 0 4px; font-size: 0.92rem; }
+  input[type="text"], input[type="number"], select, textarea {
+    width: 100%; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px;
+    font: inherit; background: #0a0c14; color: var(--text);
+  }
+  input::placeholder, textarea::placeholder { color: #5a6274; }
+  textarea { min-height: 68px; resize: vertical; }
+  input:invalid:not(:placeholder-shown) { border-color: var(--alert); }
+  .ayuda { font-weight: 400; font-size: 0.8rem; color: var(--muted); margin: 2px 0 0; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid3 { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 10px; align-items: end; }
+  .checks label { display: flex; align-items: flex-start; gap: 8px; font-weight: 400; }
+  .checks input { width: auto; margin-top: 4px; }
+
+  details { border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; margin: 10px 0; background: #0e1018; }
+  details summary { cursor: pointer; font-weight: 700; }
+  details[open] summary { margin-bottom: 8px; }
+  .pista-box summary { color: var(--cyan); }
+
+  /* Rúbrica */
+  .rubrica td.logrado { background: #06251b; }
+  .rubrica td.proceso { background: #201a05; }
+  .rubrica td.inicial { background: #26090c; }
+
+  .aviso { background: #061a22; border: 1px solid #17384a; border-radius: 10px; padding: 12px 14px; font-size: 0.88rem; margin: 12px 0; }
+  .aviso strong { color: var(--cyan); }
+
+  .export-acciones { display: flex; gap: 12px; flex-wrap: wrap; margin: 14px 0; }
+  #salidaMarkdown { width: 100%; min-height: 240px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.82rem; white-space: pre; overflow: auto; }
+
+  /* Likert autoevaluación */
+  .likert { display: flex; gap: 6px; flex-wrap: wrap; }
+  .likert button[aria-pressed="true"] { background: var(--cyan); color: #001018; border-color: var(--cyan); font-weight: 800; }
+
+  /* ---------- Retroalimentación asistida en vivo (N4) ---------- */
+  .n4-live { border: 1px solid #17384a; background: #071b24; border-radius: 12px; padding: 12px 14px; margin: 10px 0; }
+  .n4-live h4 { margin: 0 0 8px; color: var(--cyan); font-size: 0.95rem; }
+  .medidor { height: 10px; border-radius: 999px; background: #10131c; border: 1px solid var(--line); overflow: hidden; margin: 6px 0 10px; }
+  .medidor > span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--alert), var(--amber), var(--green)); transition: width .3s ease; }
+  .n4-live ul { margin: 0; padding-left: 18px; font-size: 0.86rem; }
+  .n4-live li.ok { color: var(--green); } .n4-live li.ok::marker { content: "✓ "; }
+  .n4-live li.mid { color: var(--amber); }
+  .n4-live li.no { color: #ff8a8a; }
+
+  /* ---------- Mentor (andamiaje permanente) ---------- */
+  .mentor {
+    position: fixed; right: 16px; bottom: 16px; width: min(360px, calc(100vw - 32px)); z-index: 50;
+    background: var(--panel); border: 1px solid var(--cyan); border-radius: 14px;
+    box-shadow: 0 10px 40px rgba(0,0,0,.5); overflow: hidden;
+  }
+  .mentor-head { display: flex; align-items: center; gap: 8px; padding: 10px 12px; background: #0e1a24; border-bottom: 1px solid var(--line); }
+  .mentor-head strong { color: var(--cyan); font-size: 0.95rem; }
+  .mentor-head .toggle { margin-left: auto; padding: 4px 10px; font-size: 0.8rem; }
+  .mentor-body { padding: 12px; max-height: 52vh; overflow: auto; }
+  .mentor[data-min="true"] .mentor-body { display: none; }
+  .mentor .contexto { font-size: 0.82rem; color: var(--muted); margin: 0 0 4px; }
+  .mentor .objetivo { font-weight: 700; margin: 0 0 8px; }
+  .mentor .msg { background: #0e1018; border: 1px solid var(--line); border-radius: 10px; padding: 10px; font-size: 0.86rem; min-height: 40px; margin: 0 0 10px; }
+  .mentor-acciones { display: flex; flex-wrap: wrap; gap: 6px; }
+  .mentor-acciones button { font-size: 0.8rem; padding: 6px 10px; }
+  .mentor .and { margin: 10px 0 0; font-size: 0.82rem; color: #c9cee2; }
+  .mentor .and li { margin: 3px 0; }
+  .mentor-fab { position: fixed; right: 16px; bottom: 16px; z-index: 49; display: none; }
+  @media (max-width: 640px) { .mentor { right: 8px; left: 8px; width: auto; bottom: 8px; } }
+  @media print { .mentor, .mentor-fab { display: none !important; } }
+
+  footer.pie { border-top: 1px solid var(--line); background: #08090e; color: var(--muted); padding: 22px 0; text-align: center; font-size: 0.85rem; }
+  footer.pie strong { color: var(--text); }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+  @keyframes pop { 0% { transform: scale(1); } 40% { transform: scale(1.12); } 100% { transform: scale(1); } }
+  .pop { animation: pop .4s ease; }
+
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+  @media (max-width: 640px) { .grid2, .grid3 { grid-template-columns: 1fr; } h1 { font-size: 1.6rem; } body { font-size: 16px; } }
+
+  /* Impresión (evidencia en PDF) */
+  @media print {
+    header.top .hud, .tags, footer.pie, .no-print, button, details.pista-box { display: none !important; }
+    body { background: #fff; color: #000; font-size: 12px; }
+    section.nivel { border: 1px solid #999; page-break-inside: avoid; }
+    section.nivel[data-bloqueado="true"] .nivel-cuerpo { display: block !important; }
+    section.nivel[data-bloqueado="true"] .candado { display: none !important; }
+    a { color: #000; }
+    #reporteImpresion { display: block !important; color: #000; }
+  }
+  #reporteImpresion { display: none; }
+</style>
+</head>
+<body>
+<a class="skip-link" href="#n1">Saltar a la actividad</a>
+
+<header class="top">
+  <div class="wrap">
+    <span class="eyebrow">IA + DATA 2026 · Unidad 1 · Semana 3 — Sesión 3 · Modelo IUTPC</span>
+    <h1>Operación BI — Arquitectura de Datos</h1>
+    <p class="lead">
+      Eres <strong>Analista de Datos en formación</strong> en la agencia <span class="marca">«Operación BI»</span>.
+      En la sesión anterior aprendiste a elegir herramientas de BI; hoy resuelves lo que las hace posibles:
+      <strong>diseñar la arquitectura básica de datos y un modelo inicial de base de datos</strong> según la
+      necesidad de información de una organización. Compites contra el <em>desafío</em>, no contra otros equipos.
+    </p>
+    <p class="lead" style="margin-top:8px;color:var(--muted)">
+      <strong>Logro de la sesión:</strong> Diseña una arquitectura básica y un modelo inicial de sistema de bases de datos,
+      de acuerdo con una necesidad de información organizacional.
+    </p>
+
+    <div class="hud" role="group" aria-label="Progreso de la misión">
+      <svg class="anillo" width="88" height="88" viewBox="0 0 88 88" role="img" aria-label="Anillo de progreso">
+        <circle class="pista" cx="44" cy="44" r="37" fill="none" stroke-width="9" />
+        <circle id="anilloAvance" class="avance" cx="44" cy="44" r="37" fill="none" stroke-width="9"
+                stroke-dasharray="232.48" stroke-dashoffset="232.48" transform="rotate(-90 44 44)" />
+        <text id="anilloTexto" x="44" y="49" text-anchor="middle">0%</text>
+      </svg>
+      <div class="xp">
+        <div><strong id="xpTotal">0</strong> XP de calidad · <small>Nivel <span id="nivelActual">1</span> de 5 · sin ranking</small></div>
+        <div class="insignias" aria-label="Insignias por logro observable">
+          <span class="insignia" data-badge="detector">🔎 Detector de datos</span>
+          <span class="insignia" data-badge="analista">📁 Analista de necesidades</span>
+          <span class="insignia" data-badge="arquitecto">🏗️ Arquitecto de datos</span>
+          <span class="insignia" data-badge="modelador">🧩 Modelador ER</span>
+          <span class="insignia" data-badge="reflexivo">🧠 Consultor reflexivo</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tags" aria-label="Técnicas aplicadas en esta actividad">
+      <span class="tag tag-ludic">Mapa interactivo (canvas)</span>
+      <span class="tag tag-ludic">Simulador de flujo (física de partículas)</span>
+      <span class="tag tag-ludic">Mito o evidencia</span>
+      <span class="tag tag-ludic">Expediente con cartas de restricción</span>
+      <span class="tag tag-ludic">Ruta del dato (drag & drop)</span>
+      <span class="tag tag-ludic">Clasificación de conceptos ER</span>
+      <span class="tag tag-ludic">Diseño de arquitectura + modelo ER</span>
+      <span class="tag tag-ludic">Pitch / defensa breve</span>
+      <span class="tag tag-gami">XP por calidad</span>
+      <span class="tag tag-gami">Mentor (andamiaje permanente)</span>
+      <span class="tag tag-gami">Retroalimentación asistida en vivo</span>
+      <span class="tag tag-gami">Pistas progresivas</span>
+      <span class="tag tag-gami">Insignias por logro</span>
+      <span class="tag tag-gami">Niveles con desbloqueo</span>
+      <span class="tag tag-gami">Narrativa inmersiva</span>
+      <span class="tag tag-gami">Declaración de uso de IA</span>
+      <span class="tag tag-gami">Roles cooperativos</span>
+      <span class="tag tag-tech">HTML semántico</span>
+      <span class="tag tag-tech">Tablas con scope y caption</span>
+      <span class="tag tag-tech">Formularios (validación, datalist)</span>
+      <span class="tag tag-tech">Details / Summary</span>
+    </div>
+    <p class="sr-only" role="status" aria-live="polite" id="anuncio"></p>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+  <!-- Reglas, rúbrica y registro -->
+  <details class="no-print">
+    <summary><strong>📋 Reglas, rúbrica y registro del equipo</strong> (visibles desde el inicio)</summary>
+    <div class="aviso">
+      <strong>Cómo se gana XP:</strong> por <strong>calidad de la evidencia</strong> —identificar la necesidad de información,
+      representar los componentes de la arquitectura, definir entidades/atributos/claves coherentes, relacionar la base de datos
+      con indicadores y decisiones, y cuidar la calidad/gobernanza del dato— <strong>nunca por rapidez ni por número de clics</strong>.
+      Las pistas <em>no penalizan</em> y los reintentos son libres.
+    </div>
+
+    <h3>Registro individual / grupal</h3>
+    <form id="formRegistro" aria-label="Registro del equipo">
+      <div class="grid2">
+        <div><label for="regEquipo">Nombre del equipo</label><input type="text" id="regEquipo" placeholder="Ej.: Escuadrón Dato" /></div>
+        <div><label for="regIntegrantes">Integrantes (separa con comas)</label><input type="text" id="regIntegrantes" placeholder="Ana, Luis, Marta" /></div>
+      </div>
+      <fieldset>
+        <legend>Roles cooperativos</legend>
+        <p class="ayuda">Un responsable por rol; rotan la palabra en el pitch de cierre.</p>
+        <div class="grid2">
+          <div><label for="rolArquitecto">🏗️ Arquitecto de datos</label><input type="text" id="rolArquitecto" placeholder="¿Quién?" /></div>
+          <div><label for="rolModelador">🧩 Modelador entidad-relación</label><input type="text" id="rolModelador" placeholder="¿Quién?" /></div>
+          <div><label for="rolCurador">🔐 Curador de calidad y gobernanza</label><input type="text" id="rolCurador" placeholder="¿Quién?" /></div>
+          <div><label for="rolVocero">📣 Vocero del pitch</label><input type="text" id="rolVocero" placeholder="¿Quién?" /></div>
+        </div>
+      </fieldset>
+    </form>
+
+    <h3>Rúbrica de la evidencia (Sesión 3)</h3>
+    <div class="tabla-scroll">
+      <table class="rubrica">
+        <caption>Escala: Logrado · En proceso · Inicial. Aplica a la evidencia principal (arquitectura + modelo ER).</caption>
+        <thead><tr><th scope="col">Criterio</th><th scope="col">Logrado</th><th scope="col">En proceso</th><th scope="col">Inicial</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">Necesidad de información</th><td class="logrado">Concreta y ligada a una decisión del caso</td><td class="proceso">Enunciada pero genérica</td><td class="inicial">Ausente o confusa</td></tr>
+          <tr><th scope="row">Fuentes de datos</th><td class="logrado">≥3 fuentes pertinentes</td><td class="proceso">1–2 fuentes</td><td class="inicial">Sin fuentes claras</td></tr>
+          <tr><th scope="row">Componentes de arquitectura</th><td class="logrado">Operacional + transformación + repositorio analítico</td><td class="proceso">Componentes incompletos</td><td class="inicial">Sin flujo</td></tr>
+          <tr><th scope="row">Herramienta BI e indicadores</th><td class="logrado">Herramienta + 2 indicadores con su origen</td><td class="proceso">Indicadores sin origen</td><td class="inicial">Ausente</td></tr>
+          <tr><th scope="row">Modelo entidad-relación</th><td class="logrado">≥4 entidades con atributos y PK + ≥3 relaciones con cardinalidad</td><td class="proceso">Entidades sin claves/relaciones claras</td><td class="inicial">Incompleto</td></tr>
+          <tr><th scope="row">Calidad y gobernanza del dato</th><td class="logrado">Medida contra duplicidad + criterio ético/seguridad</td><td class="proceso">Solo mención parcial</td><td class="inicial">Ausente</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <!-- ============ N1 · INICIO ============ -->
+  <section class="nivel" id="n1" data-nivel="1" data-bloqueado="false" aria-labelledby="t1">
+    <div class="nivel-head">
+      <span class="nivel-num" aria-hidden="true">I</span>
+      <div>
+        <h2 class="nivel-titulo" id="t1">Nivel I · Inicio — «El dashboard sin datos»</h2>
+        <p class="nivel-meta">10 min · Activar saberes y clima · Conecta las herramientas de BI (Sesión 2) con la necesidad de datos confiables</p>
+      </div>
+      <span class="nivel-estado activo" id="estado1">En curso</span>
+    </div>
+    <div class="nivel-cuerpo">
+      <span class="op-cognitiva">Operación cognitiva: analizar condiciones</span>
+
+      <div class="consigna">
+        <strong>Motivación — Mapa interactivo «La ruta del dato».</strong> Observa cómo los <em>paquetes de datos</em> viajan
+        desde las fuentes hasta la decisión. Antes del <strong>ETL</strong> llegan <span class="dot sucio" aria-hidden="true"></span>
+        <em>sucios</em> (duplicados, inconsistentes) y salen <span class="dot limpio" aria-hidden="true"></span> <em>limpios</em>.
+        Sin esa arquitectura, el dashboard muestra datos poco confiables.
+      </div>
+
+      <figure class="mapa-wrap" aria-label="Simulación del flujo de datos por la arquitectura de BI">
+        <canvas id="mapaCanvas" width="920" height="240" role="img"
+                aria-label="Animación: paquetes de datos fluyen por Fuentes, Base operacional, ETL, Data Warehouse, Herramienta BI y Decisión; se limpian al pasar por el ETL."></canvas>
+        <div class="mapa-fallback aviso">
+          <strong>Ruta del dato:</strong> Fuentes → Base operacional → <strong>ETL (limpieza)</strong> → Data Warehouse → Herramienta BI → Decisión.
+          Los datos se unifican y depuran en el ETL antes de analizarse. (Animación desactivada por preferencia de movimiento reducido.)
+        </div>
+        <figcaption class="mapa-controls">
+          <button type="button" id="mapaPlay" class="btn-primario" aria-pressed="true">⏸️ Pausar</button>
+          <button type="button" id="mapaCalidad">Ver «sin ETL» (datos sin limpiar)</button>
+          <span class="leyenda"><span class="dot sucio"></span>dato sin depurar · <span class="dot limpio"></span>dato depurado</span>
+        </figcaption>
+      </figure>
+
+      <div class="assoc">
+        <h4>🎮 Puente lúdico — de un juego clásico a un simulador de datos</h4>
+        <p style="margin:0 0 6px;font-size:0.9rem">
+          Este mapa reutiliza la idea de <strong>sistemas de partículas y fuerzas</strong> del repositorio
+          <a href="https://github.com/Mario55666/Physics-for-JavaScript-Games-Animation-Simulations" target="_blank" rel="noopener">Physics&nbsp;for&nbsp;JavaScript&nbsp;Games</a>
+          para representar el flujo de datos. Y la <em>lógica de decidir con datos</em> se relaciona con un clásico de
+          <a href="https://github.com/Mario55666/basic-computer-games" target="_blank" rel="noopener">basic-computer-games</a>:
+        </p>
+        <div class="par">
+          <div class="caja"><strong>Simulación de partículas / flujo</strong><br />(Physics for JavaScript Games — partículas, velocidad y fuerzas)</div>
+          <div class="flecha" aria-hidden="true">↔</div>
+          <div class="caja"><strong>43_Hammurabi</strong> · <em>basic-computer-games</em><br />gestionas grano, tierra y población <strong>decidiendo con indicadores año a año</strong>: el mismo bucle dato → decisión → consecuencia que en BI.</div>
+        </div>
+        <details>
+          <summary style="font-size:0.85rem">Otras asociaciones posibles</summary>
+          <ul style="font-size:0.85rem;margin:8px 0 0">
+            <li><strong>Movimiento de proyectil</strong> (Physics for JS Games) ↔ <strong>42_Gunner / 12_Bombs_Away</strong> (basic-computer-games): calcular con variables observadas.</li>
+            <li><strong>Sistema de partículas de recursos</strong> ↔ <strong>83_Stock_Market / 38_Fur_Trader</strong>: decisiones de negocio a partir de datos que cambian.</li>
+          </ul>
+          <p style="font-size:0.82rem;color:var(--muted);margin:8px 0 0">Pertinencia: el <strong>logro</strong> de la sesión es decidir la arquitectura según una <strong>necesidad de información</strong>; por eso el juego motivador elegido es de <em>decisión basada en datos</em> (Hammurabi), no de acción.</p>
+        </details>
+      </div>
+
+      <div class="consigna">
+        <strong>Misión 1 — Mito o evidencia.</strong> Un dashboard atractivo no sirve si sus datos están desordenados.
+        Clasifica cada afirmación; la retroalimentación explica <em>por qué</em>.
+      </div>
+      <div id="mitoContenedor"></div>
+      <details class="pista-box">
+        <summary>💡 Pista progresiva (no penaliza)</summary>
+        <p>«Una buena visualización no compensa una mala arquitectura». Para decidir con confianza se necesitan datos
+        <strong>identificables (clave única), relacionados, consistentes y protegidos</strong>.</p>
+      </details>
+      <p id="mitoResumen" class="fb" aria-live="polite"></p>
+    </div>
+    <div class="candado"><span aria-hidden="true">🔒</span> Nivel bloqueado.</div>
+  </section>
+
+  <!-- ============ N2 · UTILIDAD ============ -->
+  <section class="nivel" id="n2" data-nivel="2" data-bloqueado="true" aria-labelledby="t2">
+    <div class="nivel-head">
+      <span class="nivel-num" aria-hidden="true">U</span>
+      <div>
+        <h2 class="nivel-titulo" id="t2">Nivel U · Utilidad — Expediente «Sabores del Barrio»</h2>
+        <p class="nivel-meta">15 min · Explicitar el para qué · Identificar necesidades y problemas de datos</p>
+      </div>
+      <span class="nivel-estado" id="estado2">Pendiente</span>
+    </div>
+    <div class="nivel-cuerpo">
+      <span class="op-cognitiva">Operación cognitiva: analizar condiciones</span>
+      <div class="consigna">
+        <strong>Misión 2 — Diagnóstico del caso.</strong> Lee el expediente y sus cartas de restricción; luego identifica
+        los problemas de datos y la necesidad de información de la gerencia.
+      </div>
+
+      <details open>
+        <summary><strong>📁 Expediente organizacional (datos ficticios)</strong></summary>
+        <p><strong>«Sabores del Barrio»</strong> — cadena de restaurantes con <strong>3 locales</strong>. Recibe pedidos por
+        caja, WhatsApp y una app de delivery. Cada sede registra ventas, productos, clientes, proveedores e inventario en
+        <strong>archivos Excel separados</strong>. La gerencia quiere responder: «¿Qué platos se venden más?»,
+        «¿Qué productos están por agotarse?» y «¿Qué clientes compran con mayor frecuencia?».</p>
+      </details>
+
+      <h3>Cartas de restricción</h3>
+      <div class="cartas" role="list" aria-label="Restricciones del caso">
+        <div class="carta" role="listitem"><h4>👥 Clientes duplicados</h4><p>El mismo cliente aparece con nombres distintos en cada local.</p></div>
+        <div class="carta" role="listitem"><h4>🏷️ Códigos inconsistentes</h4><p>Un mismo producto está registrado con códigos diferentes.</p></div>
+        <div class="carta" role="listitem"><h4>📄 Reportes que no coinciden</h4><p>Los reportes entre locales no cuadran.</p></div>
+        <div class="carta" role="listitem"><h4>🗂️ Datos dispersos</h4><p>Todo vive en hojas de cálculo separadas, sin integración.</p></div>
+      </div>
+
+      <form id="formProblemas" aria-label="Problemas y necesidad de información">
+        <fieldset>
+          <legend>1 · ¿Qué problemas de datos identificas? (marca los que apliquen)</legend>
+          <div class="checks">
+            <label><input type="checkbox" name="prob" value="dup" /> Clientes repetidos sin un código único que los identifique.</label>
+            <label><input type="checkbox" name="prob" value="cod" /> Productos con códigos distintos entre locales.</label>
+            <label><input type="checkbox" name="prob" value="int" /> Datos dispersos en Excel, sin integración.</label>
+            <label><input type="checkbox" name="prob" value="rep" /> Reportes que no coinciden entre sedes.</label>
+            <label><input type="checkbox" name="prob" value="logo" /> El logotipo del restaurante es poco atractivo.</label>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>2 · ¿Cuál es la necesidad de información de la gerencia?</legend>
+          <div class="checks">
+            <label><input type="radio" name="nec" value="a" /> Cambiar el diseño del local y el uniforme del personal.</label>
+            <label><input type="radio" name="nec" value="b" /> Responder qué platos se venden más, qué productos se agotan y qué clientes compran más, con datos unificados y confiables.</label>
+            <label><input type="radio" name="nec" value="c" /> Publicar más promociones en redes sociales.</label>
+          </div>
+          <button type="button" class="btn-primario" id="btnProblemas" style="margin-top:12px">Confirmar diagnóstico</button>
+        </fieldset>
+      </form>
+      <p id="fbProblemas" class="fb" aria-live="polite"></p>
+      <div id="refuerzoProblemas"></div>
+    </div>
+    <div class="candado"><span aria-hidden="true">🔒</span> Completa el <strong>Nivel I</strong> para desbloquear.</div>
+  </section>
+
+  <!-- ============ N3 · TRANSFORMACIÓN ============ -->
+  <section class="nivel" id="n3" data-nivel="3" data-bloqueado="true" aria-labelledby="t3">
+    <div class="nivel-head">
+      <span class="nivel-num" aria-hidden="true">T</span>
+      <div>
+        <h2 class="nivel-titulo" id="t3">Nivel T · Transformación — «De la operación al análisis»</h2>
+        <p class="nivel-meta">30 min · Construir y comparar · Arquitectura de datos y modelado entidad-relación</p>
+      </div>
+      <span class="nivel-estado" id="estado3">Pendiente</span>
+    </div>
+    <div class="nivel-cuerpo">
+      <span class="op-cognitiva">Operación cognitiva: comparar alternativas · clasificar criterios</span>
+
+      <div class="consigna">
+        <strong>Misión 3A — Arma la ruta del dato.</strong> Coloca cada componente en su posición del flujo
+        (arrastra o toca el componente y luego el casillero). Del origen hasta la decisión.
+      </div>
+
+      <!-- Retroalimentación en vivo para N3A -->
+      <div class="n4-live" style="margin-bottom:16px" aria-live="polite">
+        <h4>🎯 Progreso de la ruta · N3A</h4>
+        <div class="medidor" role="progressbar" aria-label="Completitud de la ruta del dato" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="medidorRuta"></span></div>
+        <ul id="n3aLiveList" style="font-size:0.86rem;margin:6px 0 0"></ul>
+      </div>
+
+      <div id="banco" class="banco" aria-label="Componentes por ordenar"></div>
+      <div class="slots" id="slots">
+        <div class="slot" data-pos="1" tabindex="0" role="button" aria-label="Posición 1 de la ruta del dato"><span class="num">Paso 1</span><div class="puesto-wrap"></div></div>
+        <div class="slot" data-pos="2" tabindex="0" role="button" aria-label="Posición 2"><span class="num">Paso 2</span><div class="puesto-wrap"></div></div>
+        <div class="slot" data-pos="3" tabindex="0" role="button" aria-label="Posición 3"><span class="num">Paso 3</span><div class="puesto-wrap"></div></div>
+        <div class="slot" data-pos="4" tabindex="0" role="button" aria-label="Posición 4"><span class="num">Paso 4</span><div class="puesto-wrap"></div></div>
+        <div class="slot" data-pos="5" tabindex="0" role="button" aria-label="Posición 5"><span class="num">Paso 5</span><div class="puesto-wrap"></div></div>
+        <div class="slot" data-pos="6" tabindex="0" role="button" aria-label="Posición 6"><span class="num">Paso 6</span><div class="puesto-wrap"></div></div>
+      </div>
+      <p class="ayuda">Accesible por teclado y táctil: selecciona un componente (Enter/clic) y activa el casillero destino. Recibe retroalimentación inmediata.</p>
+      <p id="fbRuta" class="fb" aria-live="polite"></p>
+
+      <details>
+        <summary><strong>📖 Referencia — componentes de la arquitectura de datos para BI</strong></summary>
+        <div class="tabla-scroll">
+          <table>
+            <caption>Del dato operacional al análisis (ejemplo «Sabores del Barrio»)</caption>
+            <thead><tr><th scope="col">Componente</th><th scope="col">Función principal</th><th scope="col">Ejemplo</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Fuentes de datos</th><td>Generan o capturan datos</td><td>Caja, WhatsApp, app de delivery, inventario</td></tr>
+              <tr><th scope="row">Base de datos operacional</th><td>Registra transacciones cotidianas</td><td>Pedidos, clientes, productos, pagos</td></tr>
+              <tr><th scope="row">Proceso ETL / ELT</th><td>Extrae, transforma, limpia y carga</td><td>Unifica códigos de productos y elimina duplicados</td></tr>
+              <tr><th scope="row">Data Warehouse / Data Mart</th><td>Integra datos históricos para análisis</td><td>Ventas por sede, mes, producto y cliente</td></tr>
+              <tr><th scope="row">Herramienta BI</th><td>Analiza y visualiza</td><td>Power BI, Tableau o Looker Studio</td></tr>
+              <tr><th scope="row">Dashboard / Decisión</th><td>Comunica indicadores para decidir</td><td>Productos más vendidos, quiebres de stock</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <div class="consigna" style="margin-top:20px">
+        <strong>Misión 3B — Reto de análisis «¿Qué pasa si no diseñamos?».</strong> Clasifica cada práctica como
+        <em>error de diseño</em> o <em>buena práctica</em>. Piensa en duplicidad, consistencia y trazabilidad.
+      </div>
+
+      <!-- Retroalimentación en vivo para N3B -->
+      <div class="n4-live" style="margin-bottom:16px" aria-live="polite">
+        <h4>🎯 Progreso del análisis · N3B</h4>
+        <div class="medidor" role="progressbar" aria-label="Completitud del análisis de errores" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="medidorER"></span></div>
+        <ul id="n3bLiveList" style="font-size:0.86rem;margin:6px 0 0"></ul>
+      </div>
+
+      <div id="erContenedor"></div>
+      <details class="pista-box">
+        <summary>💡 Pista progresiva — Aprende mientras practicas</summary>
+        <div>
+          <p><strong>Concepto 1 — Entidad:</strong> Es un objeto relevante para el negocio. Ejemplos: Cliente, Producto, Pedido, Local.</p>
+          <p style="margin-top:6px"><strong>Concepto 2 — Clave primaria (PK):</strong> Un identificador único para cada entidad. Ejemplos: <code>id_cliente</code>, <code>id_producto</code>, <code>id_pedido</code>. Evita duplicados.</p>
+          <p style="margin-top:6px"><strong>Concepto 3 — Clave foránea (FK):</strong> Campo en una tabla que apunta a la PK de otra. Ejemplos: <code>id_cliente</code> dentro de Pedido relaciona al Cliente que hizo el pedido.</p>
+          <p style="margin-top:6px"><strong>Concepto 4 — Cardinalidad:</strong> Tipo de relación entre entidades. Ejemplos: 1:1 (un cliente → un único registro), 1:N (un cliente → muchos pedidos), N:M (muchos estudiantes ↔ muchos cursos).</p>
+          <p style="margin-top:6px"><strong>Regla de oro:</strong> Registrar todo en una sola tabla genera redundancia e inconsistencia; por eso se separan entidades y se relacionan.</p>
+        </div>
+      </details>
+      <p id="fbER" class="fb" aria-live="polite"></p>
+    </div>
+    <div class="candado"><span aria-hidden="true">🔒</span> Completa el <strong>Nivel U</strong> para desbloquear.</div>
+  </section>
+
+  <!-- ============ N4 · PRÁCTICA (EVIDENCIA) ============ -->
+  <section class="nivel" id="n4" data-nivel="4" data-bloqueado="true" aria-labelledby="t4">
+    <div class="nivel-head">
+      <span class="nivel-num" aria-hidden="true">P</span>
+      <div>
+        <h2 class="nivel-titulo" id="t4">Nivel P · Práctica — «Diseña la arquitectura y el modelo inicial»</h2>
+        <p class="nivel-meta">25 min · Aplicación autónoma · EVIDENCIA PRINCIPAL exportable</p>
+      </div>
+      <span class="nivel-estado" id="estado4">Pendiente</span>
+    </div>
+    <div class="nivel-cuerpo">
+      <span class="op-cognitiva">Operación cognitiva: analizar condiciones · comparar alternativas</span>
+      <div class="consigna">
+        <strong>Misión 4 — Producto de dos partes.</strong> El XP se otorga por <strong>calidad</strong> según la rúbrica.
+        Puedes evaluar y reintentar sin castigo. Elige un sector y diseña su arquitectura + modelo ER.
+      </div>
+
+      <form id="formEvidencia" aria-label="Diseño de arquitectura y modelo entidad-relación">
+        <fieldset>
+          <legend>0 · Caso y necesidad de información</legend>
+          <label for="evSector">Sector del caso</label>
+          <select id="evSector">
+            <option value="">— Elige un sector —</option>
+            <option>Retail (tienda de ropa: ventas, stock, clientes, promociones)</option>
+            <option>Educación (instituto: matrícula, asistencia, cursos, docentes, notas)</option>
+            <option>Salud (clínica: pacientes, citas, especialidades, médicos, pagos)</option>
+            <option>Logística (delivery: pedidos, repartidores, rutas, tiempos, reclamos)</option>
+            <option>Municipalidad (trámites, ciudadanos, áreas, plazos, estado)</option>
+          </select>
+          <label for="evNecesidad">Necesidad / decisión de negocio que apoyará el diseño</label>
+          <textarea id="evNecesidad" placeholder="Ej.: Anticipar quiebres de stock por tienda y producto para reponer a tiempo."></textarea>
+        </fieldset>
+
+        <fieldset>
+          <legend>Parte A · Esquema de arquitectura de datos</legend>
+          <label>Tres (o más) fuentes de datos</label>
+          <div class="grid3">
+            <input type="text" id="fte1" list="fuentesDL" placeholder="Fuente 1" aria-label="Fuente 1" />
+            <input type="text" id="fte2" list="fuentesDL" placeholder="Fuente 2" aria-label="Fuente 2" />
+            <input type="text" id="fte3" list="fuentesDL" placeholder="Fuente 3" aria-label="Fuente 3" />
+          </div>
+          <datalist id="fuentesDL">
+            <option value="Caja / POS"></option><option value="App de delivery"></option>
+            <option value="WhatsApp / pedidos"></option><option value="Inventario"></option>
+            <option value="CRM / clientes"></option><option value="Formularios web"></option>
+          </datalist>
+          <div class="grid2">
+            <div><label for="evOperacional">Base de datos operacional</label><input type="text" id="evOperacional" placeholder="Ej.: BD de pedidos y clientes" /></div>
+            <div><label for="evTransform">Acción de limpieza / transformación (ETL·ELT)</label><input type="text" id="evTransform" placeholder="Ej.: Unificar códigos y eliminar duplicados" /></div>
+          </div>
+          <div class="grid2">
+            <div><label for="evRepo">Repositorio analítico (Data Warehouse / Data Mart)</label><input type="text" id="evRepo" placeholder="Ej.: DW de ventas históricas" /></div>
+            <div><label for="evBI">Herramienta BI propuesta</label><input type="text" id="evBI" list="biDL" placeholder="Ej.: Power BI" /><datalist id="biDL"><option value="Power BI"></option><option value="Tableau"></option><option value="Looker Studio"></option></datalist></div>
+          </div>
+          <label>Dos indicadores del dashboard (con la tabla/fuente de donde salen)</label>
+          <div class="grid2">
+            <div><input type="text" id="ind1" placeholder="Indicador 1" aria-label="Indicador 1" /><input type="text" id="indf1" placeholder="Origen (tabla/fuente) del indicador 1" aria-label="Origen indicador 1" style="margin-top:8px" /></div>
+            <div><input type="text" id="ind2" placeholder="Indicador 2" aria-label="Indicador 2" /><input type="text" id="indf2" placeholder="Origen (tabla/fuente) del indicador 2" aria-label="Origen indicador 2" style="margin-top:8px" /></div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Parte B · Modelo entidad-relación básico</legend>
+          <p class="ayuda">Mínimo 4 entidades: nombre, dos atributos y una clave primaria por entidad.</p>
+          <datalist id="entDL"><option value="Cliente"></option><option value="Producto"></option><option value="Pedido"></option><option value="Detalle_Pedido"></option><option value="Local"></option><option value="Proveedor"></option><option value="Inventario"></option><option value="Pago"></option></datalist>
+          <div class="tabla-scroll">
+            <table>
+              <caption>Entidades del modelo</caption>
+              <thead><tr><th scope="col">Entidad</th><th scope="col">Atributo 1</th><th scope="col">Atributo 2</th><th scope="col">Clave primaria</th></tr></thead>
+              <tbody id="entBody"></tbody>
+            </table>
+          </div>
+          <label style="margin-top:14px">Tres (o más) relaciones con cardinalidad</label>
+          <div id="relWrap"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Calidad y gobernanza del dato</legend>
+          <div class="grid2">
+            <div><label for="evDup">Medida contra duplicidad / inconsistencia</label><input type="text" id="evDup" placeholder="Ej.: Usar id_cliente único y catálogo maestro de productos." /></div>
+            <div><label for="evSeg">Criterio de seguridad / ética del dato</label><input type="text" id="evSeg" placeholder="Ej.: Solo datos ficticios; accesos por rol; no cargar datos personales en IA." /></div>
+          </div>
+        </fieldset>
+
+        <details class="pista-box">
+          <summary>💡 Pistas progresivas (no penalizan)</summary>
+          <ul>
+            <li>Un buen indicador nombra <strong>qué mide</strong> y <strong>de qué tabla/fuente</strong> proviene.</li>
+            <li><strong>Producto</strong> y <strong>Detalle de Venta</strong> no son lo mismo: el detalle registra cantidad y precio por pedido.</li>
+            <li>Para no duplicar clientes, define una <strong>clave primaria única</strong> (id_cliente) y relaciónala con los pedidos (clave foránea).</li>
+          </ul>
+        </details>
+
+        <div id="n4Live" class="n4-live" aria-live="polite">
+          <h4>🛰️ Retroalimentación asistida en vivo</h4>
+          <p class="ayuda" style="margin:0 0 4px">Se actualiza mientras completas el diseño (no necesitas enviar). Objetivo: llegar a Logrado en cada criterio.</p>
+          <div class="medidor" role="progressbar" aria-label="Calidad del diseño" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span id="medidorFill"></span></div>
+          <ul id="n4LiveList"></ul>
+        </div>
+        <button type="button" class="btn-primario" id="btnEvaluar" style="margin-top:8px">Evaluar calidad del diseño</button>
+      </form>
+      <div id="fbEvidencia" class="fb" aria-live="polite"></div>
+    </div>
+    <div class="candado"><span aria-hidden="true">🔒</span> Completa el <strong>Nivel T</strong> para desbloquear.</div>
+  </section>
+
+  <!-- ============ N5 · CIERRE ============ -->
+  <section class="nivel" id="n5" data-nivel="5" data-bloqueado="true" aria-labelledby="t5">
+    <div class="nivel-head">
+      <span class="nivel-num" aria-hidden="true">C</span>
+      <div>
+        <h2 class="nivel-titulo" id="t5">Nivel C · Cierre — «La ruta del dato»</h2>
+        <p class="nivel-meta">10 min · Reflexión y transferencia · Ticket de salida + declaración de IA</p>
+      </div>
+      <span class="nivel-estado" id="estado5">Pendiente</span>
+    </div>
+    <div class="nivel-cuerpo">
+      <span class="op-cognitiva">Operación cognitiva: analizar condiciones (transferir)</span>
+
+      <div class="consigna"><strong>Misión 5 — Síntesis, reflexión y evidencia.</strong> Reconstruye la ruta, completa tu ticket de salida y declara el uso de IA. Luego exporta.</div>
+
+      <form id="formCierre" aria-label="Cierre metacognitivo">
+        <fieldset>
+          <legend>Síntesis: «La ruta del dato»</legend>
+          <p class="ayuda">Completa la secuencia con los pasos intermedios.</p>
+          <p style="font-weight:700">Fuentes de datos →
+            <select id="ruta1" aria-label="Paso 2"><option value="">…</option><option>Base operacional</option><option>Dashboard</option><option>Decisión</option></select> →
+            <select id="ruta2" aria-label="Paso 3"><option value="">…</option><option>ETL / limpieza</option><option>Fuentes</option><option>Pitch</option></select> →
+            <select id="ruta3" aria-label="Paso 4"><option value="">…</option><option>Data Warehouse</option><option>Caja</option><option>Logo</option></select> →
+            <select id="ruta4" aria-label="Paso 5"><option value="">…</option><option>Herramienta BI</option><option>Excel suelto</option><option>WhatsApp</option></select> → Decisión
+          </p>
+          <button type="button" id="btnRuta">Comprobar ruta</button>
+          <p id="fbRutaCierre" class="fb" aria-live="polite"></p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Ticket de salida (individual)</legend>
+          <label for="cDif">¿Qué diferencia comprendes entre una base de datos operacional y un repositorio analítico?</label>
+          <textarea id="cDif" placeholder="La operacional registra el día a día; el repositorio analítico integra histórico para analizar…"></textarea>
+          <label for="cReto">¿Qué fue lo más retador al identificar entidades y relaciones?</label>
+          <input type="text" id="cReto" placeholder="Tu respuesta" />
+          <label for="cDup">¿Qué criterio usarás para evitar duplicidad o inconsistencia de datos?</label>
+          <input type="text" id="cDup" placeholder="Ej.: claves primarias únicas y catálogos maestros" />
+          <label for="cTransfer">Transferencia: ¿en qué <em>otra</em> organización aplicarías este diseño y qué decisión mejoraría?</label>
+          <textarea id="cTransfer" placeholder="Ej.: En una clínica, para anticipar demanda de citas por especialidad…"></textarea>
+        </fieldset>
+
+        <fieldset>
+          <legend>Autoevaluación (progreso personal, sin ranking)</legend>
+          <p class="ayuda" id="likertAyuda">1 = Inicial · 2 = En proceso · 3 = Logrado</p>
+          <div id="autoeval"></div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Declaración de uso de IA (transparencia y trazabilidad)</legend>
+          <p class="ayuda">Regla de oro: solo datos ficticios; nunca datos personales, financieros o confidenciales en herramientas de IA.</p>
+          <div class="checks"><label><input type="checkbox" id="iaUso" /> Usamos una herramienta de IA como copiloto en esta actividad</label></div>
+          <div class="grid2">
+            <div><label for="iaHerramienta">Herramienta y propósito</label><input type="text" id="iaHerramienta" placeholder="Ej.: asistente de IA para revisar el modelo ER" /></div>
+            <div><label for="iaPrompt">Prompt significativo utilizado</label><input type="text" id="iaPrompt" placeholder="Ej.: 'revisa duplicidades y cardinalidades de mi modelo'" /></div>
+          </div>
+          <label for="iaRevision">Revisión humana realizada</label>
+          <input type="text" id="iaRevision" placeholder="Ej.: contrastamos con el caso y corregimos una relación mal planteada." />
+        </fieldset>
+
+        <button type="button" class="btn-primario" id="btnCierre">Registrar cierre</button>
+      </form>
+      <p id="fbCierre" class="fb" aria-live="polite"></p>
+
+      <h3>Genera tu evidencia final</h3>
+      <div class="aviso">
+        <strong>Markdown</strong> (entrega en la Práctica) y versión <strong>imprimible en PDF</strong> (Imprimir → Guardar como PDF).
+        El reporte incluye participantes, roles, respuestas, autoevaluación, declaración de IA, XP e insignias.
+      </div>
+      <div class="export-acciones no-print">
+        <button type="button" class="btn-amber" id="btnGenerar">📝 Generar Markdown</button>
+        <button type="button" id="btnDescargar">⬇️ Descargar .md</button>
+        <button type="button" id="btnImprimir">🖨️ Imprimir / PDF</button>
+        <button type="button" id="btnReiniciar">♻️ Reiniciar progreso</button>
+      </div>
+      <textarea id="salidaMarkdown" class="no-print" aria-label="Evidencia en Markdown" placeholder="Pulsa «Generar Markdown» para ver aquí tu evidencia exportable."></textarea>
+    </div>
+    <div class="candado"><span aria-hidden="true">🔒</span> Completa el <strong>Nivel P</strong> para desbloquear.</div>
+  </section>
+
+  <div id="reporteImpresion" aria-hidden="true"></div>
+
+  <details class="no-print">
+    <summary><strong>🎓 Justificación pedagógica (para el docente)</strong></summary>
+    <p>La actividad conserva el método de la serie IA+DATA (narrativa inmersiva, niveles IUTPC con desbloqueo, XP por calidad,
+    insignias, progreso personal sin ranking, rúbrica visible, autoevaluación, declaración de uso de IA y reporte exportable) e
+    implementa los procedimientos y el logro de la <strong>Sesión 3</strong>: diseñar una <strong>arquitectura básica de datos</strong>
+    (Fuentes → Operacional → ETL → Data Warehouse → BI → Decisión) y un <strong>modelo entidad-relación</strong> inicial según una
+    necesidad de información organizacional, sobre el caso «Sabores del Barrio» y sectores (retail, educación, salud, logística, sector público).</p>
+    <p>Cumple el <strong>DUA</strong> en representación (texto breve, tarjetas, tablas con <code>scope</code>/<code>caption</code>, anillo SVG),
+    acción/expresión (clasificación, ordenamiento drag-and-drop con alternativa táctil y por teclado, formularios, redacción) e implicación
+    (narrativa, roles cooperativos, reto vs. desafío). La <strong>evaluación es formativa</strong>: rúbrica visible, XP por calidad, refuerzo de
+    cinco pasos ante el error (pausa, pista, dato, contexto, reintento) y reintentos sin castigo. Accesibilidad <strong>WCAG 2.1 AA</strong>
+    (contraste, teclado, ARIA, foco visible, <code>prefers-reduced-motion</code>), <strong>datos ficticios</strong> y criterio ético de IA.</p>
+  </details>
+
+</div>
+</main>
+
+<!-- Mentor: andamiaje permanente (refuerzos y retroalimentación asistida) -->
+<aside class="mentor" id="mentor" role="complementary" aria-label="Mentor Operación BI — apoyo y retroalimentación">
+  <div class="mentor-head">
+    <span aria-hidden="true">🧭</span><strong>Mentor · Operación BI</strong>
+    <button type="button" class="toggle" id="mentorToggle" aria-expanded="true" aria-controls="mentorBody">Ocultar</button>
+  </div>
+  <div class="mentor-body" id="mentorBody">
+    <p class="contexto" id="mentorContexto">Nivel I · Inicio</p>
+    <p class="objetivo" id="mentorObjetivo"></p>
+    <div class="msg" id="mentorMsg" role="status" aria-live="polite">Pulsa «Pista» cuando lo necesites: nunca penaliza. Puedo darte pistas progresivas, un ejemplo resuelto y decirte cómo vas.</div>
+    <div class="mentor-acciones">
+      <button type="button" id="mentorPista">💡 Pista</button>
+      <button type="button" id="mentorEjemplo">🧪 Ejemplo resuelto</button>
+      <button type="button" id="mentorComoVoy">📊 ¿Cómo voy?</button>
+      <button type="button" id="mentorGlosario">📖 Glosario</button>
+    </div>
+    <ul class="and" id="mentorAnd" aria-label="Preguntas de andamiaje"></ul>
+  </div>
+</aside>
+<button type="button" class="mentor-fab btn-primario" id="mentorFab" aria-label="Abrir Mentor">🧭 Mentor</button>
+
+<footer class="pie">
+  <div class="wrap">
+    <p><strong>Operación BI · Sesión 3 — Arquitectura de Datos</strong> · Actividad gamificada DUA-IUTPC</p>
+    <p><strong>Mg. Mario Quiroz Martínez</strong> · IA + DATA 2026 · Unidad 1: Fundamentos de Business Intelligence.</p>
+    <p>Datos ficticios/anonimizados · Progreso personal sin ranking público · «Una buena visualización no compensa una mala arquitectura».</p>
+  </div>
+</footer>
+
+<script>
+/* ===========================================================
+   Operación BI — Sesión 3. Máquina de estados, XP por calidad,
+   feedback con fundamento y exportación. Estado en memoria con
+   persistencia local tolerante a fallos (Guardado local del progreso).
+   =========================================================== */
+(function () {
+  "use strict";
+  var CIRC = 232.48; // 2·π·r (r=37)
+
+  var estado = {
+    nivel: 1, xp: 0, badges: [],
+    n1: { hechas: 0 }, n2: false,
+    n3ruta: false, n3er: { hechas: 0 },
+    n4: { xp: 0, evaluada: false }, n5: false,
+    respuestas: {}
+  };
+
+  var KEY = "operacionBI.s3.v1";
+  function guardar() { try { window.localStorage.setItem(KEY, JSON.stringify(estado)); } catch (e) {} }
+  function cargar() { try { var r = window.localStorage.getItem(KEY); if (r) { estado = Object.assign(estado, JSON.parse(r)); } } catch (e) {} }
+
+  function $(s) { return document.querySelector(s); }
+  function anunciar(m) { var a = $("#anuncio"); if (a) { a.textContent = m; } }
+  function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+  function val(id) { var el = document.getElementById(id); return el ? String(el.value || "").trim() : ""; }
+
+  function sumarXP(n) { estado.xp += n; render(); guardar(); }
+  function ganarBadge(id) {
+    if (estado.badges.indexOf(id) === -1) {
+      estado.badges.push(id);
+      var el = document.querySelector('.insignia[data-badge="' + id + '"]');
+      if (el) { el.classList.add("ganada", "pop"); }
+      guardar();
+    }
+  }
+  function desbloquear(n) {
+    if (n > estado.nivel) { estado.nivel = n; }
+    var sec = document.querySelector('section.nivel[data-nivel="' + n + '"]');
+    if (sec) {
+      sec.setAttribute("data-bloqueado", "false");
+      var e = $("#estado" + n);
+      if (e && !e.classList.contains("logrado")) { e.textContent = "En curso"; e.className = "nivel-estado activo"; }
+    }
+    render(); guardar();
+  }
+  function marcarLogrado(n) { var e = $("#estado" + n); if (e) { e.textContent = "Logrado"; e.className = "nivel-estado logrado"; } }
+
+  function render() {
+    $("#xpTotal").textContent = estado.xp;
+    $("#nivelActual").textContent = estado.nivel;
+    var c = 0;
+    if (estado.n1.hechas >= 6) { c++; }
+    if (estado.n2) { c++; }
+    if (estado.n3ruta && estado.n3er.hechas >= 4) { c++; }
+    if (estado.n4.evaluada) { c++; }
+    if (estado.n5) { c++; }
+    var pct = Math.round((c / 5) * 100);
+    $("#anilloAvance").setAttribute("stroke-dashoffset", String(CIRC - (CIRC * pct) / 100));
+    $("#anilloTexto").textContent = pct + "%";
+  }
+
+  /* ---------- N1: Mito o evidencia ---------- */
+  var afirmaciones = [
+    { t: "Un dashboard atractivo garantiza buenas decisiones aunque los datos estén duplicados o incompletos.", r: "mito",
+      fb: "La visualización no compensa una mala arquitectura: con datos duplicados, los indicadores mienten." },
+    { t: "Si un cliente aparece con nombres distintos en cada local, el conteo de clientes frecuentes será poco confiable.", r: "evidencia",
+      fb: "Sin un identificador único, el mismo cliente se cuenta varias veces." },
+    { t: "Guardar ventas, productos, clientes y pagos en una sola tabla facilita el análisis y evita errores.", r: "mito",
+      fb: "Amontonar todo en una tabla produce redundancia e inconsistencia; por eso se separan entidades." },
+    { t: "Una clave primaria única por cliente evita duplicidad y permite relacionar sus pedidos.", r: "evidencia",
+      fb: "La clave primaria identifica sin ambigüedad y habilita relaciones mediante claves foráneas." },
+    { t: "La calidad y la seguridad del dato influyen en la confianza de los reportes de BI.", r: "evidencia",
+      fb: "Datos confiables y protegidos son la base de indicadores creíbles." },
+    { t: "Cuantas más tablas y campos sin relación tenga el modelo, mejor será.", r: "mito",
+      fb: "Un modelo bueno no es el más grande, sino el coherente: entidades bien definidas y relacionadas." }
+  ];
+  function pintarMito() {
+    var c = $("#mitoContenedor"); c.innerHTML = "";
+    afirmaciones.forEach(function (a, i) {
+      var d = document.createElement("div");
+      d.className = "afirmacion"; d.id = "af" + i;
+      d.innerHTML = '<p><strong>' + (i + 1) + '.</strong> ' + esc(a.t) + '</p>' +
+        '<div class="opciones"><button type="button" data-i="' + i + '" data-op="mito">🚫 Mito</button>' +
+        '<button type="button" data-i="' + i + '" data-op="evidencia">✅ Evidencia</button></div>' +
+        '<p class="fb" id="fbaf' + i + '"></p>';
+      c.appendChild(d);
+    });
+  }
+  function responderMito(i, op) {
+    var a = afirmaciones[i], d = $("#af" + i), fb = $("#fbaf" + i);
+    if (d.classList.contains("resuelta")) { return; }
+    if (op === a.r) {
+      d.classList.add("resuelta"); fb.className = "fb fb-ok"; fb.textContent = "Correcto: " + a.fb;
+      estado.n1.hechas++; sumarXP(10); ganarBadge("detector"); anunciar("Correcto. +10 XP.");
+    } else {
+      fb.className = "fb"; fb.innerHTML = '<dl class="refuerzo"><dt>Aún no</dt><dd>Reléela pensando en «Sabores del Barrio».</dd>' +
+        '<dt>Dato clave</dt><dd>' + esc(a.fb) + '</dd><dt>Contexto</dt><dd>Distinguir mito de evidencia evita diseñar mal la base de datos.</dd>' +
+        '<dt>Reintento</dt><dd>Vuelve a elegir con esa idea en mente.</dd></dl>';
+    }
+    if (estado.n1.hechas >= 6) {
+      $("#mitoResumen").className = "fb fb-ok";
+      $("#mitoResumen").textContent = "Terreno despejado: clasificaste las 6 afirmaciones. ¡Nivel Utilidad desbloqueado!";
+      marcarLogrado(1); desbloquear(2);
+    } else { $("#mitoResumen").textContent = "Progreso: " + estado.n1.hechas + " de 6 correctas."; }
+    guardar();
+  }
+
+  /* ---------- N2: problemas + necesidad ---------- */
+  function evaluarProblemas() {
+    var fb = $("#fbProblemas"), ref = $("#refuerzoProblemas"); ref.innerHTML = "";
+    if (estado.n2) { fb.className = "fb fb-ok"; fb.textContent = "Diagnóstico ya confirmado. Avanza al Nivel Transformación."; return; }
+    var marcados = Array.prototype.map.call(document.querySelectorAll('input[name="prob"]:checked'), function (c) { return c.value; });
+    var correctos = ["dup", "cod", "int", "rep"];
+    var buenos = marcados.filter(function (m) { return correctos.indexOf(m) !== -1; }).length;
+    var incluyoLogo = marcados.indexOf("logo") !== -1;
+    var nec = document.querySelector('input[name="nec"]:checked');
+    var okNec = nec && nec.value === "b";
+    if (buenos >= 3 && !incluyoLogo && okNec) {
+      fb.className = "fb fb-ok";
+      fb.textContent = "Diagnóstico correcto: los problemas son de datos (duplicidad, códigos, dispersión, reportes que no cuadran) y la necesidad es responder las preguntas de negocio con datos unificados.";
+      estado.n2 = true; estado.respuestas.problemas = marcados; estado.respuestas.necesidadCaso = "b";
+      sumarXP(15); ganarBadge("analista"); marcarLogrado(2); desbloquear(3); anunciar("Diagnóstico confirmado. Nivel Transformación desbloqueado.");
+    } else {
+      fb.className = "fb fb-error"; fb.textContent = "Aún no está completo.";
+      var motivos = [];
+      if (buenos < 3) { motivos.push("marca al menos 3 problemas reales de datos"); }
+      if (incluyoLogo) { motivos.push("el logotipo no es un problema de datos"); }
+      if (!okNec) { motivos.push("elige la necesidad de información correcta (las preguntas de la gerencia)"); }
+      ref.innerHTML = '<dl class="refuerzo"><dt>Pista</dt><dd>' + esc(motivos.join("; ")) + '.</dd>' +
+        '<dt>Dato clave</dt><dd>Los problemas son de calidad e integración de datos, no de imagen.</dd>' +
+        '<dt>Reintento</dt><dd>Ajusta tu selección y confirma otra vez.</dd></dl>';
+    }
+    guardar();
+  }
+
+  /* ---------- N3A: Ruta del dato (ordenar) ---------- */
+  var pasos = [
+    { id: "p_fuentes", t: "Fuentes de datos", pos: 1 },
+    { id: "p_oper", t: "Base de datos operacional", pos: 2 },
+    { id: "p_etl", t: "ETL / ELT (limpieza)", pos: 3 },
+    { id: "p_dw", t: "Data Warehouse / Data Mart", pos: 4 },
+    { id: "p_bi", t: "Herramienta BI", pos: 5 },
+    { id: "p_dash", t: "Dashboard / Decisión", pos: 6 }
+  ];
+  var seleccion = null, colocados = 0;
+  function barajar(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function pintarBanco() {
+    var b = $("#banco"); b.innerHTML = "";
+    barajar(pasos).forEach(function (p) {
+      var el = document.createElement("button");
+      el.type = "button"; el.className = "chip"; el.id = p.id; el.textContent = p.t;
+      el.setAttribute("draggable", "true"); el.setAttribute("aria-pressed", "false"); el.setAttribute("data-pos", String(p.pos));
+      b.appendChild(el);
+    });
+  }
+  function actualizarMedidorRuta() {
+    var bien = document.querySelectorAll("#slots .puesto.bien").length;
+    var total = 6;
+    var pct = Math.round((bien / total) * 100);
+    var fill = $("#medidorRuta");
+    if (fill) { fill.style.width = pct + "%"; }
+    var bar = document.querySelector(".n4-live .medidor");
+    if (bar && bar.id === "") { bar.setAttribute("aria-valuenow", String(pct)); }
+    var ul = $("#n3aLiveList");
+    if (ul) {
+      ul.innerHTML = "";
+      var li = document.createElement("li");
+      li.className = bien === total ? "ok" : (bien >= 3 ? "mid" : "no");
+      li.textContent = "Componentes correctos: " + bien + "/" + total;
+      ul.appendChild(li);
+    }
+  }
+  function colocarPaso(chip, slot) {
+    var esperado = parseInt(chip.getAttribute("data-pos"), 10);
+    var real = parseInt(slot.getAttribute("data-pos"), 10);
+    var wrap = slot.querySelector(".puesto-wrap");
+    if (wrap.querySelector(".puesto")) { return; } // ocupado
+    var p = document.createElement("div");
+    p.className = "puesto " + (esperado === real ? "bien" : "mal");
+    p.textContent = (esperado === real ? "✓ " : "✗ ") + chip.textContent;
+    wrap.appendChild(p);
+    chip.classList.add("colocado"); chip.setAttribute("aria-pressed", "false"); seleccion = null;
+    var fb = $("#fbRuta");
+    if (esperado === real) {
+      colocados++; sumarXP(5); fb.className = "fb fb-ok"; fb.textContent = "✓ Correcto: «" + chip.textContent + "» en posición " + real + " (" + colocados + "/6).";
+    } else {
+      fb.className = "fb fb-error"; fb.textContent = "⚠️ «" + chip.textContent + "» va en otro lugar. Pista: CAPTURA → INTEGRA → ALMACENA → ANALIZA → DECIDE.";
+    }
+    actualizarMedidorRuta();
+    if (document.querySelectorAll("#banco .chip:not(.colocado)").length === 0) {
+      var bien = document.querySelectorAll("#slots .puesto.bien").length;
+      if (bien === 6) { estado.n3ruta = true; fb.className = "fb fb-ok"; fb.textContent = "🎉 ¡RUTA CORRECTA Y COMPLETA! Insignia «Arquitecto» desbloqueada."; ganarBadge("arquitecto"); }
+      else { fb.className = "fb fb-error"; fb.textContent = "⚠️ Hay " + (6 - bien) + " paso(s) fuera de orden. Pulsa «Reordenar» para reintentar."; }
+      verificarN3();
+    }
+    guardar();
+  }
+  function reiniciarRuta() {
+    colocados = 0; seleccion = null;
+    document.querySelectorAll("#slots .puesto-wrap").forEach(function (w) { w.innerHTML = ""; });
+    pintarBanco(); $("#fbRuta").textContent = "";
+  }
+  function initRuta() {
+    var banco = $("#banco");
+    banco.addEventListener("click", function (e) {
+      var chip = e.target.closest(".chip"); if (!chip) { return; }
+      if (seleccion === chip) { chip.setAttribute("aria-pressed", "false"); seleccion = null; anunciar("Selección cancelada."); }
+      else { if (seleccion) { seleccion.setAttribute("aria-pressed", "false"); } seleccion = chip; chip.setAttribute("aria-pressed", "true"); anunciar("Seleccionado " + chip.textContent + ". Activa un casillero."); }
+    });
+    banco.addEventListener("dragstart", function (e) { var c = e.target.closest(".chip"); if (c) { e.dataTransfer.setData("text/plain", c.id); } });
+    document.querySelectorAll("#slots .slot").forEach(function (slot) {
+      slot.addEventListener("click", function () { if (seleccion) { colocarPaso(seleccion, slot); } });
+      slot.addEventListener("keydown", function (e) { if ((e.key === "Enter" || e.key === " ") && seleccion) { e.preventDefault(); colocarPaso(seleccion, slot); } });
+      slot.addEventListener("dragover", function (e) { e.preventDefault(); slot.classList.add("dragover"); });
+      slot.addEventListener("dragleave", function () { slot.classList.remove("dragover"); });
+      slot.addEventListener("drop", function (e) { e.preventDefault(); slot.classList.remove("dragover"); var id = e.dataTransfer.getData("text/plain"); var chip = document.getElementById(id); if (chip && !chip.classList.contains("colocado")) { colocarPaso(chip, slot); } });
+    });
+  }
+
+  /* ---------- N3B: errores de diseño (clasificar) ---------- */
+  var practicas = [
+    { t: "Registrar el nombre del cliente en cada pedido, sin un código único.", r: "error", fb: "Genera duplicados y clientes 'distintos' que en realidad son el mismo. Se previene con clave primaria." },
+    { t: "Guardar pedido, producto, cliente y pago en una sola tabla gigante.", r: "error", fb: "Produce redundancia e inconsistencia. Se separan en entidades relacionadas por claves foráneas." },
+    { t: "Cambiar el precio de un producto sin conservar el historial de ventas.", r: "error", fb: "Se pierde trazabilidad: los reportes históricos quedan mal. Se conserva el precio en el detalle de venta." },
+    { t: "Definir id_cliente como clave primaria y usarlo como clave foránea en Pedido.", r: "buena", fb: "Correcto: identifica sin ambigüedad y relaciona cliente con sus pedidos." },
+    { t: "Separar Producto y Detalle_Pedido con sus propias claves.", r: "buena", fb: "Correcto: evita repetir datos del producto en cada pedido." }
+  ];
+  function pintarER() {
+    var c = $("#erContenedor"); c.innerHTML = "";
+    practicas.forEach(function (p, i) {
+      var d = document.createElement("div"); d.className = "afirmacion"; d.id = "er" + i;
+      d.innerHTML = '<p><strong>' + (i + 1) + '.</strong> ' + esc(p.t) + '</p>' +
+        '<div class="opciones"><button type="button" data-i="' + i + '" data-op="error">⚠️ Error de diseño</button>' +
+        '<button type="button" data-i="' + i + '" data-op="buena">👍 Buena práctica</button></div>' +
+        '<p class="fb" id="fber' + i + '"></p>';
+      c.appendChild(d);
+    });
+  }
+  function actualizarMedidorER() {
+    var hechas = estado.n3er.hechas;
+    var total = 5;
+    var pct = Math.round((hechas / total) * 100);
+    var fill = $("#medidorER");
+    if (fill) { fill.style.width = pct + "%"; }
+    var ul = $("#n3bLiveList");
+    if (ul) {
+      ul.innerHTML = "";
+      var li = document.createElement("li");
+      li.className = hechas === total ? "ok" : (hechas >= 3 ? "mid" : "no");
+      li.textContent = "Prácticas analizadas: " + hechas + "/" + total;
+      ul.appendChild(li);
+    }
+  }
+  function responderER(i, op) {
+    var p = practicas[i], d = $("#er" + i), fb = $("#fber" + i);
+    if (d.classList.contains("resuelta")) { return; }
+    if (op === p.r) {
+      d.classList.add("resuelta"); fb.className = "fb fb-ok"; fb.textContent = "✓ Correcto: " + p.fb;
+      estado.n3er.hechas++; sumarXP(6); anunciar("Correcto. +6 XP."); actualizarMedidorER();
+    } else {
+      fb.className = "fb"; fb.innerHTML = '<dl class="refuerzo"><dt>Aún no</dt><dd>Piensa en duplicidad, consistencia y trazabilidad.</dd><dt>Dato clave</dt><dd>' + esc(p.fb) + '</dd><dt>Concepto</dt><dd>Una buena arquitectura previene estos errores mediante claves primarias, claves foráneas y separación de entidades.</dd><dt>Reintento</dt><dd>Vuelve a clasificar sin penalización.</dd></dl>';
+    }
+    var fbG = $("#fbER");
+    if (estado.n3er.hechas >= 5) { fbG.className = "fb fb-ok"; fbG.textContent = "✓ Analizaste las 5 prácticas de diseño. Entiendes bien la diferencia entre errores y buenas prácticas."; }
+    else { fbG.textContent = "Progreso 3B: " + estado.n3er.hechas + " de 5 correctas."; }
+    verificarN3(); guardar();
+  }
+  function verificarN3() {
+    if (estado.n3ruta && estado.n3er.hechas >= 4) { marcarLogrado(3); desbloquear(4); anunciar("Nivel Práctica desbloqueado."); }
+  }
+
+  /* ---------- N4: entidades y relaciones dinámicas ---------- */
+  function pintarEntidades() {
+    var body = $("#entBody"); body.innerHTML = "";
+    for (var i = 1; i <= 4; i++) {
+      var tr = document.createElement("tr");
+      tr.innerHTML =
+        '<td><input type="text" id="ent' + i + 'n" list="entDL" placeholder="Entidad ' + i + '" aria-label="Entidad ' + i + ' nombre" /></td>' +
+        '<td><input type="text" id="ent' + i + 'a" placeholder="atributo" aria-label="Entidad ' + i + ' atributo 1" /></td>' +
+        '<td><input type="text" id="ent' + i + 'b" placeholder="atributo" aria-label="Entidad ' + i + ' atributo 2" /></td>' +
+        '<td><input type="text" id="ent' + i + 'k" placeholder="id_..." aria-label="Entidad ' + i + ' clave primaria" /></td>';
+      body.appendChild(tr);
+    }
+    var rw = $("#relWrap"); rw.innerHTML = "";
+    for (var r = 1; r <= 3; r++) {
+      var div = document.createElement("div"); div.className = "grid3"; div.style.marginTop = "8px";
+      div.innerHTML =
+        '<input type="text" id="rel' + r + 'a" placeholder="Entidad A" aria-label="Relación ' + r + ' entidad A" />' +
+        '<select id="rel' + r + 'c" aria-label="Relación ' + r + ' cardinalidad"><option value="">cardinalidad</option><option>1:1</option><option>1:N</option><option>N:M</option></select>' +
+        '<input type="text" id="rel' + r + 'b" placeholder="Entidad B" aria-label="Relación ' + r + ' entidad B" />';
+      rw.appendChild(div);
+    }
+  }
+  function computeEvidencia() {
+    var crit = [], puntos = 0;
+    // 0. Sector + necesidad (15)
+    var sector = val("evSector"), nec = val("evNecesidad");
+    if (sector && nec.length >= 20) { puntos += 15; crit.push("Necesidad de información: LOGRADO"); }
+    else if (sector || nec) { puntos += 6; crit.push("Necesidad de información: EN PROCESO (elige sector y redacta la decisión que apoyará)"); }
+    else { crit.push("Necesidad de información: INICIAL"); }
+    // A. Fuentes (15)
+    var fuentes = [val("fte1"), val("fte2"), val("fte3")].filter(Boolean).length;
+    if (fuentes >= 3) { puntos += 15; crit.push("Fuentes de datos: LOGRADO (" + fuentes + ")"); }
+    else if (fuentes >= 1) { puntos += fuentes * 4; crit.push("Fuentes de datos: EN PROCESO (" + fuentes + "/3)"); }
+    else { crit.push("Fuentes de datos: INICIAL"); }
+    // A. Componentes arquitectura (20)
+    var comp = [val("evOperacional"), val("evTransform"), val("evRepo")].filter(Boolean).length;
+    if (comp === 3) { puntos += 20; crit.push("Componentes de arquitectura: LOGRADO (operacional + ETL + repositorio)"); }
+    else if (comp >= 1) { puntos += comp * 5; crit.push("Componentes de arquitectura: EN PROCESO (" + comp + "/3)"); }
+    else { crit.push("Componentes de arquitectura: INICIAL"); }
+    // A. Herramienta + 2 indicadores con origen (15)
+    var bi = val("evBI");
+    var ind = 0;
+    if (val("ind1") && val("indf1")) { ind++; }
+    if (val("ind2") && val("indf2")) { ind++; }
+    if (bi && ind === 2) { puntos += 15; crit.push("Herramienta BI e indicadores: LOGRADO"); }
+    else if (bi || ind >= 1) { puntos += 6; crit.push("Herramienta BI e indicadores: EN PROCESO (indicadores con su origen)"); }
+    else { crit.push("Herramienta BI e indicadores: INICIAL"); }
+    // B. Modelo ER (25)
+    var ents = 0, entsConClave = 0;
+    for (var i = 1; i <= 4; i++) {
+      var n = val("ent" + i + "n"), a = val("ent" + i + "a"), b = val("ent" + i + "b"), k = val("ent" + i + "k");
+      if (n) { ents++; }
+      if (n && a && b && k) { entsConClave++; }
+    }
+    var rels = 0;
+    for (var r = 1; r <= 3; r++) { if (val("rel" + r + "a") && val("rel" + r + "b") && val("rel" + r + "c")) { rels++; } }
+    if (entsConClave >= 4 && rels >= 3) { puntos += 25; crit.push("Modelo entidad-relación: LOGRADO (4 entidades completas + 3 relaciones con cardinalidad)"); }
+    else { var parcial = Math.min(entsConClave, 4) * 3 + Math.min(rels, 3) * 4; puntos += parcial; crit.push("Modelo entidad-relación: EN PROCESO (" + entsConClave + "/4 entidades completas, " + rels + "/3 relaciones)"); }
+    // Gobernanza (10)
+    var dup = val("evDup"), seg = val("evSeg");
+    if (dup && seg) { puntos += 10; crit.push("Calidad y gobernanza: LOGRADO"); }
+    else if (dup || seg) { puntos += 4; crit.push("Calidad y gobernanza: EN PROCESO"); }
+    else { crit.push("Calidad y gobernanza: INICIAL"); }
+
+    var nivelLogro = puntos >= 80 ? "LOGRADO" : (puntos >= 45 ? "EN PROCESO" : "INICIAL");
+    return { puntos: puntos, crit: crit, nivelLogro: nivelLogro };
+  }
+
+  function nivelDeCrit(texto) {
+    if (/LOGRADO/.test(texto)) { return "ok"; }
+    if (/EN PROCESO/.test(texto)) { return "mid"; }
+    return "no";
+  }
+
+  function medidorVivo() {
+    var res = computeEvidencia();
+    var fill = $("#medidorFill");
+    if (fill) { fill.style.width = res.puntos + "%"; }
+    var bar = document.querySelector("#n4Live .medidor");
+    if (bar) { bar.setAttribute("aria-valuenow", String(res.puntos)); }
+    var ul = $("#n4LiveList");
+    if (ul) {
+      ul.innerHTML = "";
+      res.crit.forEach(function (c) {
+        var li = document.createElement("li");
+        li.className = nivelDeCrit(c);
+        li.textContent = c;
+        ul.appendChild(li);
+      });
+    }
+    return res;
+  }
+
+  function evaluarEvidencia() {
+    var res = computeEvidencia(), crit = res.crit, puntos = res.puntos;
+    var delta = puntos - estado.n4.xp; estado.n4.xp = puntos; estado.n4.evaluada = true;
+    if (delta !== 0) { sumarXP(delta); } else { render(); }
+
+    var nivelLogro = puntos >= 80 ? "LOGRADO" : (puntos >= 45 ? "EN PROCESO" : "INICIAL");
+    var clase = puntos >= 80 ? "fb-ok" : "fb-error";
+    var html = '<p class="' + clase + '"><strong>Calidad del diseño: ' + nivelLogro + '</strong> — ' + puntos + '/100.</p><ul>';
+    crit.forEach(function (c) { html += "<li>" + esc(c) + "</li>"; }); html += "</ul>";
+    if (puntos >= 80) {
+      html += '<p class="fb-ok">¡Diseño sólido! Insignia «Modelador ER» desbloqueada y Nivel Cierre disponible.</p>';
+      ganarBadge("modelador"); marcarLogrado(4); desbloquear(5); anunciar("Diseño logrado. Nivel Cierre desbloqueado.");
+    } else {
+      html += '<p class="fb-error">Mejora los criterios en proceso y vuelve a evaluar sin penalización.</p>';
+      if (puntos >= 45) { desbloquear(5); }
+    }
+    $("#fbEvidencia").innerHTML = html;
+
+    // guardar respuestas
+    var entidades = [];
+    for (var e = 1; e <= 4; e++) { if (val("ent" + e + "n")) { entidades.push({ n: val("ent" + e + "n"), a: val("ent" + e + "a"), b: val("ent" + e + "b"), k: val("ent" + e + "k") }); } }
+    var relaciones = [];
+    for (var rr = 1; rr <= 3; rr++) { if (val("rel" + rr + "a")) { relaciones.push({ a: val("rel" + rr + "a"), c: val("rel" + rr + "c"), b: val("rel" + rr + "b") }); } }
+    estado.respuestas.evidencia = {
+      sector: sector, necesidad: nec,
+      fuentes: [val("fte1"), val("fte2"), val("fte3")].filter(Boolean),
+      operacional: val("evOperacional"), transform: val("evTransform"), repo: val("evRepo"), bi: bi,
+      indicadores: [{ i: val("ind1"), o: val("indf1") }, { i: val("ind2"), o: val("indf2") }],
+      entidades: entidades, relaciones: relaciones,
+      duplicidad: dup, seguridad: seg, puntos: puntos, nivelLogro: nivelLogro
+    };
+    guardar();
+  }
+
+  /* ---------- N5: autoevaluación, ruta, cierre ---------- */
+  var autoItems = [
+    "Identifico fuentes de datos pertinentes al caso.",
+    "Represento los componentes de una arquitectura de datos.",
+    "Defino entidades, atributos y claves coherentes.",
+    "Establezco relaciones y cardinalidad correctamente.",
+    "Vinculo la base de datos con indicadores y decisiones."
+  ];
+  function pintarAutoeval() {
+    var c = $("#autoeval"); c.innerHTML = "";
+    autoItems.forEach(function (t, i) {
+      var d = document.createElement("div"); d.style.margin = "10px 0";
+      var b = '<div class="likert" role="group" aria-label="' + esc(t) + '">';
+      for (var k = 1; k <= 3; k++) { b += '<button type="button" data-ae="' + i + '" data-v="' + k + '" aria-pressed="false">' + k + '</button>'; }
+      b += '</div>';
+      d.innerHTML = '<div>' + esc(t) + '</div>' + b;
+      c.appendChild(d);
+    });
+    if (!estado.respuestas.autoeval) { estado.respuestas.autoeval = {}; }
+  }
+  function comprobarRuta() {
+    var ok = val("ruta1") === "Base operacional" && val("ruta2") === "ETL / limpieza" && val("ruta3") === "Data Warehouse" && val("ruta4") === "Herramienta BI";
+    var fb = $("#fbRutaCierre");
+    if (ok) { fb.className = "fb fb-ok"; fb.textContent = "Correcto: Fuentes → Base operacional → ETL → Data Warehouse → Herramienta BI → Decisión."; }
+    else { fb.className = "fb fb-error"; fb.textContent = "Aún no. Recuerda: se captura, se limpia, se almacena para análisis y luego se visualiza para decidir."; }
+    estado.respuestas.rutaOk = ok; guardar();
+  }
+  function registrarCierre() {
+    var ya = estado.n5;
+    estado.respuestas.cierre = {
+      dif: val("cDif"), reto: val("cReto"), dup: val("cDup"), transferencia: val("cTransfer"),
+      ia: { uso: $("#iaUso").checked, herramienta: val("iaHerramienta"), prompt: val("iaPrompt"), revision: val("iaRevision") }
+    };
+    estado.n5 = true; ganarBadge("reflexivo"); marcarLogrado(5);
+    if (!ya) { sumarXP(10); }
+    var fb = $("#fbCierre"); fb.className = "fb fb-ok"; fb.textContent = "Cierre registrado. Ya puedes generar y exportar la evidencia. ¡Misión completada!";
+    anunciar("Cierre registrado."); guardar();
+  }
+
+  /* ---------- Exportación ---------- */
+  function construirMarkdown() {
+    var r = estado.respuestas, L = [];
+    var equipo = val("regEquipo") || "(sin nombre)";
+    L.push("# Operación BI — Sesión 3 · Evidencia del equipo \"" + equipo + "\"");
+    L.push("");
+    L.push("_IA + DATA 2026 · Unidad 1 · Sesión 3: Arquitectura de Datos y Modelo Entidad-Relación · Datos ficticios._");
+    L.push("");
+    L.push("## Participantes y roles");
+    L.push("- **Equipo:** " + equipo);
+    L.push("- **Integrantes:** " + (val("regIntegrantes") || "(no indicados)"));
+    L.push("- **Arquitecto de datos:** " + (val("rolArquitecto") || "—"));
+    L.push("- **Modelador ER:** " + (val("rolModelador") || "—"));
+    L.push("- **Curador de calidad y gobernanza:** " + (val("rolCurador") || "—"));
+    L.push("- **Vocero del pitch:** " + (val("rolVocero") || "—"));
+    L.push("- **XP de calidad:** " + estado.xp + " · **Insignias:** " + (estado.badges.length ? estado.badges.join(", ") : "ninguna aún"));
+    L.push("");
+    var ev = r.evidencia;
+    L.push("## Diseño (evidencia principal)");
+    if (ev) {
+      L.push("**Sector:** " + (ev.sector || "—"));
+      L.push("");
+      L.push("**Necesidad / decisión:** " + (ev.necesidad || "—"));
+      L.push("");
+      L.push("### Parte A · Arquitectura de datos");
+      L.push("`Fuentes → Base operacional → ETL/ELT → Data Warehouse → Herramienta BI → Dashboard/Decisión`");
+      L.push("- **Fuentes:** " + (ev.fuentes.length ? ev.fuentes.join(", ") : "—"));
+      L.push("- **Base operacional:** " + (ev.operacional || "—"));
+      L.push("- **Transformación (ETL/ELT):** " + (ev.transform || "—"));
+      L.push("- **Repositorio analítico:** " + (ev.repo || "—"));
+      L.push("- **Herramienta BI:** " + (ev.bi || "—"));
+      L.push("- **Indicadores:** " + ev.indicadores.map(function (x) { return (x.i || "—") + " (origen: " + (x.o || "—") + ")"; }).join(" · "));
+      L.push("");
+      L.push("### Parte B · Modelo entidad-relación");
+      L.push("");
+      L.push("| Entidad | Atributo 1 | Atributo 2 | Clave primaria |");
+      L.push("|---|---|---|---|");
+      (ev.entidades || []).forEach(function (e) { L.push("| " + (e.n || "—") + " | " + (e.a || "—") + " | " + (e.b || "—") + " | " + (e.k || "—") + " |"); });
+      L.push("");
+      L.push("**Relaciones:**");
+      (ev.relaciones || []).forEach(function (x) { L.push("- " + (x.a || "—") + " —(" + (x.c || "—") + ")→ " + (x.b || "—")); });
+      L.push("");
+      L.push("### Calidad y gobernanza del dato");
+      L.push("- **Contra duplicidad:** " + (ev.duplicidad || "—"));
+      L.push("- **Seguridad / ética:** " + (ev.seguridad || "—"));
+      L.push("");
+      L.push("> **Calidad del diseño:** " + ev.nivelLogro + " (" + ev.puntos + "/100).");
+    } else { L.push("_El diseño aún no ha sido evaluado en el Nivel P._"); }
+    L.push("");
+    L.push("## Autoevaluación (1 Inicial · 2 En proceso · 3 Logrado)");
+    var ae = r.autoeval || {};
+    autoItems.forEach(function (t, i) { L.push("- " + t + " **" + (ae[i] || "—") + "**"); });
+    L.push("");
+    var c = r.cierre;
+    L.push("## Cierre: metacognición y transferencia");
+    if (c) {
+      L.push("- **Operacional vs analítico:** " + (c.dif || "—"));
+      L.push("- **Lo más retador (entidades/relaciones):** " + (c.reto || "—"));
+      L.push("- **Criterio anti-duplicidad:** " + (c.dup || "—"));
+      L.push("- **Transferencia:** " + (c.transferencia || "—"));
+      L.push("");
+      L.push("### Declaración de uso de IA");
+      L.push("- ¿Se usó IA?: " + (c.ia.uso ? "Sí" : "No"));
+      L.push("- Herramienta y propósito: " + (c.ia.herramienta || "—"));
+      L.push("- Prompt: " + (c.ia.prompt || "—"));
+      L.push("- Revisión humana: " + (c.ia.revision || "—"));
+    } else { L.push("_El cierre aún no ha sido registrado._"); }
+    L.push("");
+    L.push("---");
+    L.push("_Generado desde «Operación BI · Sesión 3». Mg. Mario Quiroz Martínez · IA + DATA 2026._");
+    return L.join("\n");
+  }
+  function generarMarkdown() {
+    var md = construirMarkdown();
+    $("#salidaMarkdown").value = md;
+    $("#reporteImpresion").innerHTML = '<h1>Operación BI — Sesión 3 · Evidencia</h1><pre style="white-space:pre-wrap;font-family:inherit">' + esc(md) + "</pre>";
+    anunciar("Markdown generado."); return md;
+  }
+  function descargar() {
+    var md = generarMarkdown();
+    var blob = new Blob([md], { type: "text/markdown;charset=utf-8" });
+    var url = URL.createObjectURL(blob), a = document.createElement("a");
+    a.href = url; a.download = "evidencia-operacion-bi-sesion3.md";
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
+  function reiniciar() {
+    if (!window.confirm("¿Reiniciar todo el progreso? No se puede deshacer.")) { return; }
+    try { window.localStorage.removeItem(KEY); } catch (e) {}
+    window.location.reload();
+  }
+
+  /* ---------- Mapa interactivo: física ligera de flujo de datos ----------
+     Inspirado en sistemas de partículas + fuerzas (Physics for JS Games).
+     Comunica el estado del pipeline (dato sucio -> ETL -> dato limpio);
+     respeta prefers-reduced-motion (usa el fallback textual). */
+  function initMapa() {
+    var canvas = document.getElementById("mapaCanvas");
+    if (!canvas || !canvas.getContext) { return; }
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var ctx = canvas.getContext("2d");
+    var W = canvas.width, H = canvas.height;
+    var nodos = [
+      { x: 70,  n: "Fuentes" }, { x: 210, n: "Operacional" }, { x: 370, n: "ETL" },
+      { x: 540, n: "Data WH" }, { x: 700, n: "BI" }, { x: 850, n: "Decisión" }
+    ];
+    var yBase = H / 2;
+    var etlX = nodos[2].x;
+    var particulas = [];
+    var reproduciendo = !reduce;
+    var conETL = true; // si false, los datos no se limpian (motivación: "sin arquitectura")
+    var raf = null, ultimo = 0, acumulaSpawn = 0;
+
+    function nueva() {
+      // Física simple: velocidad horizontal + oscilación vertical (jitter) si está sucia
+      return { x: nodos[0].x, vx: 55 + Math.random() * 25, faseY: Math.random() * Math.PI * 2, limpio: false };
+    }
+    function dibujarNodos() {
+      ctx.textAlign = "center";
+      ctx.font = "600 13px system-ui, sans-serif";
+      for (var i = 0; i < nodos.length; i++) {
+        var nd = nodos[i];
+        if (i < nodos.length - 1) {
+          ctx.strokeStyle = "#233047"; ctx.lineWidth = 3;
+          ctx.beginPath(); ctx.moveTo(nd.x + 26, yBase); ctx.lineTo(nodos[i + 1].x - 26, yBase); ctx.stroke();
+        }
+        var esETL = nd.n === "ETL";
+        ctx.fillStyle = esETL ? "#1a2f14" : "#0e1a2a";
+        ctx.strokeStyle = esETL ? "#00ff9d" : "#17384a"; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(nd.x, yBase, 26, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+        ctx.fillStyle = esETL ? "#00ff9d" : "#00e5ff";
+        ctx.fillText(esETL ? "ETL" : "", nd.x, yBase + 4);
+        ctx.fillStyle = "#c9cee2";
+        ctx.fillText(nd.n, nd.x, yBase + 46);
+      }
+    }
+    function frame(t) {
+      if (!ultimo) { ultimo = t; }
+      var dt = Math.min((t - ultimo) / 1000, 0.05); ultimo = t;
+      acumulaSpawn += dt;
+      if (acumulaSpawn > 0.55 && particulas.length < 26) { particulas.push(nueva()); acumulaSpawn = 0; }
+      ctx.clearRect(0, 0, W, H);
+      dibujarNodos();
+      for (var i = particulas.length - 1; i >= 0; i--) {
+        var p = particulas[i];
+        p.x += p.vx * dt;
+        if (conETL && !p.limpio && p.x >= etlX) { p.limpio = true; }
+        var sucio = !(conETL ? p.limpio : false);
+        // jitter vertical (fuerza oscilante) mientras esté sucio
+        var y = yBase + (sucio ? Math.sin(t / 90 + p.faseY) * 9 : 0);
+        ctx.beginPath(); ctx.arc(p.x, y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = sucio ? "#ff2038" : "#00ff9d"; ctx.fill();
+        if (p.x > W - 40) { particulas.splice(i, 1); }
+      }
+      if (reproduciendo) { raf = window.requestAnimationFrame(frame); }
+    }
+    function dibujarEstatico() { ctx.clearRect(0, 0, W, H); dibujarNodos(); }
+    function play() { if (raf) { return; } reproduciendo = true; ultimo = 0; raf = window.requestAnimationFrame(frame); }
+    function pause() { reproduciendo = false; if (raf) { window.cancelAnimationFrame(raf); raf = null; } }
+
+    var btnPlay = document.getElementById("mapaPlay");
+    var btnCal = document.getElementById("mapaCalidad");
+    if (btnPlay) {
+      btnPlay.addEventListener("click", function () {
+        if (reproduciendo) { pause(); btnPlay.textContent = "▶️ Reanudar"; btnPlay.setAttribute("aria-pressed", "false"); }
+        else { play(); btnPlay.textContent = "⏸️ Pausar"; btnPlay.setAttribute("aria-pressed", "true"); }
+      });
+    }
+    if (btnCal) {
+      btnCal.addEventListener("click", function () {
+        conETL = !conETL; particulas = [];
+        btnCal.textContent = conETL ? "Ver «sin ETL» (datos sin limpiar)" : "Ver «con ETL» (datos depurados)";
+        anunciar(conETL ? "Flujo con ETL: los datos se depuran." : "Flujo sin ETL: los datos llegan sucios al análisis.");
+        if (!reproduciendo && !reduce) { dibujarEstatico(); }
+      });
+    }
+    if (reduce) { dibujarEstatico(); if (btnPlay) { btnPlay.textContent = "▶️ Reproducir"; btnPlay.setAttribute("aria-pressed", "false"); } }
+    else { play(); }
+  }
+
+  /* ---------- Mentor: andamiaje permanente (refuerzos + retroalimentación asistida) ---------- */
+  var mentorData = {
+    1: { ctx: "Nivel I · Inicio", obj: "Reconoce por qué un dashboard necesita datos organizados.",
+         pistas: ["Observa el mapa: sin ETL los datos llegan «sucios» (duplicados, inconsistentes).",
+                  "«Una buena visualización no compensa una mala arquitectura».",
+                  "Si una afirmación depende solo del volumen o de «mientras más, mejor», suele ser mito."],
+         ejemplo: "Ejemplo: «Cuantos más indicadores, mejor» es MITO: satura la decisión; conviene pocos KPIs pertinentes ligados a una pregunta de negocio.",
+         and: ["¿De dónde provienen los datos de un dashboard?", "¿Qué pasa si un cliente aparece con 3 nombres distintos?"] },
+    2: { ctx: "Nivel U · Utilidad", obj: "Identifica los problemas de datos y la necesidad de información del caso.",
+         pistas: ["Los problemas son de calidad e integración de datos, no de imagen o marketing.",
+                  "Relee las cartas: clientes duplicados, códigos distintos, datos dispersos, reportes que no cuadran.",
+                  "La necesidad = las 3 preguntas de la gerencia respondidas con datos unificados y confiables."],
+         ejemplo: "Ejemplo de necesidad: «Saber qué platos se venden más y qué productos se agotan, con datos unificados por cliente y producto».",
+         and: ["¿Qué decisión se tomaría mal con datos duplicados?", "¿Qué áreas o sistemas generan datos en el caso?"] },
+    3: { ctx: "Nivel T · Transformación", obj: "Ordena la ruta del dato y distingue errores de diseño de buenas prácticas.",
+         pistas: ["Primero se CAPTURA, luego se INTEGRA/LIMPIA y al final se ANALIZA para decidir.",
+                  "El ETL va DESPUÉS de la base operacional y ANTES del Data Warehouse.",
+                  "Guardar pedido, producto, cliente y pago en una sola tabla es un ERROR (redundancia e inconsistencia)."],
+         ejemplo: "Ruta correcta: Fuentes → Base operacional → ETL → Data Warehouse → Herramienta BI → Dashboard/Decisión.",
+         and: ["¿Qué diferencia hay entre base operacional y Data Warehouse?", "¿Por qué separar Producto y Detalle de Venta?"] },
+    4: { ctx: "Nivel P · Práctica (evidencia)", obj: "Diseña la arquitectura (Parte A) y el modelo entidad-relación (Parte B).",
+         pistas: ["Cada indicador debe nombrar QUÉ mide y DE QUÉ tabla/fuente sale.",
+                  "Define una clave primaria única por entidad (id_cliente, id_producto…).",
+                  "Relaciona con claves foráneas (id_cliente dentro de Pedido) y asigna cardinalidad (1:N, N:M)."],
+         ejemplo: "Ejemplo — Entidad: Cliente | atributos: nombre, correo | PK: id_cliente. Relación: Cliente —(1:N)→ Venta.",
+         and: ["¿Qué dato identifica de forma única a cada cliente?", "¿Cuál es la diferencia entre Producto y Detalle de Venta?",
+               "¿Qué información necesita el dashboard y de qué tabla provendría?", "¿Cómo evitar registrar dos veces al mismo cliente?",
+               "¿Qué decisión se tomaría con cada indicador?"] },
+    5: { ctx: "Nivel C · Cierre", obj: "Reconstruye la ruta, reflexiona y declara el uso de IA.",
+         pistas: ["Ruta: Fuentes → Base operacional → ETL → Data Warehouse → Herramienta BI → Decisión.",
+                  "Operacional = registra el día a día; analítico = integra histórico para decidir.",
+                  "Declara herramienta, prompt y revisión humana; usa solo datos ficticios."],
+         ejemplo: "Transferencia: en una clínica, este diseño anticiparía la demanda de citas por especialidad para reducir ausentismo.",
+         and: ["¿Qué criterio usarás para evitar duplicidad?", "¿En qué otra organización aplicarías este diseño?"] }
+  };
+  var GLOSARIO = "📖 Glosario: <b>Entidad</b> = objeto relevante (Cliente, Producto). <b>Atributo</b> = su característica (nombre, precio). " +
+    "<b>Clave primaria (PK)</b> = identificador único (id_cliente). <b>Clave foránea (FK)</b> = campo que relaciona tablas. " +
+    "<b>Cardinalidad</b> = tipo de relación (1:1, 1:N, N:M). <b>ETL/ELT</b> = extraer, transformar/limpiar y cargar. " +
+    "<b>BD operacional</b> = el día a día. <b>Data Warehouse</b> = histórico para análisis.";
+  var mentorNivel = 1, pistaIdx = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
+  function renderMentor() {
+    var d = mentorData[mentorNivel]; if (!d) { return; }
+    $("#mentorContexto").textContent = d.ctx;
+    $("#mentorObjetivo").textContent = "🎯 " + d.obj;
+    var ul = $("#mentorAnd"); ul.innerHTML = "<li><em>Preguntas para pensar:</em></li>";
+    d.and.forEach(function (q) { var li = document.createElement("li"); li.textContent = "• " + q; ul.appendChild(li); });
+  }
+  function setMentorNivel(n) {
+    if (!mentorData[n] || n === mentorNivel) { return; }
+    mentorNivel = n; renderMentor();
+    $("#mentorMsg").innerHTML = "Estás en <b>" + esc(mentorData[n].ctx) + "</b>. Pide una pista, un ejemplo o «¿Cómo voy?».";
+  }
+  function mentorPista() {
+    var d = mentorData[mentorNivel], i = pistaIdx[mentorNivel] || 0;
+    if (i < d.pistas.length) {
+      $("#mentorMsg").innerHTML = "💡 <b>Pista " + (i + 1) + "/" + d.pistas.length + ":</b> " + esc(d.pistas[i]);
+      pistaIdx[mentorNivel] = i + 1;
+    } else {
+      $("#mentorMsg").innerHTML = "Ya viste todas las pistas de este nivel (no penalizan). Prueba «Ejemplo resuelto» o «¿Cómo voy?».";
+    }
+    anunciar("Pista mostrada.");
+  }
+  function mentorEjemplo() { $("#mentorMsg").innerHTML = "🧪 " + esc(mentorData[mentorNivel].ejemplo); }
+  function mentorGlosario() { $("#mentorMsg").innerHTML = GLOSARIO; }
+  function mentorComoVoy() {
+    if (mentorNivel === 4) {
+      var res = medidorVivo();
+      var faltan = res.crit.filter(function (c) { return !/LOGRADO/.test(c); });
+      var msg = "📊 Calidad actual: <b>" + res.puntos + "/100</b> (" + res.nivelLogro + "). ";
+      msg += faltan.length ? "Aún por mejorar: " + esc(faltan.map(function (c) { return c.split(":")[0]; }).join(", ")) + "." : "¡Todos los criterios en Logrado! Pulsa «Evaluar».";
+      $("#mentorMsg").innerHTML = msg;
+    } else {
+      var hechos = { 1: estado.n1.hechas >= 6, 2: estado.n2, 3: (estado.n3ruta && estado.n3er.hechas >= 4), 5: estado.n5 };
+      $("#mentorMsg").innerHTML = hechos[mentorNivel]
+        ? "✅ Este nivel está completo. Puedes avanzar al siguiente."
+        : "🔸 Aún no completas este nivel. Sigue la misión; usa «Pista» si te atascas.";
+    }
+  }
+  function initMentor() {
+    renderMentor();
+    $("#mentorPista").addEventListener("click", mentorPista);
+    $("#mentorEjemplo").addEventListener("click", mentorEjemplo);
+    $("#mentorGlosario").addEventListener("click", mentorGlosario);
+    $("#mentorComoVoy").addEventListener("click", mentorComoVoy);
+    var aside = $("#mentor"), fab = $("#mentorFab"), tgl = $("#mentorToggle");
+    tgl.addEventListener("click", function () { aside.style.display = "none"; fab.style.display = "block"; });
+    fab.addEventListener("click", function () { aside.style.display = "block"; fab.style.display = "none"; });
+
+    // Detecta el nivel activo por desplazamiento para dar apoyo contextual
+    if ("IntersectionObserver" in window) {
+      var ratios = {};
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) { ratios[e.target.getAttribute("data-nivel")] = e.isIntersecting ? e.intersectionRatio : 0; });
+        var mejor = null, max = 0;
+        Object.keys(ratios).forEach(function (k) { if (ratios[k] > max) { max = ratios[k]; mejor = k; } });
+        if (mejor && max > 0.15) { setMentorNivel(parseInt(mejor, 10)); }
+      }, { threshold: [0.15, 0.4, 0.7] });
+      document.querySelectorAll("section.nivel").forEach(function (s) { obs.observe(s); });
+    }
+
+    // Retroalimentación asistida en vivo del formulario de evidencia
+    var form = $("#formEvidencia");
+    if (form) { form.addEventListener("input", medidorVivo); form.addEventListener("change", medidorVivo); medidorVivo(); }
+  }
+
+  function restaurarUI() {
+    for (var n = 2; n <= 5; n++) { if (estado.nivel >= n) { desbloquear(n); } }
+    if (estado.n1.hechas >= 6) { marcarLogrado(1); }
+    if (estado.n2) { marcarLogrado(2); }
+    if (estado.n3ruta && estado.n3er.hechas >= 4) { marcarLogrado(3); }
+    if (estado.n4.evaluada && estado.n4.xp >= 80) { marcarLogrado(4); }
+    if (estado.n5) { marcarLogrado(5); }
+    estado.badges.forEach(function (b) { var el = document.querySelector('.insignia[data-badge="' + b + '"]'); if (el) { el.classList.add("ganada"); } });
+    render();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    cargar();
+    pintarMito(); pintarBanco(); initRuta(); pintarER(); pintarEntidades(); pintarAutoeval(); initMapa(); initMentor();
+    // Inicializar medidores de retroalimentación de N3
+    actualizarMedidorRuta(); actualizarMedidorER();
+
+    $("#mitoContenedor").addEventListener("click", function (e) { var b = e.target.closest("button[data-op]"); if (b) { responderMito(parseInt(b.getAttribute("data-i"), 10), b.getAttribute("data-op")); } });
+    $("#erContenedor").addEventListener("click", function (e) { var b = e.target.closest("button[data-op]"); if (b) { responderER(parseInt(b.getAttribute("data-i"), 10), b.getAttribute("data-op")); } });
+    $("#autoeval").addEventListener("click", function (e) {
+      var b = e.target.closest("button[data-ae]"); if (!b) { return; }
+      var idx = b.getAttribute("data-ae"), v = b.getAttribute("data-v");
+      b.parentNode.querySelectorAll("button").forEach(function (x) { x.setAttribute("aria-pressed", "false"); });
+      b.setAttribute("aria-pressed", "true");
+      if (!estado.respuestas.autoeval) { estado.respuestas.autoeval = {}; }
+      estado.respuestas.autoeval[idx] = v; guardar();
+    });
+    $("#btnProblemas").addEventListener("click", evaluarProblemas);
+    $("#btnEvaluar").addEventListener("click", evaluarEvidencia);
+    $("#btnRuta").addEventListener("click", comprobarRuta);
+    $("#btnCierre").addEventListener("click", registrarCierre);
+    $("#btnGenerar").addEventListener("click", generarMarkdown);
+    $("#btnDescargar").addEventListener("click", descargar);
+    $("#btnImprimir").addEventListener("click", function () { generarMarkdown(); window.print(); });
+    $("#btnReiniciar").addEventListener("click", reiniciar);
+
+    // Botón reordenar ruta
+    var rr = document.createElement("button"); rr.type = "button"; rr.textContent = "🔄 Reordenar ruta"; rr.style.marginTop = "8px";
+    rr.addEventListener("click", reiniciarRuta);
+    $("#slots").insertAdjacentElement("afterend", rr);
+
+    restaurarUI();
+  });
+})();
+</script>
+</body>
+</html>
