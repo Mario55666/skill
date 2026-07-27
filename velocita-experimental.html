@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VELOCITÀ — Palabras en Libertad</title>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Oswald:wght@200;400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --dark: #0a0a0a;
+            --metal: #2a2a2a;
+            --accent: #ff1744;
+            --light: #ffffff;
+            --smoke: #4a4a4a;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--dark) 0%, #1a1a2e 50%, var(--dark) 100%);
+            color: var(--light);
+            font-family: 'Oswald', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.2;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+
+        .diagonal-line {
+            position: absolute;
+            background: linear-gradient(45deg, var(--accent), transparent);
+            transform: rotate(45deg);
+            animation: slashAcross 8s infinite linear;
+        }
+
+        .line-1 { width: 200%; height: 1px; top: 10%; left: -50%; }
+        .line-2 { width: 200%; height: 2px; top: 30%; left: -50%; animation-delay: 1s; }
+        .line-3 { width: 200%; height: 1px; top: 50%; left: -50%; animation-delay: 2s; }
+        .line-4 { width: 200%; height: 2px; top: 70%; left: -50%; animation-delay: 1.5s; }
+        .line-5 { width: 200%; height: 1px; top: 90%; left: -50%; animation-delay: 2.5s; }
+
+        @keyframes slashAcross {
+            from { transform: translateX(-100%) rotate(45deg); }
+            to { transform: translateX(100%) rotate(45deg); }
+        }
+
+        /* Header */
+        header {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 20% 50%, rgba(255, 23, 68, 0.1), transparent 50%);
+        }
+
+        .header-content {
+            padding: 60px 40px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(4rem, 12vw, 12rem);
+            font-style: italic;
+            font-weight: 900;
+            line-height: 0.9;
+            color: var(--light);
+            text-shadow:
+                3px 3px 0 var(--accent),
+                6px 6px 0 rgba(255, 23, 68, 0.3),
+                9px 9px 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            word-break: break-word;
+            animation: titleTilt 0.8s ease-out;
+        }
+
+        @keyframes titleTilt {
+            from {
+                transform: skewY(5deg) translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: skewY(0) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .subtitle {
+            font-family: 'Oswald', sans-serif;
+            font-size: clamp(1rem, 3vw, 2.5rem);
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--smoke);
+            margin-bottom: 40px;
+            animation: slideIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .tagline {
+            font-size: clamp(0.9rem, 2vw, 1.3rem);
+            font-style: italic;
+            color: var(--accent);
+            margin-bottom: 60px;
+            letter-spacing: 1px;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Speed Lines Effect */
+        .speed-lines {
+            position: absolute;
+            top: 50%;
+            right: 10%;
+            width: 300px;
+            height: 400px;
+            opacity: 0.15;
+        }
+
+        .speed-line {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            width: 150px;
+            animation: speedPass 1.5s infinite linear;
+        }
+
+        .speed-line:nth-child(1) { top: 20%; right: 0; animation-delay: 0s; }
+        .speed-line:nth-child(2) { top: 40%; right: 0; animation-delay: 0.3s; }
+        .speed-line:nth-child(3) { top: 60%; right: 0; animation-delay: 0.6s; }
+        .speed-line:nth-child(4) { top: 80%; right: 0; animation-delay: 0.9s; }
+
+        @keyframes speedPass {
+            from { transform: translateX(200px); }
+            to { transform: translateX(-200px); }
+        }
+
+        /* Section Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 80px 40px;
+            position: relative;
+        }
+
+        section {
+            margin-bottom: 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Archivo Black', sans-serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-style: italic;
+            font-weight: 900;
+            line-height: 0.95;
+            margin-bottom: 40px;
+            color: var(--light);
+            text-shadow: 2px 2px 0 var(--accent);
+            letter-spacing: -1px;
+            position: relative;
+            padding-left: 20px;
+            border-left: 4px solid var(--accent);
+            animation: skewIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes skewIn {
+            from {
+                transform: skewY(10deg) translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: skewY(0) translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        /* Cards */
+        .card {
+            background: rgba(255, 23, 68, 0.05);
+            border: 1px solid rgba(255, 23, 68, 0.2);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            animation: topBorder 2s infinite;
+        }
+
+        @keyframes topBorder {
+            0% { left: -100%; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+
+        .card:hover {
+            transform: skewY(-2deg);
+            border-color: var(--accent);
+            background: rgba(255, 23, 68, 0.1);
+        }
+
+        .card h3 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--accent);
+        }
+
+        .card p {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: var(--smoke);
+            font-weight: 300;
+        }
+
+        /* Accelerating Text */
+        .accelerating-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            line-height: 1.1;
+            margin: 40px 0;
+        }
+
+        .accelerating-text span {
+            font-family: 'Archivo Black', sans-serif;
+            font-style: italic;
+            color: var(--light);
+            display: inline-block;
+        }
+
+        .accelerating-text span:nth-child(1) {
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+        }
+
+        .accelerating-text span:nth-child(2) {
+            font-size: 2rem;
+            letter-spacing: 2px;
+            margin-left: 20px;
+        }
+
+        .accelerating-text span:nth-child(3) {
+            font-size: 2.8rem;
+            letter-spacing: 1px;
+            margin-left: 40px;
+            color: var(--accent);
+            text-shadow: 2px 2px 0 rgba(255, 23, 68, 0.5);
+        }
+
+        .accelerating-text span:nth-child(4) {
+            font-size: 3.5rem;
+            letter-spacing: 0px;
+            margin-left: 60px;
+            color: var(--accent);
+            text-shadow: 3px 3px 10px rgba(255, 23, 68, 0.6);
+        }
+
+        .accelerating-text span:nth-child(5) {
+            font-size: 4.2rem;
+            letter-spacing: -1px;
+            margin-left: 80px;
+            color: var(--light);
+            text-shadow: 4px 4px 20px rgba(255, 23, 68, 0.7);
+        }
+
+        /* Diagonal Divider */
+        .divider {
+            position: relative;
+            height: 80px;
+            margin: 60px 0;
+            overflow: hidden;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -50%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 40%, var(--accent) 50%, transparent 60%);
+            transform: skewX(-20deg);
+            animation: diagonalShift 3s linear infinite;
+        }
+
+        @keyframes diagonalShift {
+            from { transform: translateX(0) skewX(-20deg); }
+            to { transform: translateX(100%) skewX(-20deg); }
+        }
+
+        /* Footer */
+        footer {
+            border-top: 2px solid rgba(255, 23, 68, 0.3);
+            padding: 60px 40px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(255, 23, 68, 0.05));
+        }
+
+        .footer-text {
+            font-family: 'Oswald', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--smoke);
+            margin: 10px 0;
+        }
+
+        .footer-accent {
+            color: var(--accent);
+            font-weight: 700;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+
+            .main-title {
+                font-size: 3rem;
+            }
+
+            .speed-lines {
+                display: none;
+            }
+
+            .accelerating-text span {
+                margin-left: 0 !important;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Print */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+
+            .bg-animation,
+            .speed-lines {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="diagonal-line line-1"></div>
+        <div class="diagonal-line line-2"></div>
+        <div class="diagonal-line line-3"></div>
+        <div class="diagonal-line line-4"></div>
+        <div class="diagonal-line line-5"></div>
+    </div>
+
+    <header>
+        <div class="speed-lines">
+            <div class="speed-line"></div>
+            <div class="speed-line"></div>
+            <div class="speed-line"></div>
+            <div class="speed-line"></div>
+        </div>
+
+        <div class="header-content">
+            <h1 class="main-title">
+                VELOCITÀ
+            </h1>
+            <p class="subtitle">Palabras en Libertad</p>
+            <p class="tagline">« Futurismo tipográfico · Movimiento acelerado · Cronofotografía »</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section>
+            <h2 class="section-title">Manifesto Visual</h2>
+
+            <div class="accelerating-text">
+                <span>Nada descansa</span>
+                <span>en horizontal.</span>
+                <span>La página rasga</span>
+                <span>el fondo</span>
+                <span>ACELERANDO.</span>
+            </div>
+
+            <p style="font-size: 1.1rem; color: var(--smoke); line-height: 1.8; margin-top: 40px;">
+                Las diagonales ascendentes despliegan energía cinética. Metal y humo. Faros que atraviesan.
+                Líneas de velocidad que sugieren movimiento perpetuo. Cronofotografía digital.
+            </p>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h2 class="section-title">Tipografía</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>Archivo Black</h3>
+                    <p>Grotesca pesada en cursiva forzada. Tamaños que aceleran línea a línea. Titulares que se estrellan contra el margen.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Oswald Condensada</h3>
+                    <p>Estructura geométrica. Letra-espacio comprimido. Velocidad visual contenida. Precisión industrial.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Escala Dinámica</h3>
+                    <p>Jerarquía por tamaño y movimiento. Proporciones que rompen la alineación. Asimetría agresiva.</p>
+                </div>
+            </div>
+
+            <div class="accelerating-text" style="margin-top: 60px;">
+                <span>Texto</span>
+                <span>que</span>
+                <span>crece</span>
+                <span>y</span>
+                <span>GOLPEA.</span>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h2 class="section-title">Composición</h2>
+
+            <div class="grid">
+                <div class="card">
+                    <h3>Diagonales Ascendentes</h3>
+                    <p>Rasgan el fondo de abajo a arriba. Energía acumulada. Perspectiva de fuga. Movimiento inevitable.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Cronofotografía</h3>
+                    <p>Secuencias visuales que sugieren trayectoria. Capas de movimiento. Tiempo capturado en frames.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Metal & Humo</h3>
+                    <p>Texturas de fricción. Reflejos inestables. Sombras que se disuelven. Materialidad en transición.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Faros Convergentes</h3>
+                    <p>Haces de luz que convergen. Punto de fuga perspectivo. Velocidad medida por la luz.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section>
+            <h2 class="section-title">Principios</h2>
+
+            <ul style="list-style: none; font-size: 1.15rem; line-height: 2.2; color: var(--smoke);">
+                <li>✦ Nada horizontal · todo diagonal</li>
+                <li>✦ Tipografía como forma, no legibilidad</li>
+                <li>✦ Movimiento perpetuo en cada píxel</li>
+                <li>✦ Asimetría que genera tensión visual</li>
+                <li>✦ Escala como instrumento de velocidad</li>
+                <li>✦ Color: metal, humo y fuego</li>
+                <li>✦ Interacción que acelera la experiencia</li>
+            </ul>
+        </section>
+    </div>
+
+    <footer>
+        <p class="footer-text"><span class="footer-accent">VELOCITÀ</span> — Experimental Typography</p>
+        <p class="footer-text">Futurismo digital · Movimiento acelerado · Libertad tipográfica</p>
+        <p class="footer-text" style="margin-top: 30px; opacity: 0.6;">Diseñado con propósitos educativos y experimentales</p>
+    </footer>
+
+    <script>
+        // Interactividad suave
+        document.addEventListener('mousemove', (e) => {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                card.style.setProperty('--mx', x + 'px');
+                card.style.setProperty('--my', y + 'px');
+            });
+        });
+
+        // Scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            section.style.opacity = '0';
+            section.style.transform = 'translateY(20px)';
+            section.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
