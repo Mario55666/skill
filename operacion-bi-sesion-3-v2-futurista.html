@@ -593,6 +593,16 @@
     <div class="nivel-cuerpo">
       <span class="op-cognitiva">Operación cognitiva: comparar alternativas · clasificar criterios</span>
 
+      <!-- Approach A: Visual Game Analogy Cards -->
+      <div class="assoc" style="border-color:#40390a;background:#14120a;margin-bottom:20px">
+        <h4 style="color:var(--amber);margin:0 0 12px">🏭 Misión 3A — Diseña tu Factorio de datos</h4>
+        <p style="margin:0 0 10px;font-size:0.92rem;color:#b9c0d6">
+          Como en <strong>Factorio</strong>, construyes una línea de producción. Aquí: organiza el flujo de datos desde el origen hasta la decisión.
+          Cada componente tiene su función: <em>capturar (Fuentes) → registrar (Base operacional) → limpiar (ETL) → analizar (Data Warehouse) → decidir (BI)</em>.
+          Si colocas los componentes fuera de orden, los datos llegarán contaminados al análisis, así como una fábrica mal organizada produce defectos.
+        </p>
+      </div>
+
       <div class="consigna">
         <strong>Misión 3A — Arma la ruta del dato.</strong> Coloca cada componente en su posición del flujo
         (arrastra o toca el componente y luego el casillero). Del origen hasta la decisión.
@@ -617,6 +627,34 @@
       <p class="ayuda">Accesible por teclado y táctil: selecciona un componente (Enter/clic) y activa el casillero destino. Recibe retroalimentación inmediata.</p>
       <p id="fbRuta" class="fb" aria-live="polite"></p>
 
+      <!-- Approach B: Pedagogical Referents Card -->
+      <details open>
+        <summary><strong>🎮 Carta de referentes pedagógicos · Dinámicas de juego en esta misión</strong></summary>
+        <div class="assoc" style="border-color:#b829dd;background:#1a0720;margin-bottom:16px">
+          <h4 style="color:#e59bf5;margin:0 0 12px">Analogía 1 — Factorio (flujo y transformación)</h4>
+          <p style="margin:0 0 8px;font-size:0.88rem;color:#d7bcbf">
+            En Factorio diseñas líneas de producción. Aquí diseñas el flujo de datos. Ambos requieren: <strong>orden secuencial</strong> (no puedes procesar antes de capturar),
+            <strong>transformación inteligente</strong> (ETL es como los refinadores que purifican materias primas), y <strong>almacenamiento estratégico</strong> (Data Warehouse es tu almacén).
+            Si colocas los pasos fuera de orden → contaminación. Si omites limpieza → defectos en el producto final (indicadores falsos).
+          </p>
+        </div>
+        <div class="assoc" style="border-color:#b829dd;background:#1a0720;margin-bottom:16px">
+          <h4 style="color:#e59bf5;margin:0 0 12px">Analogía 2 — Papers, Please &amp; Return of the Obra Dinn (auditoría e investigación)</h4>
+          <p style="margin:0 0 8px;font-size:0.88rem;color:#d7bcbf">
+            Ambos juegos entrenan el reconocimiento de inconsistencias. Aquí: detectas errores de diseño que crearían datos irreconciliables.
+            Sin clave primaria → mismo cliente contado múltiples veces → reportes falsos → decisiones equivocadas. Tu rol es <strong>auditor de calidad</strong>:
+            inspeccionar antes de que los datos contaminen toda la cadena.
+          </p>
+        </div>
+        <div class="assoc" style="border-color:#b829dd;background:#1a0720">
+          <h4 style="color:#e59bf5;margin:0 0 12px">Analogía 3 — SimCity (indicadores guían decisiones)</h4>
+          <p style="margin:0;font-size:0.88rem;color:#d7bcbf">
+            En SimCity, los indicadores (felicidad, tráfico, crimen) determinan qué construyes next. En BI: el modelo de datos define <strong>qué indicadores puedes calcular</strong>.
+            Una arquitectura coherente → indicadores confiables → mejores decisiones. Una arquitectura confusa → indicadores imposibles o contradictorios.
+          </p>
+        </div>
+      </details>
+
       <details>
         <summary><strong>📖 Referencia — componentes de la arquitectura de datos para BI</strong></summary>
         <div class="tabla-scroll">
@@ -635,7 +673,17 @@
         </div>
       </details>
 
-      <div class="consigna" style="margin-top:20px">
+      <!-- Approach A: Visual Game Analogy for N3B -->
+      <div class="assoc" style="border-color:#40390a;background:#14120a;margin:20px 0">
+        <h4 style="color:var(--amber);margin:0 0 12px">🕵️ Misión 3B — Auditoría de calidad como Papers, Please</h4>
+        <p style="margin:0 0 10px;font-size:0.92rem;color:#b9c0d6">
+          Como en <strong>Papers, Please</strong> o <strong>Return of the Obra Dinn</strong>, eres inspector de datos.
+          Tu trabajo: detectar inconsistencias, duplicados y diseños peligrosos que comprometerían la integridad del análisis.
+          Cada decisión equivocada deja un riesgo: clientes contados varias veces, productos con precios contradictorios, reportes irreconciliables.
+        </p>
+      </div>
+
+      <div class="consigna">
         <strong>Misión 3B — Reto de análisis «¿Qué pasa si no diseñamos?».</strong> Clasifica cada práctica como
         <em>error de diseño</em> o <em>buena práctica</em>. Piensa en duplicidad, consistencia y trazabilidad.
       </div>
@@ -1070,7 +1118,20 @@
     if (esperado === real) {
       colocados++; sumarXP(5); fb.className = "fb fb-ok"; fb.textContent = "✓ Correcto: «" + chip.textContent + "» en posición " + real + " (" + colocados + "/6).";
     } else {
-      fb.className = "fb fb-error"; fb.textContent = "⚠️ «" + chip.textContent + "» va en otro lugar. Pista: CAPTURA → INTEGRA → ALMACENA → ANALIZA → DECIDE.";
+      // Approach C: Friction Point Mechanics — show consequences of wrong placement
+      var friccionMsg = "";
+      if (chip.textContent.indexOf("ETL") !== -1 && real < 2) {
+        friccionMsg = " 🚨 <strong>FRICCIÓN DE DISEÑO:</strong> Si ETL va antes de la Base operacional, los datos nunca se capturan correctamente. ¡Datos sin depurar contaminarán todo el análisis!";
+      } else if (chip.textContent.indexOf("operacional") !== -1 && real > 3) {
+        friccionMsg = " ⚠️ <strong>FRICCIÓN:</strong> La Base operacional debe registrar las transacciones antes de transformarlas. Si va tarde, pierdes el historial.";
+      } else if (chip.textContent.indexOf("Fuentes") !== -1 && real > 1) {
+        friccionMsg = " ⚠️ <strong>FRICCIÓN:</strong> Las Fuentes son el origen. Si no están primeras, ¿de dónde capturan los datos?";
+      } else if (chip.textContent.indexOf("Warehouse") !== -1 && real < 4) {
+        friccionMsg = " ⚠️ <strong>FRICCIÓN:</strong> El Data Warehouse recibe datos ya transformados. Debe venir después del ETL.";
+      } else if (chip.textContent.indexOf("Decisión") !== -1 && real < 6) {
+        friccionMsg = " ⚠️ <strong>FRICCIÓN:</strong> La Decisión es el destino final. Primero análisis, luego decisión.";
+      }
+      fb.className = "fb fb-error"; fb.innerHTML = "⚠️ «" + chip.textContent + "» va en otro lugar. Pista: CAPTURA → INTEGRA → ALMACENA → ANALIZA → DECIDE." + friccionMsg;
     }
     actualizarMedidorRuta();
     if (document.querySelectorAll("#banco .chip:not(.colocado)").length === 0) {
@@ -1144,7 +1205,20 @@
       d.classList.add("resuelta"); fb.className = "fb fb-ok"; fb.textContent = "✓ Correcto: " + p.fb;
       estado.n3er.hechas++; sumarXP(6); anunciar("Correcto. +6 XP."); actualizarMedidorER();
     } else {
-      fb.className = "fb"; fb.innerHTML = '<dl class="refuerzo"><dt>Aún no</dt><dd>Piensa en duplicidad, consistencia y trazabilidad.</dd><dt>Dato clave</dt><dd>' + esc(p.fb) + '</dd><dt>Concepto</dt><dd>Una buena arquitectura previene estos errores mediante claves primarias, claves foráneas y separación de entidades.</dd><dt>Reintento</dt><dd>Vuelve a clasificar sin penalización.</dd></dl>';
+      // Approach C: Friction Point Mechanics for N3B — consequences of misclassification
+      var friccionN3B = "";
+      if (i === 0 && op === "buena") { // Debería ser error pero clasificó como buena
+        friccionN3B = "<dt>⚠️ FRICCIÓN DE DISEÑO</dt><dd><strong>Riesgo crítico:</strong> Sin id_cliente único, el mismo cliente «Juan» se cuenta varias veces en tus reportes. Resultado: estimaciones de frecuencia de clientes falsas. La gerencia cree tener 100 clientes únicos cuando en realidad son 30. Decisión basada en mentira.</dd>";
+      } else if (i === 1 && op === "buena") { // Registrar todo en una tabla es error
+        friccionN3B = "<dt>⚠️ FRICCIÓN DE DISEÑO</dt><dd><strong>Cuello de botella:</strong> Una sola tabla gigante con pedido+producto+cliente+pago repite datos. Cada pedido repite el nombre del cliente, el nombre del producto. Al actualizar un producto, ¿actualizas 50.000 filas? Inconsistencia garantizada.</dd>";
+      } else if (i === 2 && op === "buena") { // No conservar historial es error
+        friccionN3B = "<dt>⚠️ FRICCIÓN DE DISEÑO</dt><dd><strong>Pérdida de trazabilidad:</strong> Si cambias el precio de un producto, todos los reportes históricos quedan mal. Reportes de hace 3 meses muestran precios de hoy. Data Warehouse inconsistente.</dd>";
+      } else if (i === 3 && op === "error") { // Usar id como clave es buena práctica
+        friccionN3B = "<dt>ℹ️ CONCEPTO</dt><dd><strong>Identificación sin ambigüedad:</strong> Una clave primaria (id_cliente) garantiza que cada cliente tiene un registro único. Eso permite relacionar todos sus pedidos sin confusión. Es la base de cualquier modelo relacional.</dd>";
+      } else if (i === 4 && op === "error") { // Separar Producto y Detalle es buena práctica
+        friccionN3B = "<dt>ℹ️ CONCEPTO</dt><dd><strong>Normalización:</strong> Separar Producto de Detalle_Pedido evita repetir datos. Cambias el precio en un lugar (Producto), no en 50.000 filas de pedidos. Consistencia.</dd>";
+      }
+      fb.className = "fb"; fb.innerHTML = '<dl class="refuerzo"><dt>Aún no</dt><dd>Piensa en duplicidad, consistencia y trazabilidad.</dd><dt>Dato clave</dt><dd>' + esc(p.fb) + '</dd>' + friccionN3B + '<dt>Concepto</dt><dd>Una buena arquitectura previene estos errores mediante claves primarias, claves foráneas y separación de entidades.</dd><dt>Reintento</dt><dd>Vuelve a clasificar sin penalización.</dd></dl>';
     }
     var fbG = $("#fbER");
     if (estado.n3er.hechas >= 5) { fbG.className = "fb fb-ok"; fbG.textContent = "✓ Analizaste las 5 prácticas de diseño. Entiendes bien la diferencia entre errores y buenas prácticas."; }
